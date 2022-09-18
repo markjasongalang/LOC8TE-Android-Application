@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LOC8TE</string>
+    <string-array name="account_types_array">
+        <item>client</item>
+        <item>professional</item>
+    </string-array>
+</resources>
