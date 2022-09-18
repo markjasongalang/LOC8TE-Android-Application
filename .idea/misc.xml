@@ -10,11 +10,13 @@
         <entry key="app/src/main/res/drawable/gradient_white_bg.xml" value="0.2405" />
         <entry key="app/src/main/res/drawable/round_corners.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/secondary_color_round_corners.xml" value="0.2405" />
+        <entry key="app/src/main/res/drawable/tertiary_color_round_corners.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/white_round_corners_10.xml" value="0.2405" />
+        <entry key="app/src/main/res/drawable/white_round_corners_40.xml" value="0.2405" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/layout/activity_signup1.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_signup2.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_signup2.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_spinner_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/spinner_dropdown_layout.xml" value="0.33" />

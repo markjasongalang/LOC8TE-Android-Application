@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 public class Signup2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner spAccount;
+    private LinearLayout llProOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +20,8 @@ public class Signup2Activity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_signup2);
 
         spAccount = findViewById(R.id.sp_account);
+        llProOption = findViewById(R.id.ll_pro_option);
+
         initSpinnerAccount();
         spAccount.setOnItemSelectedListener(this);
     }
@@ -31,8 +35,10 @@ public class Signup2Activity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-        if (pos == 1) {
-            Toast.makeText(this, "clicked professional!", Toast.LENGTH_SHORT).show();
+        if (pos == 0) {
+            llProOption.setVisibility(View.GONE);
+        } else {
+            llProOption.setVisibility(View.VISIBLE);
         }
     }
 

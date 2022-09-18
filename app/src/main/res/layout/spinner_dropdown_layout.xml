@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="hello"
-    android:fontFamily="@font/open_sans_bold"
+    android:fontFamily="@font/open_sans_semi_bold"
     android:textSize="20sp"
     android:background="@drawable/custom_dropdown_design"
     android:textColor="@color/primaryColor">
