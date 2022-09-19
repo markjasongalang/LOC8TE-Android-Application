@@ -21,6 +21,7 @@ public class Signup1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup1);
 
+        // Initialize the date picker dialog
         initDatePicker();
         btnDate = findViewById(R.id.btn_date);
         btnDate.setText(getTodaysDate());

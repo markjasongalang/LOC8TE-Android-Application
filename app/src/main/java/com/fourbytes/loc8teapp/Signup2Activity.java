@@ -1,7 +1,5 @@
 package com.fourbytes.loc8teapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -10,7 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Signup2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner spAccount;
@@ -38,16 +37,20 @@ public class Signup2Activity extends AppCompatActivity implements AdapterView.On
     }
 
     private void initTextValidation() {
-        String message = "** validation process can take <b>3 - 5 business days</b>."+
-                        "you will receive an email once your account is verified. " +
-                        "<b>you may not use the account while it is in the process of verification</b>.";
+        String message = "** validation process can take <b>3 - 5 business days</b>." +
+                         "you will receive an email once your account is verified. " +
+                         "<b>you may not use the account while it is in the process of verification</b>.";
 
         tvValidation.setText(Html.fromHtml(message));
     }
 
     private void initSpinnerAccount() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.account_types_array, R.layout.spinner_dropdown_layout);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.account_types_array,
+                R.layout.spinner_dropdown_layout
+        );
+
         adapter.setDropDownViewResource(R.layout.spinner_item_layout);
         spAccount.setAdapter(adapter);
     }
