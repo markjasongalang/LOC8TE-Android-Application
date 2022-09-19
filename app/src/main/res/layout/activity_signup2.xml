@@ -158,14 +158,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="-40dp"
                     android:background="@drawable/fourth_color_round_corners_40"
                     android:fontFamily="@font/open_sans_light"
                     android:gravity="center"
                     android:text="name of the file"
                     android:textAlignment="center"
-                    android:layout_marginLeft="-40dp"
                     android:textColor="@color/primaryColor" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_validation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:fontFamily="@font/open_sans_light_italic"
+                android:text="** validation process..." />
         </LinearLayout>
 
         <Button
