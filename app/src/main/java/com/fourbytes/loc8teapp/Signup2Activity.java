@@ -1,5 +1,6 @@
 package com.fourbytes.loc8teapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -15,6 +16,7 @@ public class Signup2Activity extends AppCompatActivity implements AdapterView.On
     private Spinner spAccount;
     private LinearLayout llProOption;
     private TextView tvValidation;
+    private String accountType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +62,21 @@ public class Signup2Activity extends AppCompatActivity implements AdapterView.On
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
         if (pos == 0) {
             llProOption.setVisibility(View.GONE);
+            accountType = "client";
         } else {
             llProOption.setVisibility(View.VISIBLE);
+            accountType = "professional";
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public void openNextSignUp(View view) {
+        Intent intent = new Intent(this, Signup3Activity.class);
+        intent.putExtra("accountType", accountType);
+        startActivity(intent);
     }
 }

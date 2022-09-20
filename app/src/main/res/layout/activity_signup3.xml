@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryColor"
-    tools:context=".Signup2Activity">
+    tools:context=".Signup3Activity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/hg15"
@@ -58,51 +58,30 @@
             android:textSize="25sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/edt_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/white_round_corners_10"
-            android:fontFamily="@font/open_sans_light"
-            android:hint="email"
-            android:inputType="textEmailAddress"
-            android:padding="10dp"
-            android:textColor="@color/primaryColor"
-            android:textColorHint="@color/primaryColor"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/edt_contact_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/white_round_corners_10"
-            android:fontFamily="@font/open_sans_light"
-            android:hint="contact number"
-            android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/primaryColor"
-            android:textColorHint="@color/primaryColor"
-            android:textSize="18sp" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/open_sans_light_italic"
-            android:text="type of account"
-            android:textAlignment="textStart"
-            android:textColor="@color/white"
-            android:textSize="17sp" />
+            android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/sp_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/white_round_corners_10"
-            android:dropDownVerticalOffset="50dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_light_italic"
+                android:text="account type:"
+                android:textColor="@color/primaryColor"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_account_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_semi_bold"
+                android:text="sample"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/primaryColor"
+                android:textSize="17sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_pro_option"
@@ -117,21 +96,12 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:fontFamily="@font/open_sans_light_italic"
-                    android:text="proof of valid ID"
-                    android:textAlignment="textStart"
+                    android:text="please add your profile picture"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light_italic"
-                    android:text="examples"
-                    android:textColor="@color/primaryColor"
                     android:textSize="17sp" />
             </LinearLayout>
 
@@ -168,14 +138,14 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_validation"
+                android:id="@+id/tv_attach_reminder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/white"
-                android:textAlignment="center"
                 android:fontFamily="@font/open_sans_light_italic"
-                android:text="** validation process..." />
+                android:text="** make sure that the picture will show your face. "
+                android:textAlignment="center"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <Button
@@ -190,7 +160,6 @@
             android:text="next"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:onClick="openNextSignUp"
             android:textSize="20sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

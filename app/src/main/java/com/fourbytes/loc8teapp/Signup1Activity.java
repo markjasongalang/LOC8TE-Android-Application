@@ -10,11 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Calendar;
 
 public class Signup1Activity extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private Button btnDate;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,9 @@ public class Signup1Activity extends AppCompatActivity {
         initDatePicker();
         btnDate = findViewById(R.id.btn_date);
         btnDate.setText(getTodaysDate());
+
+        // Initialize Firebase database
+        db = FirebaseFirestore.getInstance();
     }
 
     private String getTodaysDate() {

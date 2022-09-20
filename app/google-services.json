@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "69530288228",
+    "project_id": "loc8te-270cb",
+    "storage_bucket": "loc8te-270cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69530288228:android:7a17fc60212c9db8b09f71",
+        "android_client_info": {
+          "package_name": "com.fourbytes.loc8teapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69530288228-th5di59gfrjp2ct0ijku7731ksg0c3sd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbJOw0MU92qfbqJ3qiLyT-2lMSs4vJTa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69530288228-th5di59gfrjp2ct0ijku7731ksg0c3sd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
