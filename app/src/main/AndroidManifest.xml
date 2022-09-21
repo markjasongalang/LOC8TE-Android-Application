@@ -14,6 +14,9 @@
         android:theme="@style/Theme.LOC8TEApp"
         tools:targetApi="31">
         <activity
+            android:name=".Signup4Activity"
+            android:exported="false" />
+        <activity
             android:name=".Signup3Activity"
             android:exported="false" />
         <activity

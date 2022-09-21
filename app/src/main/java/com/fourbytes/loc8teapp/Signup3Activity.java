@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
 import android.widget.TextView;
 
 public class Signup3Activity extends AppCompatActivity {
@@ -35,5 +36,9 @@ public class Signup3Activity extends AppCompatActivity {
             message += "<b>this will be used to validate if your ID matches your picture.</b>";
         }
         tvAttachReminder.setText(Html.fromHtml(message));
+    }
+
+    public void openNextSignup(View view) {
+        startActivity(new Intent(this, Signup4Activity.class));
     }
 }
