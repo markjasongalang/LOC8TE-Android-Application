@@ -1,196 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primaryColor"
-    tools:context=".Signup2Activity">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/hg15"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primaryColor"
+        tools:context=".Signup2Activity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vg05"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/hg15"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vg95"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vg05"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
 
-    <ImageView
-        android:layout_width="180dp"
-        android:layout_height="120dp"
-        android:src="@drawable/logo_only"
-        app:layout_constraintBottom_toTopOf="@id/hg15"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vg95"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/gradient_white_bg"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="30dp"
-        app:layout_constraintLeft_toRightOf="@+id/vg05"
-        app:layout_constraintRight_toLeftOf="@+id/vg95"
-        app:layout_constraintTop_toBottomOf="@+id/hg15">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans_bold"
-            android:text="sign up"
-            android:textAlignment="center"
-            android:textColor="@color/primaryColor"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/edt_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/white_round_corners_10"
-            android:fontFamily="@font/open_sans_light"
-            android:hint="email"
-            android:inputType="textEmailAddress"
-            android:padding="10dp"
-            android:textColor="@color/primaryColor"
-            android:textColorHint="@color/primaryColor"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/edt_contact_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/white_round_corners_10"
-            android:fontFamily="@font/open_sans_light"
-            android:hint="contact number"
-            android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/primaryColor"
-            android:textColorHint="@color/primaryColor"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/open_sans_light_italic"
-            android:text="type of account"
-            android:textAlignment="textStart"
-            android:textColor="@color/white"
-            android:textSize="17sp" />
-
-        <Spinner
-            android:id="@+id/sp_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/white_round_corners_10"
-            android:dropDownVerticalOffset="50dp" />
+        <ImageView
+            android:layout_width="180dp"
+            android:layout_height="120dp"
+            android:src="@drawable/logo_only"
+            app:layout_constraintBottom_toTopOf="@id/hg15"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/ll_pro_option"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/open_sans_light_italic"
-                    android:text="proof of valid ID"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light_italic"
-                    android:text="examples"
-                    android:textColor="@color/primaryColor"
-                    android:textSize="17sp" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/tertiary_color_round_corners"
-                    android:fontFamily="@font/glacial_indifference"
-                    android:text="attach"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="-40dp"
-                    android:background="@drawable/fourth_color_round_corners_40"
-                    android:fontFamily="@font/open_sans_light"
-                    android:gravity="center"
-                    android:text="name of the file"
-                    android:textAlignment="center"
-                    android:textColor="@color/primaryColor" />
-            </LinearLayout>
+            android:background="@drawable/gradient_white_bg"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="30dp"
+            app:layout_constraintLeft_toRightOf="@+id/vg05"
+            app:layout_constraintRight_toLeftOf="@+id/vg95"
+            app:layout_constraintTop_toBottomOf="@+id/hg15">
 
             <TextView
-                android:id="@+id/tv_validation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_bold"
+                android:text="sign up"
+                android:textAlignment="center"
+                android:textColor="@color/primaryColor"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/white_round_corners_10"
+                android:fontFamily="@font/open_sans_light"
+                android:hint="email"
+                android:inputType="textEmailAddress"
+                android:padding="10dp"
+                android:textColor="@color/primaryColor"
+                android:textColorHint="@color/primaryColor"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edt_contact_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/white"
-                android:textAlignment="center"
-                android:fontFamily="@font/open_sans_light_italic"
-                android:text="** validation process..." />
-        </LinearLayout>
+                android:background="@drawable/white_round_corners_10"
+                android:fontFamily="@font/open_sans_light"
+                android:hint="contact number"
+                android:inputType="number"
+                android:padding="10dp"
+                android:textColor="@color/primaryColor"
+                android:textColorHint="@color/primaryColor"
+                android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="70dp"
-            android:background="@drawable/secondary_color_round_corners"
-            android:fontFamily="@font/glacial_indifference"
-            android:text="next"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:onClick="openNextSignUp"
-            android:textSize="20sp" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/open_sans_light_italic"
+                android:text="type of account"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+
+            <Spinner
+                android:id="@+id/sp_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_round_corners_10"
+                android:dropDownVerticalOffset="50dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_pro_option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/open_sans_light_italic"
+                        android:text="proof of valid ID"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans_light_italic"
+                        android:text="examples"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/tertiary_color_round_corners"
+                        android:fontFamily="@font/glacial_indifference"
+                        android:text="attach"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="-40dp"
+                        android:background="@drawable/fourth_color_round_corners_40"
+                        android:fontFamily="@font/open_sans_light"
+                        android:gravity="center"
+                        android:text="name of the file"
+                        android:textAlignment="center"
+                        android:textColor="@color/primaryColor" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_validation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/open_sans_light_italic"
+                    android:text="** validation process..."
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="70dp"
+                android:background="@drawable/secondary_color_round_corners"
+                android:fontFamily="@font/glacial_indifference"
+                android:onClick="openNextSignUp"
+                android:text="next"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
