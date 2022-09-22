@@ -31,4 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     public void openSignupActivity(View view) {
         startActivity(new Intent(this, Signup1Activity.class));
     }
+
+    public void openHome(View view) {
+        startActivity(new Intent(this, HomeActivity.class));
+    }
 }
