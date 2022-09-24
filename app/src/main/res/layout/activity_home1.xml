@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:itemIconTint="#9BD7D1"
-        app:itemTextColor="#32516D"
+        app:itemTextColor="#9BD7D1"
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_navigation_menu"
         android:layout_height="wrap_content"/>
