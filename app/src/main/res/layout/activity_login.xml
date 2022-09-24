@@ -118,7 +118,6 @@
                 android:layout_marginRight="40dp"
                 android:background="@drawable/secondary_color_round_corners"
                 android:fontFamily="@font/glacial_indifference"
-                android:onClick="openHome"
                 android:text="log in"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
