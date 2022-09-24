@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.R;
 
-public class FragmentEvent extends Fragment {
+public class FragmentEvent_General extends Fragment {
 
-    public FragmentEvent() {
+    public FragmentEvent_General() {
         // Required empty public constructor
     }
 
