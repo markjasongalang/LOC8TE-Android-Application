@@ -16,4 +16,5 @@
     <color name="fourthColor">#EDEAE9</color>
     <color name="fifthColor">#7F98AC</color>
     <color name="sixthColor">#85D157</color>
+    <color name="secondaryColorLight">#F3965C</color>
 </resources>
