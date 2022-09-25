@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize Firebase database
         db = FirebaseFirestore.getInstance();
 
-        // Instantiate views
+        // Find views from the layout
         btnLogin = findViewById(R.id.btn_login);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
