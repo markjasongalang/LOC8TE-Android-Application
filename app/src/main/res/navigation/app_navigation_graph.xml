@@ -25,9 +25,4 @@
         android:name="com.fourbytes.loc8teapp.fragment.FragmentEvent"
         android:label="fragment_event"
         tools:layout="@layout/fragment_event" />
-    <fragment
-        android:id="@+id/fragmentEvent_general"
-        android:name="com.fourbytes.loc8teapp.fragment.FragmentEvent"
-        android:label="fragment_event_general"
-        tools:layout="@layout/fragment_event_general" />
 </navigation>
