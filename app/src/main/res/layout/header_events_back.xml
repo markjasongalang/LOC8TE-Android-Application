@@ -30,7 +30,7 @@
         android:layout_height="30dp"
         android:layout_toStartOf="@+id/header_text"
         android:background="@drawable/icon_arrow_back"
-        android:onClick="openHome"
+        android:onClick="backButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

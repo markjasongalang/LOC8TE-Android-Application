@@ -22,7 +22,8 @@
         android:layout_below="@id/header_event"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="10dp"
-        card_view:cardCornerRadius="10dp">
+        card_view:cardCornerRadius="10dp"
+        android:onClick="openGeneral">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,7 +54,8 @@
         android:layout_below="@id/my_events_view"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="10dp"
-        card_view:cardCornerRadius="10dp">
+        card_view:cardCornerRadius="10dp"
+        android:onClick="openIndustry">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,7 +86,8 @@
         android:layout_below="@id/general_events_view"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="10dp"
-        card_view:cardCornerRadius="10dp">
+        card_view:cardCornerRadius="10dp"
+        android:onClick="openMyEvents">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
