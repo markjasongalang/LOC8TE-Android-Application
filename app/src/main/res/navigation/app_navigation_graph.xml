@@ -25,4 +25,19 @@
         android:name="com.fourbytes.loc8teapp.fragment.FragmentEvent"
         android:label="fragment_event"
         tools:layout="@layout/fragment_event" />
+    <fragment
+        android:id="@+id/fragmentEvent_general"
+        android:name="com.fourbytes.loc8teapp.fragment.FragmentEvent_General"
+        android:label="fragment_event_general"
+        tools:layout="@layout/fragment_event_general" />
+    <fragment
+        android:id="@+id/fragmentEvent_industry"
+        android:name="com.fourbytes.loc8teapp.fragment.FragmentEvent_Industry"
+        android:label="fragment_event_industry"
+        tools:layout="@layout/fragment_event_industry" />
+    <fragment
+        android:id="@+id/fragmentEvent_myevents"
+        android:name="com.fourbytes.loc8teapp.fragment.FragmentEvent_MyEvents"
+        android:label="fragment_event_myevents"
+        tools:layout="@layout/fragment_event_myevents" />
 </navigation>

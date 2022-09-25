@@ -31,31 +31,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void openGeneral(View view) {
-        FragmentEvent_General fragment = new FragmentEvent_General();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment, fragment)
-                .commit();
+        Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent_general);
+
     }
     public void openIndustry(View view) {
-        FragmentEvent_Industry fragment = new FragmentEvent_Industry();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment, fragment)
-                .commit();
+        Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent_industry);
     }
     public void openMyEvents(View view) {
-        FragmentEvent_MyEvents fragment = new FragmentEvent_MyEvents();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment, fragment)
-                .commit();
+        Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent_myevents);
     }
     public void backButton(View view) {
-        FragmentEvent fragment = new FragmentEvent();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment, fragment)
-                .commit();
+
+        Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent);
     }
 }
