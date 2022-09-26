@@ -4,19 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.fourbytes.loc8teapp.fragment.FragmentEvent;
-import com.fourbytes.loc8teapp.fragment.FragmentEvent_General;
-import com.fourbytes.loc8teapp.fragment.FragmentEvent_Industry;
-import com.fourbytes.loc8teapp.fragment.FragmentEvent_MyEvents;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HostActivity extends AppCompatActivity {
     private ItemViewModel viewModel;
