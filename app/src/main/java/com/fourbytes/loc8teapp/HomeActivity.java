@@ -32,7 +32,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public void openGeneral(View view) {
         Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent_general);
-
     }
     public void openIndustry(View view) {
         Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent_industry);
@@ -41,7 +40,6 @@ public class HomeActivity extends AppCompatActivity {
         Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent_myevents);
     }
     public void backButton(View view) {
-
         Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent);
     }
 }

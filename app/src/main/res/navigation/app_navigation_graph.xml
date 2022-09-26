@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/fragmentHome"
-        android:name="com.fourbytes.loc8teapp.fragment.FragmentHome"
+        android:name="com.fourbytes.loc8teapp.fragment.FragmentHome_Client"
         android:label="fragment_home1"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home_client" />
     <fragment
         android:id="@+id/fragmentProfile"
         android:name="com.fourbytes.loc8teapp.fragment.FragmentProfile"
@@ -40,4 +40,19 @@
         android:name="com.fourbytes.loc8teapp.fragment.FragmentEvent_MyEvents"
         android:label="fragment_event_myevents"
         tools:layout="@layout/fragment_event_myevents" />
+    <fragment
+        android:id="@+id/fragmentHome_NewList"
+        android:name="com.fourbytes.loc8teapp.fragment.FragmentHome_NewList"
+        android:label="fragment_home_new"
+        tools:layout="@layout/fragment_home_new" />
+    <fragment
+        android:id="@+id/fragmentHome_ConnectedList"
+        android:name="com.fourbytes.loc8teapp.fragment.FragmentHome_ConnectedList"
+        android:label="fragment_home_connected"
+        tools:layout="@layout/fragment_home_connected" />
+    <fragment
+        android:id="@+id/fragmentHome_MapView"
+        android:name="com.fourbytes.loc8teapp.fragment.FragmentHome_MapView"
+        android:label="fragment_home_map"
+        tools:layout="@layout/fragment_home_map" />
 </navigation>
