@@ -17,7 +17,7 @@
             android:name=".AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".HostActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"

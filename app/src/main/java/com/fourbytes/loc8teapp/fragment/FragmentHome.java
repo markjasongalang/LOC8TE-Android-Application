@@ -6,11 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.fourbytes.loc8teapp.HomeActivity;
 import com.fourbytes.loc8teapp.LoginActivity;
 import com.fourbytes.loc8teapp.R;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;

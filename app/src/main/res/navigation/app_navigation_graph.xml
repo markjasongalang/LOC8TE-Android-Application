@@ -14,7 +14,7 @@
         android:id="@+id/fragmentProfile"
         android:name="com.fourbytes.loc8teapp.fragment.FragmentProfile"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/client_fragment_profile" />
     <fragment
         android:id="@+id/fragmentChat"
         android:name="com.fourbytes.loc8teapp.fragment.FragmentChat"

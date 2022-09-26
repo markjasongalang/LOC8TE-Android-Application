@@ -5,43 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".fragment.FragmentHome"
-    android:background="@color/fourthColor">
+    android:background="@color/fourthColor"
+    tools:context=".fragment.FragmentHome">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid3"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.87"/>
+        app:layout_constraintGuide_percent="0.87" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid4"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5"
         android:layout_width="0dp"
-        android:layout_height="0dp"/>
-    
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2"
         android:layout_width="0dp"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65"
         android:layout_width="0dp"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid2"
-        app:layout_constraintGuide_percent="0.3"
-        android:orientation="horizontal"
         android:layout_width="0dp"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
 
     <!-- location FAB -->
     <FrameLayout
@@ -56,76 +56,76 @@
             android:id="@+id/location_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_gravity="bottom"
             android:backgroundTint="@color/white"
-            android:outlineProvider="none"
-            android:gravity="end"
-            app:iconTint="@color/secondaryColorLight"
-            app:icon="@drawable/icon_location"
             android:fontFamily="@font/open_sans_light_italic"
-            android:textColor="@color/secondaryColorLight"
+            android:gravity="end"
+            android:outlineProvider="none"
+            android:text="update my location"
             android:textAllCaps="false"
-            android:text="update my location"/>
+            android:textColor="@color/secondaryColorLight"
+            app:icon="@drawable/icon_location"
+            app:iconTint="@color/secondaryColorLight" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/location_settings_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/white_round_corners_10">
+            android:background="@drawable/white_round_corners_10"
+            android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="50dp">
-
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="50dp">
 
-                <EditText
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/fourth_color_round_corners_40_2"
-                    android:fontFamily="@font/open_sans_light_italic"
-                    android:hint="search for address"
-                    android:inputType="text"
-                    android:textColor="@color/primaryColor"
-                    android:textColorHint="@color/primaryColor"
-                    android:textSize="16sp"/>
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="or"
-                    android:textSize="20sp"
-                    android:layout_margin="10dp"
-                    android:fontFamily="@font/open_sans_light_italic"
-                    android:textAlignment="center"
-                    android:textColor="@color/primaryColor"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/fourth_color_round_corners_40_2"
+                        android:fontFamily="@font/open_sans_light_italic"
+                        android:hint="search for address"
+                        android:inputType="text"
+                        android:textColor="@color/primaryColor"
+                        android:textColorHint="@color/primaryColor"
+                        android:textSize="16sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="40dp"
-                    android:layout_marginLeft="40dp"
-                    android:background="@drawable/tertiary_color_round_corners"
-                    android:fontFamily="@font/glacial_indifference"
-                    android:text="turn on GPS"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </ScrollView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:fontFamily="@font/open_sans_light_italic"
+                        android:text="or"
+                        android:textAlignment="center"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="20sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:background="@drawable/tertiary_color_round_corners"
+                        android:fontFamily="@font/glacial_indifference"
+                        android:text="turn on GPS"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
 
     </FrameLayout>
@@ -140,164 +140,165 @@
         app:layout_constraintTop_toBottomOf="@id/mid2">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/home_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/home_settings"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="10dp"
             android:layout_gravity="bottom"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="@color/secondaryColorLight"
-            android:outlineProvider="none"
-            android:gravity="end"
-            app:iconTint="@color/white"
-            app:icon="@drawable/icon_settings"
             android:fontFamily="@font/open_sans_light_italic"
-            android:textColor="@color/white"
+            android:gravity="end"
+            android:outlineProvider="none"
+            android:text="settings"
             android:textAllCaps="false"
-            android:text="settings"/>
+            android:textColor="@color/white"
+            app:icon="@drawable/icon_settings"
+            app:iconTint="@color/white" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/home_settings_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/secondary_color_round_corners_20">
+            android:background="@drawable/secondary_color_round_corners_20"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:minHeight="0dp"
                 android:id="@+id/logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="logout"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:paddingRight="50dp"
-                android:paddingLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/log_out_button"
                 android:fontFamily="@font/glacial_indifference"
+                android:minHeight="0dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="50dp"
+                android:text="logout"
                 android:textAllCaps="false"
-                android:textColor="@color/primaryColor"
-                android:background="@drawable/log_out_button"/>
+                android:textColor="@color/primaryColor" />
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="40dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/open_sans_semi_bold_italic"
-                    android:paddingLeft="5dp"
-                    android:text="locator view"
-                    android:textColor="@color/white" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="map view"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/open_sans_semi_bold_italic"
+                        android:paddingLeft="5dp"
+                        android:text="locator view"
+                        android:textColor="@color/white" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="list view"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="map view"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/open_sans_semi_bold_italic"
-                    android:paddingLeft="5dp"
-                    android:text="professionals filter"
-                    android:textColor="@color/white" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="list view"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="medical and health"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/open_sans_semi_bold_italic"
+                        android:paddingLeft="5dp"
+                        android:text="professionals filter"
+                        android:textColor="@color/white" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="graphic design"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="medical and health"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="photography"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="graphic design"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="social media manager"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="photography"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="virtual assistant"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="social media manager"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="website development"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="virtual assistant"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="copywriting"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="website development"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="copywriting"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
@@ -308,10 +309,10 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/top">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/search_prof_button"
@@ -330,6 +331,10 @@
             android:id="@+id/search_prof_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="30dp"
             android:background="@drawable/white_round_corners_10"
             android:fontFamily="@font/open_sans_light_italic"
             android:hint="search professional by name"
@@ -337,11 +342,7 @@
             android:padding="16dp"
             android:textColor="@color/primaryColor"
             android:textColorHint="@color/primaryColor"
-            android:textSize="18sp"
-            android:layout_gravity="right"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"/>
+            android:textSize="18sp" />
 
     </FrameLayout>
 

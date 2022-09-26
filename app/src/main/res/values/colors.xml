@@ -12,9 +12,10 @@
     <!-- LOC8TE Colors by Angeline -->
     <color name="primaryColor">#32516D</color>
     <color name="secondaryColor">#E16530</color>
+    <color name="secondaryColorLight">#F3965C</color>
     <color name="tertiaryColor">#9BCFCA</color>
     <color name="fourthColor">#EDEAE9</color>
     <color name="fifthColor">#7F98AC</color>
     <color name="sixthColor">#85D157</color>
-    <color name="secondaryColorLight">#F3965C</color>
+    <color name="eightColor">#E3EAE9</color>
 </resources>
