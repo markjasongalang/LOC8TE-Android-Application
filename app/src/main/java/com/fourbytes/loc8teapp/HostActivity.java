@@ -4,16 +4,18 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.fourbytes.loc8teapp.fragment.FragmentEvent_General;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HostActivity extends AppCompatActivity {
     private ItemViewModel viewModel;
-
+    FragmentManager fragmentManager = getSupportFragmentManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,19 +36,4 @@ public class HostActivity extends AppCompatActivity {
         viewModel.setItem(accountType);
     }
 
-    public void openGeneral(View view) {
-        Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent_general);
-    }
-
-    public void openIndustry(View view) {
-        Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent_industry);
-    }
-
-    public void openMyEvents(View view) {
-        Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent_myevents);
-    }
-
-    public void backButton(View view) {
-        Navigation.findNavController(this, R.id.fragment).navigate(R.id.fragmentEvent);
-    }
 }
