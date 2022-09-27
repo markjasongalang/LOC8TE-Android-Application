@@ -93,6 +93,7 @@ public class FragmentHome_Client extends Fragment {
                     buttonView.setEnabled(false);
 
                     map_view_container.setVisibility(view.VISIBLE);
+                    viewPager.removeAllViews();
 
                     listview.setChecked(false);
                     listview.setEnabled(true);
@@ -108,6 +109,7 @@ public class FragmentHome_Client extends Fragment {
                     buttonView.setEnabled(false);
 
                     map_view_container.setVisibility(view.GONE);
+                    setUpViewPager(viewPager);
 
                     mapview.setChecked(false);
                     mapview.setEnabled(true);
