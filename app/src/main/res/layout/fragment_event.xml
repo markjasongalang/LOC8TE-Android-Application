@@ -10,13 +10,35 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <include
-        layout="@layout/header"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/header_event"
+        android:background="@color/primaryColor"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="40dp">
+
+
+        <TextView
+            android:id="@+id/header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/open_sans_light"
+            android:text="@string/event_header"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/my_events_view"
+        android:id="@+id/general_events_view"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_below="@id/header_event"
@@ -31,42 +53,10 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/my_events_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/general_events_text"
-                android:textStyle="bold"
-                android:textSize="25sp"
-                android:textColor="@color/secondaryColor"
-                android:fontFamily="@font/open_sans_light"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/general_events_view"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@id/my_events_view"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="10dp"
-        card_view:cardCornerRadius="10dp"
-        android:onClick="openIndustry">
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
                 android:id="@+id/general_events_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/industry_events_text"
+                android:text="@string/general_events_text"
                 android:textStyle="bold"
                 android:textSize="25sp"
                 android:textColor="@color/secondaryColor"
@@ -87,7 +77,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="10dp"
         card_view:cardCornerRadius="10dp"
-        android:onClick="openMyEvents">
+        android:onClick="openIndustry">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,6 +86,38 @@
 
             <TextView
                 android:id="@+id/industry_events_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/industry_events_text"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:textColor="@color/secondaryColor"
+                android:fontFamily="@font/open_sans_light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/my_events_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/industry_events_view"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        card_view:cardCornerRadius="10dp"
+        android:onClick="openMyEvents">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/my_events_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/my_events_text"

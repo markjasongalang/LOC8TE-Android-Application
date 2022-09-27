@@ -15,7 +15,7 @@ import com.fourbytes.loc8teapp.R;
 public class FragmentEvent extends Fragment{
     private View view;
 
-    private CardView cvGeneral;
+    private CardView card_general, card_industry, card_myEvents;
 
     public FragmentManager fragmentManager;
 
@@ -27,12 +27,37 @@ public class FragmentEvent extends Fragment{
 
         fragmentManager = getParentFragmentManager();
 
-        cvGeneral = view.findViewById(R.id.my_events_view);
-        cvGeneral.setOnClickListener(new View.OnClickListener() {
+        card_general = view.findViewById(R.id.general_events_view);
+        card_industry = view.findViewById(R.id.industry_events_view);
+        card_myEvents = view.findViewById(R.id.my_events_view);
+
+        card_general.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment, FragmentEvent_General.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        card_industry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment, FragmentEvent_Industry.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        card_myEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment, FragmentEvent_MyEvents.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
