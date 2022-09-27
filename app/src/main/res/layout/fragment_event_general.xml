@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.FragmentEvent_General"
     android:background="@color/fourthColor">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <include
-        layout="@layout/header_events_back"
+    <LinearLayout
+        android:background="@color/primaryColor"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="back" />
+
+        <TextView
+            android:textSize="18sp"
+            android:fontFamily="@font/open_sans"
+            android:text="General Events"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>
