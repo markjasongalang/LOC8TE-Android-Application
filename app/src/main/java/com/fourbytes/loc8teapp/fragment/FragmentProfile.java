@@ -2,6 +2,7 @@ package com.fourbytes.loc8teapp.fragment;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.fourbytes.loc8teapp.ItemViewModel;
 import com.fourbytes.loc8teapp.R;
@@ -26,6 +28,8 @@ public class FragmentProfile extends Fragment {
 
     private RecyclerView rvReviewForProfessional;
 
+    private AppCompatButton btnAddReview;
+
     public FragmentProfile() {}
 
     @Override
@@ -33,9 +37,11 @@ public class FragmentProfile extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         view = getViewBasedOnAccountType(inflater, container);
 
+        // Get views from layout
         rvReviewForProfessional = view.findViewById(R.id.rv_review_for_professional);
-        rvReviewForProfessional.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        btnAddReview = view.findViewById(R.id.btn_add_review);
 
+        rvReviewForProfessional.setLayoutManager(new LinearLayoutManager(view.getContext()));
         List<ReviewForProfessional> reviewForProfessionals = new ArrayList<>();
         reviewForProfessionals.add(new ReviewForProfessional(
                 "Julia",
@@ -67,9 +73,14 @@ public class FragmentProfile extends Fragment {
                 3.78
         ));
 
-        // TODO: Place button for adding reviews
-
         rvReviewForProfessional.setAdapter(new ReviewForProfessionalAdapter(view.getContext(), reviewForProfessionals));
+
+        btnAddReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Add a review!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }

@@ -45,14 +45,18 @@
         <entry key="app/src/main/res/drawable/fourth_color_round_corners.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/fourth_color_round_corners_40.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/gradient_white_bg.xml" value="0.2405" />
+        <entry key="app/src/main/res/drawable/icon_add_review.xml" value="0.226" />
         <entry key="app/src/main/res/drawable/icon_home.xml" value="0.2335" />
+        <entry key="app/src/main/res/drawable/icon_profile.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/round_corners.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/secondary_color_banner.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/secondary_color_round_corners.xml" value="0.2405" />
         <entry key="app/src/main/res/drawable/secondary_color_round_corners2.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/secondary_color_round_corners_20.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/sixth_color_round_corners.xml" value="0.2395" />
+        <entry key="app/src/main/res/drawable/tertiary_color_add_review_round_corners.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/tertiary_color_round_corners.xml" value="0.2395" />
+        <entry key="app/src/main/res/drawable/tertiary_colro_round_corners.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/white_round_corners_10.xml" value="0.2405" />
         <entry key="app/src/main/res/drawable/white_round_corners_40.xml" value="0.2405" />
         <entry key="app/src/main/res/layout/activity_admin.xml" value="0.33" />
