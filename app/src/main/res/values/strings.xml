@@ -10,4 +10,6 @@
     <string name="general_events_text">General Events</string>
     <string name="industry_events_text">Industry Events</string>
     <string name="my_events_text">My Events</string>
+    <string name="general__itemheader">General Events</string>
+    <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis tristique sollicitudin nibh sit amet.</string>
 </resources>
