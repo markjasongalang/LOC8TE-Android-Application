@@ -5,38 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fourthColor"
-    tools:context=".fragment.FragmentHome_Client">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:background="@color/tertiaryColor"
-            app:tabTextColor="@color/white"
-            app:tabIndicatorHeight="70sp"
-            app:tabIndicatorColor="@color/primaryColor">
-        </com.google.android.material.tabs.TabLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    tools:context=".fragment.FragmentHome_Professional">
 
     <FrameLayout
-        android:id="@+id/map_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/connected_list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -73,19 +45,19 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+        app:layout_constraintGuide_percent="0.8" />
 
-    <!-- search professional FAB -->
+    <!-- search client FAB -->
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/mid5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+        app:layout_constraintTop_toBottomOf="@id/linearLayout">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/search_prof_button"
+            android:id="@+id/search_cli_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -97,12 +69,12 @@
             android:layout_gravity="bottom"/>
 
         <EditText
-            android:id="@+id/search_prof_field"
+            android:id="@+id/search_cli_field"
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:background="@drawable/white_round_corners_10"
             android:fontFamily="@font/open_sans_light_italic"
-            android:hint="search professional by name"
+            android:hint="search client by name"
             android:inputType="text"
             android:paddingTop="16dp"
             android:paddingRight="16dp"
@@ -127,7 +99,7 @@
         app:layout_constraintTop_toBottomOf="@id/mid4">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/location_settings"
+            android:id="@+id/location_settings_prof"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -144,7 +116,7 @@
             app:iconTint="@color/secondaryColorLight" />
 
         <LinearLayout
-            android:id="@+id/location_settings_toolbar"
+            android:id="@+id/location_settings_toolbar_prof"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
@@ -214,7 +186,7 @@
         app:layout_constraintTop_toBottomOf="@id/mid2">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/home_settings"
+            android:id="@+id/home_settings_prof"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -231,7 +203,7 @@
             app:iconTint="@color/white" />
 
         <LinearLayout
-            android:id="@+id/home_settings_toolbar"
+            android:id="@+id/home_settings_toolbar_prof"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
@@ -255,121 +227,30 @@
                 android:textAllCaps="false"
                 android:textColor="@color/primaryColor" />
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="40dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/map_view_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="map view"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/list_view_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="list view"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="@font/open_sans_semi_bold_italic"
-                        android:paddingLeft="5dp"
-                        android:text="professionals filter"
-                        android:textColor="@color/white" />
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/secondaryColor"
-                        android:fontFamily="@font/open_sans_light"
-                        android:minHeight="0dp"
-                        android:text="medical and health"
-                        android:textColor="@color/white"
-                        android:textSize="17sp" />
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/secondaryColor"
-                        android:fontFamily="@font/open_sans_light"
-                        android:minHeight="0dp"
-                        android:text="graphic design"
-                        android:textColor="@color/white"
-                        android:textSize="17sp" />
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/secondaryColor"
-                        android:fontFamily="@font/open_sans_light"
-                        android:minHeight="0dp"
-                        android:text="photography"
-                        android:textColor="@color/white"
-                        android:textSize="17sp" />
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/secondaryColor"
-                        android:fontFamily="@font/open_sans_light"
-                        android:minHeight="0dp"
-                        android:text="social media manager"
-                        android:textColor="@color/white"
-                        android:textSize="17sp" />
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/secondaryColor"
-                        android:fontFamily="@font/open_sans_light"
-                        android:minHeight="0dp"
-                        android:text="virtual assistant"
-                        android:textColor="@color/white"
-                        android:textSize="17sp" />
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/secondaryColor"
-                        android:fontFamily="@font/open_sans_light"
-                        android:minHeight="0dp"
-                        android:text="website development"
-                        android:textColor="@color/white"
-                        android:textSize="17sp" />
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/secondaryColor"
-                        android:fontFamily="@font/open_sans_light"
-                        android:minHeight="0dp"
-                        android:text="copywriting"
-                        android:textColor="@color/white"
-                        android:textSize="17sp" />
-                </LinearLayout>
-            </ScrollView>
         </LinearLayout>
 
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/primaryColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:elevation="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="connected clients"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:fontFamily="@font/open_sans_bold"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

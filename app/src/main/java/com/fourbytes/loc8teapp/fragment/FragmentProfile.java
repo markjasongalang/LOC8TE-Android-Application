@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.fourbytes.loc8teapp.ItemViewModel;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.ReviewForProfessional;
-import com.fourbytes.loc8teapp.ReviewForProfessionalAdapter;
+import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

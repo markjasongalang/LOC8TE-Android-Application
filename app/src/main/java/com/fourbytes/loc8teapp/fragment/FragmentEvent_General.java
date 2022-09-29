@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.GeneralEventsItems;
 import com.fourbytes.loc8teapp.R;
-import com.fourbytes.loc8teapp.ReviewForProfessionalAdapter;
 import com.fourbytes.loc8teapp.adapter.GeneralEventsAdapter;
 
 import java.util.ArrayList;

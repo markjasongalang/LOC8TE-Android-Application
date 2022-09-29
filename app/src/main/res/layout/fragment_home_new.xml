@@ -3,15 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.FragmentHome_NewList"
     android:background="@color/primaryColor">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/new_linear"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/new_recyclerview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="List View New"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:layout_centerInParent="true"/>
+        android:padding="20dp"
+        android:layout_below="@id/new_linear"/>
 
 </RelativeLayout>
