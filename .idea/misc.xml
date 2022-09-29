@@ -46,6 +46,7 @@
         <entry key="app/src/main/res/drawable/fourth_color_round_corners_40.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/gradient_white_bg.xml" value="0.2405" />
         <entry key="app/src/main/res/drawable/icon_add_review.xml" value="0.226" />
+        <entry key="app/src/main/res/drawable/icon_full_star.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/icon_home.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/icon_profile.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/round_corners.xml" value="0.2395" />
@@ -58,6 +59,7 @@
         <entry key="app/src/main/res/drawable/tertiary_color_round_corners.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/tertiary_colro_round_corners.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/white_round_corners_10.xml" value="0.2405" />
+        <entry key="app/src/main/res/drawable/white_round_corners_20.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/white_round_corners_40.xml" value="0.2405" />
         <entry key="app/src/main/res/layout/activity_admin.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_home1.xml" value="0.23020833333333332" />
@@ -77,6 +79,7 @@
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_review_for_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/professional_fragment_profile.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/rate_professional_popup.xml" value="0.33" />
         <entry key="app/src/main/res/layout/spinner_dropdown_layout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/spinner_item_layout.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.23020833333333332" />
