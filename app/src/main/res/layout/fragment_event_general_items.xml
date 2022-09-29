@@ -164,7 +164,7 @@
             android:paddingRight="20dp">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_view_event"
+                android:id="@+id/btn_view"
                 android:layout_width="45dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/tertiary_color_round_corners_button"

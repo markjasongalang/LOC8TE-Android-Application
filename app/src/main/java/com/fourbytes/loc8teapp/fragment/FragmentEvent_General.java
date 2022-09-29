@@ -26,6 +26,7 @@ public class FragmentEvent_General extends Fragment {
     private FragmentManager fragmentManager;
 
     private AppCompatButton btnBack;
+    private AppCompatButton btnView;
     private RecyclerView recyclerView;
     public FragmentEvent_General() {
         // Required empty public constructor
@@ -35,12 +36,12 @@ public class FragmentEvent_General extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_event_general, container, false);
+        btnBack = view.findViewById(R.id.btn_back);
+        btnView = view.findViewById(R.id.btn_view);
         List <GeneralEventsItems> items = new ArrayList<GeneralEventsItems>();
+
         recyclerView = view.findViewById(R.id.general_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-//        fragmentManager = getParentFragmentManager();
-//        btnBack = view.findViewById(R.id.btn_back);
-
 
         items.add(new GeneralEventsItems(
                 "Cooking Show",
@@ -66,13 +67,20 @@ public class FragmentEvent_General extends Fragment {
         recyclerView.setAdapter(new GeneralEventsAdapter(view.getContext(), items));
 
         fragmentManager = getParentFragmentManager();
-        btnBack = view.findViewById(R.id.btn_back);
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fragmentManager.popBackStack();
             }
         });
+
+//        btnView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         // Inflate the layout for this fragment
         return view;

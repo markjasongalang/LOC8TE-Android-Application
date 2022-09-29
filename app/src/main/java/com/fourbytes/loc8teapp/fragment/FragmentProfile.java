@@ -1,17 +1,21 @@
 package com.fourbytes.loc8teapp.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.fourbytes.loc8teapp.ItemViewModel;
 import com.fourbytes.loc8teapp.R;
@@ -21,7 +25,7 @@ import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentProfile extends Fragment {
+public class FragmentProfile extends Fragment implements AdapterView.OnItemSelectedListener {
     private View view;
 
     private ItemViewModel viewModel;
@@ -29,6 +33,15 @@ public class FragmentProfile extends Fragment {
     private RecyclerView rvReviewForProfessional;
 
     private AppCompatButton btnAddReview;
+    private AppCompatButton btnRate;
+    private AppCompatButton btnCancel;
+
+    private EditText edtReview;
+
+    private Spinner spProfessional;
+
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
 
     public FragmentProfile() {}
 
@@ -78,7 +91,35 @@ public class FragmentProfile extends Fragment {
         btnAddReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Add a review!", Toast.LENGTH_SHORT).show();
+                dialogBuilder = new AlertDialog.Builder(view.getContext());
+                final View rateProfessionalPopupView = getLayoutInflater().inflate(R.layout.rate_professional_popup, null);
+
+                spProfessional = rateProfessionalPopupView.findViewById(R.id.sp_professional);
+                btnRate = rateProfessionalPopupView.findViewById(R.id.btn_rate);
+                btnCancel = rateProfessionalPopupView.findViewById(R.id.btn_cancel);
+                edtReview = rateProfessionalPopupView.findViewById(R.id.edt_review);
+
+                initSpinnerProfessional();
+                spProfessional.setOnItemSelectedListener(FragmentProfile.this);
+
+                dialogBuilder.setView(rateProfessionalPopupView);
+                dialog = dialogBuilder.create();
+                dialog.show();
+                dialog.getWindow().setLayout(1050, 1350);
+
+                btnRate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(view.getContext(), "Nice rating tho", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -93,5 +134,31 @@ public class FragmentProfile extends Fragment {
             view = inflater.inflate(R.layout.professional_fragment_profile, container, false);
         }
         return view;
+    }
+
+    private void initSpinnerProfessional() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                view.getContext(),
+                R.array.sample_names_array,
+                R.layout.spinner_dropdown_layout
+        );
+
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout);
+        spProfessional.setAdapter(adapter);
+    }
+
+    /* The methods below are needed to be overridden for the spinner action listener. */
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+        edtReview.setText("");
+
+        if (pos == 2) {
+            Toast.makeText(view.getContext(), "Pogi!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
