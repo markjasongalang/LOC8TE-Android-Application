@@ -12,10 +12,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Signup2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Signup2Activity extends AppCompatActivity {
     private Spinner spAccount;
+    private Spinner spFields;
+
     private LinearLayout llProOption;
+
     private TextView tvValidation;
+
     private String accountType;
 
     @Override
@@ -27,12 +31,41 @@ public class Signup2Activity extends AppCompatActivity implements AdapterView.On
 
         // Get views from the layout
         spAccount = findViewById(R.id.sp_account);
+        spFields = findViewById(R.id.sp_fields);
         llProOption = findViewById(R.id.ll_pro_option);
         tvValidation = findViewById(R.id.tv_validation);
 
-        // Fill spinner with data
         initSpinnerAccount();
-        spAccount.setOnItemSelectedListener(this);
+        spAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                if (pos == 0) {
+                    llProOption.setVisibility(View.GONE);
+                    accountType = "client";
+                } else {
+                    llProOption.setVisibility(View.VISIBLE);
+                    accountType = "professional";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        initSpinnerFields();
+        spFields.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         // Put message for validation
         initTextValidation();
@@ -57,21 +90,15 @@ public class Signup2Activity extends AppCompatActivity implements AdapterView.On
         spAccount.setAdapter(adapter);
     }
 
-    /* The methods below are needed to be overridden for the spinner action listener. */
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-        if (pos == 0) {
-            llProOption.setVisibility(View.GONE);
-            accountType = "client";
-        } else {
-            llProOption.setVisibility(View.VISIBLE);
-            accountType = "professional";
-        }
-    }
+    private void initSpinnerFields() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.fields_array,
+                R.layout.spinner_dropdown_layout
+        );
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout);
+        spFields.setAdapter(adapter);
     }
 
     public void openNextSignUp(View view) {
