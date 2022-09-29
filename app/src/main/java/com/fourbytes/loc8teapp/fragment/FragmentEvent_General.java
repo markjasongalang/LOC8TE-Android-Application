@@ -38,7 +38,7 @@ public class FragmentEvent_General extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_event_general, container, false);
         btnBack = view.findViewById(R.id.btn_back);
-        btnBack = view.findViewById(R.id.btn_view);
+        btnView = view.findViewById(R.id.btn_view);
         List <GeneralEventsItems> items = new ArrayList<GeneralEventsItems>();
 
         recyclerView = view.findViewById(R.id.general_recyclerview);
@@ -76,12 +76,12 @@ public class FragmentEvent_General extends Fragment {
             }
         });
 
-        btnView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+//        btnView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         // Inflate the layout for this fragment
         return view;
