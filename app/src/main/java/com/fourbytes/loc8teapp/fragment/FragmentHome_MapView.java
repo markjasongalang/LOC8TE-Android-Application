@@ -4,6 +4,9 @@ import static com.fourbytes.loc8teapp.Constants.MAPVIEW_BUNDLE_KEY;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.R;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -27,6 +31,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback {
     private View view;
     private MapView map_view;
+    private Location location;
+    private GoogleMap map_instance;
+
 
     public FragmentHome_MapView() {
         // Required empty public constructor
@@ -69,6 +76,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        map_instance = googleMap;
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .title("Marker"));
@@ -77,11 +85,12 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-
             return;
         }
-        googleMap.setMapType(1);
-        Log.d("MAPS: ", "True");
+        CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(14.6041, 120.9886),20);
+
+        // moves camera to coordinates
+        googleMap.moveCamera(point);
         googleMap.setMyLocationEnabled(true);
 
     }
