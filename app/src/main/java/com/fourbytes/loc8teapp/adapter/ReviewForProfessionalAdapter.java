@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.ReviewForProfessional;
+import com.fourbytes.loc8teapp.ReviewForProfessionalViewHolder;
 
 import java.util.List;
 

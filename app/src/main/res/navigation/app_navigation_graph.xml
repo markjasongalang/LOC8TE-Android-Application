@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation_graph"
-    app:startDestination="@id/fragmentHome">
+    app:startDestination="@id/fragmentHome_Client">
 
     <fragment
-        android:id="@+id/fragmentHome"
+        android:id="@+id/fragmentHome_Client"
         android:name="com.fourbytes.loc8teapp.fragment.FragmentHome_Client"
         android:label="fragment_home1"
         tools:layout="@layout/fragment_home_client" />
@@ -55,4 +55,9 @@
         android:name="com.fourbytes.loc8teapp.fragment.FragmentHome_MapView"
         android:label="fragment_home_map"
         tools:layout="@layout/fragment_home_map" />
+    <fragment
+        android:id="@+id/fragmentHome_Professional"
+        android:name="com.fourbytes.loc8teapp.fragment.FragmentHome_Professional"
+        android:label="fragment_home_professional"
+        tools:layout="@layout/fragment_home_professional" />
 </navigation>

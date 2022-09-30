@@ -12,6 +12,16 @@
         <item>Mark Jason</item>
         <item>Joshua Matthew</item>
     </string-array>
+    <string-array name="fields_array">
+        <item>medical and health</item>
+        <item>graphic design</item>
+        <item>photography</item>
+        <item>social media manager</item>
+        <item>virtual assistant</item>
+        <item>accounting and finance</item>
+        <item>website development</item>
+        <item>copywriting</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

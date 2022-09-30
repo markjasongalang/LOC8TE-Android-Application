@@ -38,7 +38,7 @@ public class FragmentHome_Client extends Fragment {
     Button logoutButton;
     Boolean isAllFABVisible, isAllFABVisible2, isAllFABVisible3;
 
-    Fragment map_view_fragment, list_view_fragment_new;
+    Fragment map_view_fragment;
 
     public FragmentHome_Client() {
         // Required empty public constructor
@@ -59,7 +59,6 @@ public class FragmentHome_Client extends Fragment {
         map_view_fragment = new FragmentHome_MapView();
 
         listview = view.findViewById(R.id.list_view_checkbox);
-        list_view_fragment_new = new FragmentHome_NewList();
 
         home_settings_FAB = view.findViewById(R.id.home_settings);
         location_settings_FAB = view.findViewById(R.id.location_settings);

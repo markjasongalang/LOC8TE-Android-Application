@@ -76,6 +76,10 @@
         <entry key="app/src/main/res/layout/fragment_event_general.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home_client.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_home_connected.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_home_connected_items.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_home_new_items.xml" value="0.19574844995571303" />
+        <entry key="app/src/main/res/layout/fragment_home_professional.xml" value="0.19574844995571303" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_review_for_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/professional_fragment_profile.xml" value="0.25" />
