@@ -53,7 +53,6 @@ public class FragmentHome_Client extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout = view.findViewById(R.id.tabLayout);
         appBarLayout = view.findViewById(R.id.appBarLayout);
-
         mapview = view.findViewById(R.id.map_view_checkbox);
         map_view_container = view.findViewById(R.id.map_view_container);
         map_view_fragment = new FragmentHome_MapView();
@@ -80,7 +79,7 @@ public class FragmentHome_Client extends Fragment {
 
         ft.replace(R.id.map_view_container, map_view_fragment);
         ft.commit();
-        map_view_container.setVisibility(view.GONE);
+        //map_view_container.bringToFront();
         listview.setChecked(true);
         listview.setEnabled(false);
 
@@ -88,9 +87,10 @@ public class FragmentHome_Client extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(buttonView.isChecked()){
+                    //view = inflater.inflate(R.layout.fragment_home_map, container, false);
                     appBarLayout.setVisibility(view.GONE);
                     buttonView.setEnabled(false);
-
+                    map_view_container.setClickable(true);
                     map_view_container.setVisibility(view.VISIBLE);
                     viewPager.removeAllViews();
 
