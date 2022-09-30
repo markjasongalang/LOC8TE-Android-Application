@@ -5,18 +5,14 @@ import static com.fourbytes.loc8teapp.Constants.MAPVIEW_BUNDLE_KEY;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.R;
 import com.google.android.gms.maps.CameraUpdate;
@@ -25,7 +21,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback {
@@ -87,7 +82,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(14.6041, 120.9886),20);
+        CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(14.6041, 120.9886),10);
 
         // moves camera to coordinates
         googleMap.moveCamera(point);
