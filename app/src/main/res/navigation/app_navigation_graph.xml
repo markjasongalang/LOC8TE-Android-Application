@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation_graph"
-    app:startDestination="@id/fragmentHome_Client">
+    app:startDestination="@id/fragmentHome_MapView">
 
-    <fragment
-        android:id="@+id/fragmentHome_Client"
-        android:name="com.fourbytes.loc8teapp.fragment.FragmentHome_Client"
-        android:label="fragment_home1"
-        tools:layout="@layout/fragment_home_client" />
+<!--    <fragment-->
+<!--        android:id="@+id/fragmentHome_Client"-->
+<!--        android:name="com.fourbytes.loc8teapp.fragment.FragmentHome_Client"-->
+<!--        android:label="fragment_home1"-->
+<!--        tools:layout="@layout/fragment_home_client" />-->
     <fragment
         android:id="@+id/fragmentProfile"
         android:name="com.fourbytes.loc8teapp.fragment.FragmentProfile"
