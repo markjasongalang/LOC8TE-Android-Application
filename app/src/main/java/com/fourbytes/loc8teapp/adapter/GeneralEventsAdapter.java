@@ -27,7 +27,7 @@ public class GeneralEventsAdapter extends RecyclerView.Adapter<GeneralEventsView
     @NonNull
     @Override
     public GeneralEventsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new GeneralEventsViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_event_general_items,parent,false));
+        return new GeneralEventsViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_event_general_professional_items,parent,false));
     }
 
     @Override

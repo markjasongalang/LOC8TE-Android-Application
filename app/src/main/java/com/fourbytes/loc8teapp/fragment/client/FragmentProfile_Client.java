@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment;
+package com.fourbytes.loc8teapp.fragment.client;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -13,11 +13,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fourbytes.loc8teapp.ItemViewModel;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.ReviewForProfessional;
 import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
@@ -25,10 +23,8 @@ import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentProfile extends Fragment implements AdapterView.OnItemSelectedListener {
+public class FragmentProfile_Client extends Fragment implements AdapterView.OnItemSelectedListener {
     private View view;
-
-    private ItemViewModel viewModel;
 
     private RecyclerView rvReviewForProfessional;
 
@@ -43,12 +39,11 @@ public class FragmentProfile extends Fragment implements AdapterView.OnItemSelec
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
-    public FragmentProfile() {}
+    public FragmentProfile_Client() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
-        view = getViewBasedOnAccountType(inflater, container);
+        view = inflater.inflate(R.layout.fragment_profile_client, container, false);
 
         // Get views from layout
         rvReviewForProfessional = view.findViewById(R.id.rv_review_for_professional);
@@ -100,7 +95,7 @@ public class FragmentProfile extends Fragment implements AdapterView.OnItemSelec
                 edtReview = rateProfessionalPopupView.findViewById(R.id.edt_review);
 
                 initSpinnerProfessional();
-                spProfessional.setOnItemSelectedListener(FragmentProfile.this);
+                spProfessional.setOnItemSelectedListener(FragmentProfile_Client.this);
 
                 dialogBuilder.setView(rateProfessionalPopupView);
                 dialog = dialogBuilder.create();
@@ -123,16 +118,6 @@ public class FragmentProfile extends Fragment implements AdapterView.OnItemSelec
             }
         });
 
-        return view;
-    }
-
-    private View getViewBasedOnAccountType(LayoutInflater inflater, ViewGroup container) {
-        String accountType = viewModel.getSelectedItem().getValue();
-        if (accountType.equals("client")) {
-            view = inflater.inflate(R.layout.client_fragment_profile, container, false);
-        } else {
-            view = inflater.inflate(R.layout.professional_fragment_profile, container, false);
-        }
         return view;
     }
 

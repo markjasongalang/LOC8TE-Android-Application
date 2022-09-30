@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment;
+package com.fourbytes.loc8teapp.fragment.client;
 
 import android.content.Intent;
 import android.os.Bundle;

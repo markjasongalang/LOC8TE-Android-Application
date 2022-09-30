@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/fragmentHome_Client"
+        android:id="@+id/fragmentHome"
         android:title="Home"
         android:icon="@drawable/icon_home"/>
 
@@ -13,8 +13,5 @@
         android:id="@+id/fragmentChat"
         android:title="Chats"
         android:icon="@drawable/icon_chat"/>
-    <item
-        android:id="@+id/fragmentEvent"
-        android:title="Events"
-        android:icon="@drawable/icon_event"/>
+
 </menu>

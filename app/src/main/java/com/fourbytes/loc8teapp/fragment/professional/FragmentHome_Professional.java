@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment;
+package com.fourbytes.loc8teapp.fragment.professional;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 
 import com.fourbytes.loc8teapp.LoginActivity;
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.fragment.client.FragmentHome_ConnectedList;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

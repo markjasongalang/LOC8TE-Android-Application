@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment;
+package com.fourbytes.loc8teapp.fragment.client;
 
 import android.os.Bundle;
 
@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.R;
 
-public class FragmentHome_MapView extends Fragment {
+public class FragmentChat_Client extends Fragment {
 
-    public FragmentHome_MapView() {
+    public FragmentChat_Client() {
         // Required empty public constructor
     }
 
@@ -20,6 +20,6 @@ public class FragmentHome_MapView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_map, container, false);
+        return inflater.inflate(R.layout.fragment_chat_client, container, false);
     }
 }

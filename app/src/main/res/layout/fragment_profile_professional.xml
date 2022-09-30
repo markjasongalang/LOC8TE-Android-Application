@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/blue_green_diagonal_background"
     android:layout_height="match_parent"
-    tools:context=".fragment.FragmentProfile">
+    android:background="@drawable/blue_green_diagonal_background"
+    tools:context=".fragment.professional.FragmentProfile_Professional">
+
     <TextView
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:textColor="@color/white"
         android:layout_height="match_parent"
-        android:text="Professional Profile Fragment" />
+        android:gravity="center"
+        android:text="Professional Profile Fragment"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
 </LinearLayout>
