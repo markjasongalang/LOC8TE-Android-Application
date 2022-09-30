@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment;
+package com.fourbytes.loc8teapp.fragment.client;
 
 import static com.fourbytes.loc8teapp.Constants.MAPVIEW_BUNDLE_KEY;
 

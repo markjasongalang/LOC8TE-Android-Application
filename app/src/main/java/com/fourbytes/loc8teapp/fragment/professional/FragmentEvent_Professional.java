@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment;
+package com.fourbytes.loc8teapp.fragment.professional;
 
 import android.os.Bundle;
 
@@ -12,18 +12,18 @@ import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.R;
 
-public class FragmentEvent extends Fragment{
+public class FragmentEvent_Professional extends Fragment{
     private View view;
 
     private CardView card_general, card_industry, card_myEvents;
 
     public FragmentManager fragmentManager;
 
-    public FragmentEvent() {}
+    public FragmentEvent_Professional() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_event, container, false);
+        view = inflater.inflate(R.layout.fragment_event_professional, container, false);
 
         fragmentManager = getParentFragmentManager();
 
@@ -35,7 +35,7 @@ public class FragmentEvent extends Fragment{
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentEvent_General.class, null)
+                        .replace(R.id.fragment, FragmentEvent_General_Professional.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
@@ -46,7 +46,7 @@ public class FragmentEvent extends Fragment{
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentEvent_Industry.class, null)
+                        .replace(R.id.fragment, FragmentEvent_Industry_Professional.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
@@ -57,7 +57,7 @@ public class FragmentEvent extends Fragment{
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentEvent_MyEvents.class, null)
+                        .replace(R.id.fragment, FragmentEvent_MyEvents_Professional.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();

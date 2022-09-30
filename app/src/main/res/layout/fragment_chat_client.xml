@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.FragmentChat">
+    tools:context=".fragment.client.FragmentChat_Client">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:gravity="center"
         android:layout_height="match_parent"
-        android:text="Chat Fragment" />
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="Client Chat Fragment" />
 
 </FrameLayout>

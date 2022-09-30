@@ -1,39 +1,45 @@
 package com.fourbytes.loc8teapp;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.fourbytes.loc8teapp.fragment.FragmentEvent_General;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HostActivity extends AppCompatActivity {
-    private ItemViewModel viewModel;
-    FragmentManager fragmentManager = getSupportFragmentManager();
+    private FragmentManager fragmentManager;
+
+    private BottomNavigationView bottomNavigationView;
+
+    private NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home1);
+        setContentView(R.layout.activity_host);
 
-        // Note: If there's an error here, go to build.gradle(:app) then click Sync Now
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
-        NavController navController = Navigation.findNavController(this, R.id.fragment);
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        fragmentManager = getSupportFragmentManager();
 
-        // Set account type to show the corresponding layout (client or professional)
-        setAccountType();
-    }
+        bottomNavigationView = findViewById(R.id.navigation);
+        navController = Navigation.findNavController(this, R.id.fragment);
 
-    private void setAccountType() {
+        // Retrieve account type to show the corresponding navigation (client or professional)
         String accountType = getIntent().getStringExtra("accountType");
-        viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
-        viewModel.setItem(accountType);
-    }
 
+        // Separate the navigation (client or professional)
+        if (accountType.equals("client")) {
+            bottomNavigationView.inflateMenu(R.menu.client_bottom_navigation_menu);
+            navController.setGraph(R.navigation.client_navigation_graph);
+        } else {
+            bottomNavigationView.inflateMenu(R.menu.professional_bottom_navigation_menu);
+            navController.setGraph(R.navigation.professional_navigation_graph);
+        }
+
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+    }
 }

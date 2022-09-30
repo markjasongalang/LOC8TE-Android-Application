@@ -13,8 +13,5 @@
         android:id="@+id/fragmentChat"
         android:title="Chats"
         android:icon="@drawable/icon_chat"/>
-    <item
-        android:id="@+id/fragmentEvent"
-        android:title="Events"
-        android:icon="@drawable/icon_event"/>
+
 </menu>

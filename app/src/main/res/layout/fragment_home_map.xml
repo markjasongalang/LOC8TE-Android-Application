@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.FragmentHome_ConnectedList"
+    tools:context=".fragment.client.FragmentHome_ConnectedList"
     android:background="@color/fourthColor">
 
     <com.google.android.gms.maps.MapView
