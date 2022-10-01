@@ -9,6 +9,10 @@
         android:icon="@drawable/icon_profile"
         android:title="Profile" />
     <item
+        android:id="@+id/fragment_chat"
+        android:icon="@drawable/icon_chat"
+        android:title="Chats" />
+    <item
         android:id="@+id/fragment_event"
         android:title="Events"
         android:icon="@drawable/icon_event"/>
