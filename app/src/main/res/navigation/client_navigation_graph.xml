@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentHome"
-        android:name="com.fourbytes.loc8teapp.fragment.client.FragmentHome_Client"
+        android:name="com.fourbytes.loc8teapp.fragment.client.FragmentHome_ListView"
         android:label="fragment_home1"
         tools:layout="@layout/fragment_home_client" />
     <fragment
