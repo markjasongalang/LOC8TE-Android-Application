@@ -89,8 +89,8 @@
         <entry key="app/src/main/res/layout/fragment_home_professional.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile__professional.xml" value="0.18558558558558558" />
-        <entry key="app/src/main/res/layout/fragment_profile_client.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_profile_professional.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_profile_client.xml" value="0.20462962962962963" />
+        <entry key="app/src/main/res/layout/fragment_profile_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_review_for_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/professional_fragment_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rate_professional_popup.xml" value="0.33" />

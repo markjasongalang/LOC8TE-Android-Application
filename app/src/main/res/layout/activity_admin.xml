@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/primaryColor"
+    android:orientation="vertical"
     tools:context=".AdminActivity">
 
 
@@ -14,27 +14,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tertiaryColor"
-        android:text="Admin Mode"
-        android:textSize="28sp"
-        android:textColor="@color/white"
         android:fontFamily="@font/open_sans_bold"
-        android:textStyle="bold"
-        android:textAlignment="center"
         android:paddingTop="15dp"
-
-        />
-
-
+        android:text="Admin Mode"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
 
     <androidx.cardview.widget.CardView
-        android:layout_marginVertical="40dp"
         android:layout_width="350dp"
         android:layout_height="220dp"
+        android:layout_marginVertical="40dp"
         android:layout_marginLeft="30dp"
-        app:cardElevation="50dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="25dp">
+        app:cardCornerRadius="25dp"
+        app:cardElevation="50dp">
 
 
         <LinearLayout
@@ -43,20 +39,19 @@
             android:orientation="vertical">
 
 
-
         </LinearLayout>
 
         <TextView
             android:id="@+id/valid_acc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Valid Accounts"
-            android:textSize="19sp"
-            android:textColor="@color/primaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="15dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Valid Accounts"
+            android:textColor="@color/primaryColor"
+            android:textSize="19sp"
+            android:textStyle="bold"
 
             />
 
@@ -64,13 +59,13 @@
             android:id="@+id/no_clients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="# of Clients:"
-            android:textSize="18sp"
-            android:textColor="@color/fifthColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="50dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="# of Clients:"
+            android:textColor="@color/fifthColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
 
             />
 
@@ -78,16 +73,16 @@
             android:id="@+id/no_clients_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="50"
-            android:textSize="18sp"
-            android:textColor="@color/secondaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
-            android:paddingLeft="25dp"
             android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
             android:layout_marginTop="80dp"
+            android:layout_marginRight="25dp"
             android:background="@color/tertiaryColor"
+            android:fontFamily="@font/open_sans_bold"
+            android:paddingLeft="25dp"
+            android:text="50"
+            android:textColor="@color/secondaryColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
 
             />
 
@@ -95,13 +90,13 @@
             android:id="@+id/no_prof"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="# of Professionals:"
-            android:textSize="18sp"
-            android:textColor="@color/fifthColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="130dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="# of Professionals:"
+            android:textColor="@color/fifthColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
 
             />
 
@@ -109,21 +104,18 @@
             android:id="@+id/no_prof_result1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="21"
-            android:textSize="18sp"
-            android:textColor="@color/secondaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
-            android:paddingLeft="25dp"
             android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
             android:layout_marginTop="160dp"
+            android:layout_marginRight="25dp"
             android:background="@color/tertiaryColor"
+            android:fontFamily="@font/open_sans_bold"
+            android:paddingLeft="25dp"
+            android:text="21"
+            android:textColor="@color/secondaryColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
 
             />
-
-
-
 
 
     </androidx.cardview.widget.CardView>
@@ -134,58 +126,58 @@
         android:layout_height="370dp"
         android:layout_marginLeft="30dp"
         android:orientation="vertical"
-        app:cardElevation="50dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="25dp">
+        app:cardCornerRadius="25dp"
+        app:cardElevation="50dp">
 
-         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-             <TextView
-                 android:id="@+id/no_prof_result2"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginLeft="25dp"
-                 android:layout_marginTop="80dp"
-                 android:layout_marginRight="25dp"
-                 android:background="@color/tertiaryColor"
-                 android:fontFamily="@font/open_sans_bold"
-                 android:paddingLeft="25dp"
-                 android:text="12"
-                 android:textColor="@color/secondaryColor"
-                 android:textSize="18sp"
-                 android:textStyle="bold"
+            <TextView
+                android:id="@+id/no_prof_result2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginRight="25dp"
+                android:background="@color/tertiaryColor"
+                android:fontFamily="@font/open_sans_bold"
+                android:paddingLeft="25dp"
+                android:text="12"
+                android:textColor="@color/secondaryColor"
+                android:textSize="18sp"
+                android:textStyle="bold"
 
-                 />
-         </LinearLayout>
+                />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/to_process_acc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="To Process"
-        android:textSize="19sp"
-        android:textColor="@color/primaryColor"
-        android:fontFamily="@font/open_sans_bold"
-        android:textStyle="bold"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="10dp"
+        <TextView
+            android:id="@+id/to_process_acc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="To Process"
+            android:textColor="@color/primaryColor"
+            android:textSize="19sp"
+            android:textStyle="bold"
 
-        />
+            />
 
         <TextView
             android:id="@+id/no_prof_process"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="# of Professionals:"
-            android:textSize="18sp"
-            android:textColor="@color/fifthColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="55dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="# of Professionals:"
+            android:textColor="@color/fifthColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
 
             />
 
@@ -193,13 +185,13 @@
             android:id="@+id/no_prof1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1)"
-            android:textSize="16sp"
-            android:textColor="@color/primaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="160dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="1)"
+            android:textColor="@color/primaryColor"
+            android:textSize="16sp"
+            android:textStyle="bold"
 
             />
 
@@ -207,13 +199,13 @@
             android:id="@+id/prof1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rylie N. Paloma"
-            android:textSize="15sp"
-            android:textColor="@color/secondaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="90dp"
             android:layout_marginTop="160dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Rylie N. Paloma"
+            android:textColor="@color/secondaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
             />
 
@@ -221,13 +213,13 @@
             android:id="@+id/no_prof2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2)"
-            android:textSize="15sp"
-            android:textColor="@color/primaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="195dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="2)"
+            android:textColor="@color/primaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
             />
 
@@ -235,13 +227,13 @@
             android:id="@+id/prof2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ashley Ariana Soriano"
-            android:textSize="15sp"
-            android:textColor="@color/secondaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="90dp"
             android:layout_marginTop="195dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Ashley Ariana Soriano"
+            android:textColor="@color/secondaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
             />
 
@@ -249,13 +241,13 @@
             android:id="@+id/no_prof3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="3)"
-            android:textSize="15sp"
-            android:textColor="@color/primaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="235dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="3)"
+            android:textColor="@color/primaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
             />
 
@@ -263,13 +255,13 @@
             android:id="@+id/prof3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Alvin Alfonso Marasigan"
-            android:textSize="15sp"
-            android:textColor="@color/secondaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="90dp"
             android:layout_marginTop="235dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Alvin Alfonso Marasigan"
+            android:textColor="@color/secondaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
             />
 
@@ -278,13 +270,13 @@
             android:id="@+id/no_prof4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="4)"
-            android:textSize="15sp"
-            android:textColor="@color/primaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="275dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="4)"
+            android:textColor="@color/primaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
             />
 
@@ -292,13 +284,13 @@
             android:id="@+id/prof4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kevin Escalante"
-            android:textSize="15sp"
-            android:textColor="@color/secondaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="90dp"
             android:layout_marginTop="275dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Kevin Escalante"
+            android:textColor="@color/secondaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
             />
 
@@ -307,13 +299,13 @@
             android:id="@+id/no_prof5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="5)"
-            android:textSize="15sp"
-            android:textColor="@color/primaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="318dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="5)"
+            android:textColor="@color/primaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
             />
 
@@ -321,54 +313,51 @@
             android:id="@+id/prof5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Elite Fernando"
-            android:textSize="15sp"
-            android:textColor="@color/secondaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
             android:layout_marginLeft="90dp"
             android:layout_marginTop="318dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Elite Fernando"
+            android:textColor="@color/secondaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
             />
-        
-        
+
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:src="@drawable/icon_profile"
-            android:layout_marginRight="220dp"
             android:layout_marginTop="305dp"
-            />
+            android:layout_marginRight="220dp"
+            android:src="@drawable/icon_profile" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:src="@drawable/icon_profile"
-            android:layout_marginRight="220dp"
             android:layout_marginTop="265dp"
-            />
+            android:layout_marginRight="220dp"
+            android:src="@drawable/icon_profile" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:src="@drawable/icon_profile"
-            android:layout_marginRight="220dp"
             android:layout_marginTop="225dp"
-            />
+            android:layout_marginRight="220dp"
+            android:src="@drawable/icon_profile" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:src="@drawable/icon_profile"
-            android:layout_marginRight="220dp"
             android:layout_marginTop="185dp"
-            />
+            android:layout_marginRight="220dp"
+            android:src="@drawable/icon_profile" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:src="@drawable/icon_profile"
-            android:layout_marginRight="220dp"
             android:layout_marginTop="145dp"
-            />
+            android:layout_marginRight="220dp"
+            android:src="@drawable/icon_profile" />
 
         <Button
             android:id="@+id/btn_next2"
@@ -380,8 +369,7 @@
             android:background="@drawable/tertiary_color_round_corners_button"
             android:fontFamily="@font/glacial_indifference"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
 
 
         <Button
@@ -394,8 +382,7 @@
             android:background="@drawable/tertiary_color_round_corners_button"
             android:fontFamily="@font/glacial_indifference"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
 
 
         <Button
@@ -408,8 +395,7 @@
             android:background="@drawable/tertiary_color_round_corners_button"
             android:fontFamily="@font/glacial_indifference"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
 
 
         <Button
@@ -422,8 +408,7 @@
             android:background="@drawable/tertiary_color_round_corners_button"
             android:fontFamily="@font/glacial_indifference"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
 
 
         <Button
@@ -436,9 +421,7 @@
             android:background="@drawable/tertiary_color_round_corners_button"
             android:fontFamily="@font/glacial_indifference"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            />
-
+            android:textColor="@color/white" />
 
 
     </androidx.cardview.widget.CardView>

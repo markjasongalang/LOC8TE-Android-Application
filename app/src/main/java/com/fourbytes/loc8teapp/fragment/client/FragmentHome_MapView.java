@@ -30,6 +30,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.fourbytes.loc8teapp.LoginActivity;
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.fragment.professional.FragmentProfile_Professional;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -300,7 +301,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     }
 
     public void setMarkers(double latitude, double longitude, double filter, String name, String id){
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.anya);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.juswa_hearts);
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 100, 100, false);
         map_instance.addMarker(new MarkerOptions()
                     .position(new LatLng(latitude, longitude))
@@ -317,12 +318,16 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         String name = marker.getTitle();
         String id = tag.getId(); //id from database documents("users")
 
-        //Delete this later
+        // Delete this later
         Toast.makeText(view.getContext(), name + "is clicked", Toast.LENGTH_SHORT).show();
         Log.d(TAG, id);
 
-        //Open Profile Fragment here
-
+        // Open Profile Fragment here
+        parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment, FragmentProfile_Professional.class, null)
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .commit();
 
         return false;
     }

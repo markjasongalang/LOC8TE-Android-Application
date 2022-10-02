@@ -71,6 +71,13 @@ public class FragmentHome_NewList extends Fragment {
         ));
 
         newlist_items.add(new NewListItems(
+                "Mary Angeline",
+                "Magpapa-Survey sa buong Manila",
+                "999 km away",
+                R.drawable.icon_profile
+        ));
+
+        newlist_items.add(new NewListItems(
                 "Allen Dela Rosa",
                 "On Call Sofware Egineer",
                 "13 km away",

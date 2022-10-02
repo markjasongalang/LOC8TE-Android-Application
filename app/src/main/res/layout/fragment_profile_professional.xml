@@ -1,17 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/blue_green_diagonal_background"
-    tools:context=".fragment.professional.FragmentProfile_Professional">
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Professional Profile Fragment"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_green_diagonal_background"
+        android:orientation="vertical"
+        tools:context=".fragment.professional.FragmentProfile_Professional">
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo_only" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/close_button_round_corners"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="160dp"
+                    android:background="@drawable/white_round_corners_50_with_padding_top"
+                    android:drawableTop="@drawable/icon_edit"
+                    android:drawablePadding="-10dp"
+                    android:fontFamily="@font/glacial_indifference"
+                    android:text="edit profile"
+                    android:textAllCaps="false"
+                    android:textColor="@color/secondaryColor"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="-30dp"
+                    android:padding="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/juswa_hearts"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="10dp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginLeft="-60dp"
+                    android:layout_marginTop="140dp"
+                    android:backgroundTint="@color/tertiaryColor"
+                    app:cardCornerRadius="43dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="22dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:fontFamily="@font/glacial_indifference"
+                            android:paddingLeft="22dp"
+                            android:text="4.9"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/open_sans_light_italic"
+                            android:text="3.5k reviews"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/glacial_indifference"
+                android:text="Joshua Padilla"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:drawableStart="@drawable/icon_location"
+                android:fontFamily="@font/open_sans_light"
+                android:text="London, United Kingdom"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/secondaryColor"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/glacial_indifference"
+                    android:text="profession"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/secondaryColorLight"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/glacial_indifference"
+                    android:text="Android Chef"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/fourthColor">
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -2,7 +2,8 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -191,6 +192,6 @@
             android:background="@drawable/tertiary_color_add_review_round_corners"
             android:textColor="@color/white"
             app:layout_constraintLeft_toRightOf="@id/vg80"
-            app:layout_constraintTop_toBottomOf="@id/hg50"/>
+            app:layout_constraintTop_toBottomOf="@id/hg50" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
