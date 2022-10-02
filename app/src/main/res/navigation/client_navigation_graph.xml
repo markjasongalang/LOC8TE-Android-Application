@@ -3,27 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/client_navigation_graph"
-    app:startDestination="@id/fragmentHome">
+    app:startDestination="@id/fragment_home">
 
     <fragment
-        android:id="@+id/fragmentHome"
-        android:name="com.fourbytes.loc8teapp.fragment.client.FragmentHome_Client"
+        android:id="@+id/fragment_home"
+        android:name="com.fourbytes.loc8teapp.fragment.client.FragmentHome_ListView"
         android:label="fragment_home1"
         tools:layout="@layout/fragment_home_client" />
     <fragment
-        android:id="@+id/fragmentProfile"
+        android:id="@+id/fragment_profile"
         android:name="com.fourbytes.loc8teapp.fragment.client.FragmentProfile_Client"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile_client" />
     <fragment
-        android:id="@+id/fragmentChat"
+        android:id="@+id/fragment_chat"
         android:name="com.fourbytes.loc8teapp.fragment.client.FragmentChat_Client"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat_client" />
     <fragment
-        android:id="@+id/fragmentEvent"
-        android:name="com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_Professional"
+        android:id="@+id/fragment_event"
+        android:name="com.fourbytes.loc8teapp.fragment.client.FragmentEvent_Client"
         android:label="fragment_event"
-        tools:layout="@layout/fragment_event_professional" />
-
+        tools:layout="@layout/fragment_event__client" />
 </navigation>

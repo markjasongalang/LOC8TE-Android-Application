@@ -56,10 +56,10 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
                 "Cruz",
                 "Santos",
                 "IT Specialist",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae tellus turpis. ",
-                        "03/31/2022",
-                        3.45
-                        ));
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae tellus turpis. ",
+                "03/31/2022",
+                3.45
+        ));
 
         reviewForProfessionals.add(new ReviewForProfessional(
                 "Elon",
@@ -78,6 +78,16 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
                 "100K Android Developer",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae tellus turpis. ",
                 "12/25/2021",
+                3.78
+        ));
+
+        reviewForProfessionals.add(new ReviewForProfessional(
+                "Mary Angeline",
+                "",
+                "Corral",
+                "Software lang",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae tellus turpis. ",
+                "03/31/2022",
                 3.78
         ));
 
@@ -100,7 +110,6 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
                 dialogBuilder.setView(rateProfessionalPopupView);
                 dialog = dialogBuilder.create();
                 dialog.show();
-                dialog.getWindow().setLayout(1050, 1350);
 
                 btnRate.setOnClickListener(new View.OnClickListener() {
                     @Override

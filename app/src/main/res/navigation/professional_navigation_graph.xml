@@ -18,6 +18,11 @@
         tools:layout="@layout/fragment_profile_professional" />
 
     <fragment
+        android:id="@+id/fragment_chat"
+        android:name="com.fourbytes.loc8teapp.fragment.professional.FragmentChat_Professional"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_chat_professional" />
+    <fragment
         android:id="@+id/fragment_event"
         android:name="com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_Professional"
         android:label="fragment_profile"
