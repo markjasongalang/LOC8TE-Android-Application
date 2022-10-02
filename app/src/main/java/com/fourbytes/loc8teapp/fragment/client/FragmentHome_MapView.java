@@ -3,19 +3,28 @@ package com.fourbytes.loc8teapp.fragment.client;
 import static com.fourbytes.loc8teapp.Constants.MAPVIEW_BUNDLE_KEY;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -26,12 +35,27 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback {
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private View view;
     private View l;
     private View l2;
@@ -58,6 +82,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private Location location;
 
     private GoogleMap map_instance;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
     public FragmentHome_MapView() {
         // Required empty public constructor
@@ -187,6 +214,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        retrieveUsers();
         map_instance = googleMap;
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
@@ -198,11 +226,12 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(14.6041, 120.9886),10);
+        CameraUpdate point = CameraUpdateFactory.newLatLngZoom(new LatLng(14.6041, 120.9886),20);
 
         // moves camera to coordinates
         googleMap.moveCamera(point);
         googleMap.setMyLocationEnabled(true);
+        googleMap.setOnMarkerClickListener(this);
 
     }
 
@@ -240,5 +269,61 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     public void onLowMemory() {
         super.onLowMemory();
         map_view.onLowMemory();
+    }
+
+    public void retrieveUsers(){
+        String lat;
+        int longtitude;
+        String TAG = "MAP USERS";
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                double latitude = document.getDouble("lat");
+                                double longitude = document.getDouble("long");
+                                String id = document.getId();
+                                String name = document.getString("first");
+                                setMarkers(latitude, longitude, 0, name, id);
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
+
+    public void setMarkers(double latitude, double longitude, double filter, String name, String id){
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.anya);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 100, 100, false);
+        map_instance.addMarker(new MarkerOptions()
+                    .position(new LatLng(latitude, longitude))
+                    .title(name).icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap))).setTag(new MarkerTag(id));
+
+    }
+
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        MarkerTag tag = (MarkerTag) marker.getTag(); //Gets the object to retrieve id/infos
+
+        String TAG = "Marker";
+        String name = marker.getTitle();
+        String id = tag.getId(); //id from database documents("users")
+
+        //Delete this later
+        Toast.makeText(view.getContext(), name + "is clicked", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, id);
+
+        //Open Profile Fragment here
+
+
+        return false;
     }
 }
