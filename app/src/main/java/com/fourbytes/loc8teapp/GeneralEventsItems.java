@@ -4,20 +4,30 @@ public class GeneralEventsItems {
 
     String event_title;
     String event_location;
+    String event_id;
     String hosted_by;
     String time;
     String date;
     String job_title;
     int image;
 
-    public GeneralEventsItems(String event_title, String event_location, String hosted_by, String time, String date, String job_title, int image) {
+    public GeneralEventsItems(String event_title, String event_location, String hosted_by, String time, String date, String job_title,String event_id, int image) {
         this.event_title = event_title;
         this.event_location = event_location;
         this.hosted_by = hosted_by;
         this.time = time;
         this.date = date;
         this.job_title = job_title;
+        this.event_id = event_id;
         this.image = image;
+    }
+
+    public String getEvent_id() {
+        return event_id;
+    }
+
+    public void setEvent_id(String event_id) {
+        this.event_id = event_id;
     }
 
     public String getEvent_title() {

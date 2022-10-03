@@ -2,7 +2,9 @@ package com.fourbytes.loc8teapp.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +41,15 @@ public class GeneralEventsAdapter extends RecyclerView.Adapter<GeneralEventsView
         holder.host_name.setText(general_items.get(position).getHosted_by());
         holder.host_job.setText(general_items.get(position).getJob_title());
         holder.host_image.setImageResource(general_items.get(position).getImage());
+
+        holder.btn_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), general_items.get(holder.getAdapterPosition()).getEvent_title(), Toast.LENGTH_SHORT).show();
+
+                //Open Fragment Event Info
+            }
+        });
     }
 
     @Override
