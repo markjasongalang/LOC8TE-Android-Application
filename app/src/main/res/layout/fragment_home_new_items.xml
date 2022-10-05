@@ -22,9 +22,12 @@
         android:layout_toEndOf="@id/newlist_img"
         android:layout_marginTop="5dp"
         android:text="Anya Forger"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textColor="@color/secondaryColor"
-        android:fontFamily="@font/open_sans_bold"/>
+        android:fontFamily="@font/open_sans_bold"
+        android:paddingRight="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 
     <TextView
         android:id="@+id/newlist_occupation"
@@ -34,9 +37,12 @@
         android:layout_below="@id/newlist_name"
         android:layout_marginTop="-3dp"
         android:text="Batang Pasaway"
-        android:textSize="13sp"
+        android:textSize="12sp"
         android:fontFamily="@font/open_sans_semi_bold"
-        android:textColor="@color/secondaryColorLight"/>
+        android:textColor="@color/secondaryColorLight"
+        android:paddingRight="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 
     <TextView
         android:id="@+id/newlist_distance"
@@ -48,7 +54,10 @@
         android:text="8km away"
         android:textSize="15sp"
         android:fontFamily="@font/open_sans_light_italic"
-        android:textColor="@color/fifthColor"/>
+        android:textColor="@color/fifthColor"
+        android:paddingRight="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/newlist_profile"
