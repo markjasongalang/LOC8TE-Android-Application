@@ -45,6 +45,9 @@ public class FragmentEvent_General_Professional extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_event_general_professional, container, false);
+
+        fragmentManager = getParentFragmentManager();
+
         btnBack = view.findViewById(R.id.btn_back);
         btnView = view.findViewById(R.id.btn_view);
         List <GeneralEventsItems> items = new ArrayList<GeneralEventsItems>();
@@ -72,12 +75,16 @@ public class FragmentEvent_General_Professional extends Fragment {
 
                         if(event_industry.equals(event_general)){
                             //add to list for recycler view
+                            //Remove Logs Later
                             Log.d("EVENTS", "Event ID: " + event_id);
                             Log.d("EVENTS", "Event Title: " + event_title);
                             Log.d("EVENTS", "Event Industry: " + event_industry);
                             Log.d("EVENTS", "Event Location: " + event_location);
+                            Log.d("EVENTS", "Event Date: " + event_date);
                             Log.d("EVENTS", "Event Host: " + event_host);
                             Log.d("EVENTS", "Event Time: " + event_time);
+                            Log.d("EVENTS", "--------------------------------");
+                            //Remove Logs Later
 
                         }
                     }
@@ -111,8 +118,6 @@ public class FragmentEvent_General_Professional extends Fragment {
         Log.d("EVENTS", "List size" + items.size());
 
         recyclerView.setAdapter(new GeneralEventsAdapter(view.getContext(), items));
-
-        fragmentManager = getParentFragmentManager();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
