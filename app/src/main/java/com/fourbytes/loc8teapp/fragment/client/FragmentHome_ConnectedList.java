@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment;
+package com.fourbytes.loc8teapp.fragment.client;
 
 import android.os.Bundle;
 
@@ -19,8 +19,8 @@ import java.util.List;
 
 public class FragmentHome_ConnectedList extends Fragment {
 
-    View view;
-    RecyclerView connected_list_recyclerView;
+    private View view;
+    private RecyclerView connected_list_recyclerView;
 
     public FragmentHome_ConnectedList() {
         // Required empty public constructor

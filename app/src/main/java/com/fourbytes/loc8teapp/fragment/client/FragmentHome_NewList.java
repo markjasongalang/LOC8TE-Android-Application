@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment;
+package com.fourbytes.loc8teapp.fragment.client;
 
 import android.os.Bundle;
 
@@ -67,6 +67,13 @@ public class FragmentHome_NewList extends Fragment {
                 "Jason Galang",
                 "Programmist",
                 "15 km away",
+                R.drawable.icon_profile
+        ));
+
+        newlist_items.add(new NewListItems(
+                "Mary Angeline",
+                "Magpapa-Survey sa buong Manila",
+                "999 km away",
                 R.drawable.icon_profile
         ));
 

@@ -5,33 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fourthColor"
-    tools:context=".fragment.client.FragmentHome_ListView">
+    tools:context=".fragment.client.FragmentHome_MapView">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:background="@color/tertiaryColor"
-            app:tabTextColor="@color/white"
-            app:tabIndicatorHeight="70sp"
-            app:tabIndicatorColor="@color/primaryColor">
-        </com.google.android.material.tabs.TabLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+    <com.google.android.gms.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -54,7 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.74"/>
+        app:layout_constraintGuide_percent="0.74" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid"
@@ -77,38 +55,38 @@
         app:layout_constraintBottom_toTopOf="@id/mid5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/search_prof_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="10dp"
             android:backgroundTint="@color/white"
             android:outlineProvider="none"
-            android:layout_marginStart="10dp"
             android:src="@drawable/icon_search_person"
             app:borderWidth="0dp"
-            app:tint="@color/secondaryColorLight"
-            android:layout_gravity="bottom"/>
+            app:tint="@color/secondaryColorLight" />
 
         <EditText
             android:id="@+id/search_prof_field"
             android:layout_width="360dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_marginStart="35dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/white_round_corners_10"
             android:fontFamily="@font/open_sans_light_italic"
             android:hint="search professional by name"
             android:inputType="text"
+            android:paddingLeft="40dp"
             android:paddingTop="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
-            android:paddingLeft="40dp"
             android:textColor="@color/fifthColor"
             android:textColorHint="@color/fifthColor"
-            android:textSize="18sp"
-            android:layout_marginStart="35dp"
-            android:layout_marginRight="20dp"
-            android:layout_gravity="bottom|left" />
+            android:textSize="18sp" />
 
     </FrameLayout>
 
@@ -261,27 +239,27 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/map_view_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="map view"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/map_view_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="map view"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/list_view_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="list view"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/list_view_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="list view"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -374,7 +352,5 @@
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
-
     </FrameLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

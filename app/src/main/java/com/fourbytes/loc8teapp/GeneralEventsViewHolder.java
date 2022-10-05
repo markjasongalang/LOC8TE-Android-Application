@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class GeneralEventsViewHolder extends RecyclerView.ViewHolder{
@@ -16,6 +17,8 @@ public class GeneralEventsViewHolder extends RecyclerView.ViewHolder{
     public TextView host_name;
     public TextView host_job;
 
+    public AppCompatButton btn_view;
+
     public GeneralEventsViewHolder(@NonNull View itemView) {
         super(itemView);
 
@@ -26,6 +29,8 @@ public class GeneralEventsViewHolder extends RecyclerView.ViewHolder{
         host_name = itemView.findViewById(R.id.general_item_hostname);
         host_image = itemView.findViewById(R.id.host_img);
         host_job = itemView.findViewById(R.id.general_item_hostJob);
+
+        btn_view = itemView.findViewById(R.id.btn_view);
 
     }
 }

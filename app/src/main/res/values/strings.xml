@@ -24,6 +24,7 @@
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="google_maps_api_key">AIzaSyC4GhSHEe6HilqTbHRJnmIosrel_SLdTYU</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="event_header">EVENTS</string>
     <string name="general_events_text">General Events</string>
@@ -31,4 +32,5 @@
     <string name="my_events_text">My Events</string>
     <string name="general__itemheader">General Events</string>
     <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis tristique sollicitudin nibh sit amet.</string>
+    <string name="description_header">Description</string>
 </resources>

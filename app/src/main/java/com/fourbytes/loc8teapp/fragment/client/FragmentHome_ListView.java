@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment;
+package com.fourbytes.loc8teapp.fragment.client;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
@@ -24,49 +25,58 @@ import com.google.android.material.tabs.TabLayout;
 
 import javax.annotation.Nullable;
 
-public class FragmentHome_Client extends Fragment {
+public class FragmentHome_ListView extends Fragment {
     private View view;
+    private View l;
+    private View l2;
+    private View l3;
 
-    ViewPager viewPager;
-    TabLayout tabLayout;
-    AppBarLayout appBarLayout;
-    FrameLayout map_view_container;
-    CheckBox mapview, listview;
+    private ViewPager viewPager;
 
-    ExtendedFloatingActionButton home_settings_FAB, location_settings_FAB;
-    FloatingActionButton search_prof_FAB;
-    Button logoutButton;
-    Boolean isAllFABVisible, isAllFABVisible2, isAllFABVisible3;
+    private TabLayout tabLayout;
 
-    Fragment map_view_fragment;
+    private AppBarLayout appBarLayout;
 
-    public FragmentHome_Client() {
+    private CheckBox mapViewCheckBox;
+    private CheckBox listViewCheckBox;
+
+    private ExtendedFloatingActionButton home_settings_FAB;
+    private ExtendedFloatingActionButton location_settings_FAB;
+
+    private FloatingActionButton search_prof_FAB;
+
+    private Button logoutButton;
+
+    private Boolean isAllFABVisible;
+    private Boolean isAllFABVisible2;
+    private Boolean isAllFABVisible3;
+
+    private FragmentManager parentFragmentManager;
+
+    public FragmentHome_ListView() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_client, container, false);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
 
+        // Get views from layout
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout = view.findViewById(R.id.tabLayout);
         appBarLayout = view.findViewById(R.id.appBarLayout);
-
-        mapview = view.findViewById(R.id.map_view_checkbox);
-        map_view_container = view.findViewById(R.id.map_view_container);
-        map_view_fragment = new FragmentHome_MapView();
-
-        listview = view.findViewById(R.id.list_view_checkbox);
-
+        mapViewCheckBox = view.findViewById(R.id.map_view_checkbox);
+        listViewCheckBox = view.findViewById(R.id.list_view_checkbox);
         home_settings_FAB = view.findViewById(R.id.home_settings);
         location_settings_FAB = view.findViewById(R.id.location_settings);
         search_prof_FAB = view.findViewById(R.id.search_prof_button);
+        l = view.findViewById(R.id.home_settings_toolbar);
+        l2 = view.findViewById(R.id.location_settings_toolbar);
+        l3 = view.findViewById(R.id.search_prof_field);
         logoutButton = view.findViewById(R.id.logout);
-        View l = view.findViewById(R.id.home_settings_toolbar);
-        View l2 = view.findViewById(R.id.location_settings_toolbar);
-        View l3 = view.findViewById(R.id.search_prof_field);
+
+        // Get parent fragment manager (from host activity)
+        parentFragmentManager = getParentFragmentManager();
 
         l.setVisibility(view.GONE);
         l2.setVisibility(view.GONE);
@@ -78,40 +88,19 @@ public class FragmentHome_Client extends Fragment {
         isAllFABVisible2 = false;
         isAllFABVisible3 = false;
 
-        ft.replace(R.id.map_view_container, map_view_fragment);
-        ft.commit();
-        map_view_container.setVisibility(view.GONE);
-        listview.setChecked(true);
-        listview.setEnabled(false);
+        listViewCheckBox.setChecked(true);
+        listViewCheckBox.setEnabled(false);
 
-        mapview.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mapViewCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(buttonView.isChecked()){
-                    appBarLayout.setVisibility(view.GONE);
-                    buttonView.setEnabled(false);
-
-                    map_view_container.setVisibility(view.VISIBLE);
-                    viewPager.removeAllViews();
-
-                    listview.setChecked(false);
-                    listview.setEnabled(true);
-                }
-            }
-        });
-
-        listview.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(buttonView.isChecked()){
-                    appBarLayout.setVisibility(view.VISIBLE);
-                    buttonView.setEnabled(false);
-
-                    map_view_container.setVisibility(view.GONE);
-                    setUpViewPager(viewPager);
-
-                    mapview.setChecked(false);
-                    mapview.setEnabled(true);
+                if (buttonView.isChecked()) {
+                    listViewCheckBox.setChecked(false);
+                    parentFragmentManager.beginTransaction()
+                            .replace(R.id.fragment, FragmentHome_MapView.class, null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack(null)
+                            .commit();
                 }
             }
         });
@@ -119,49 +108,43 @@ public class FragmentHome_Client extends Fragment {
         home_settings_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(!isAllFABVisible){
+                if (!isAllFABVisible) {
                     home_settings_FAB.extend();
                     l.setVisibility(view.VISIBLE);
                     isAllFABVisible = true;
-                }else{
+                } else {
                     home_settings_FAB.shrink();
                     l.setVisibility(view.GONE);
                     isAllFABVisible = false;
                 }
-
             }
         });
 
         location_settings_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(!isAllFABVisible2){
+                if (!isAllFABVisible2) {
                     location_settings_FAB.extend();
                     l2.setVisibility(view.VISIBLE);
                     isAllFABVisible2 = true;
-                }else{
+                } else {
                     location_settings_FAB.shrink();
                     l2.setVisibility(view.GONE);
                     isAllFABVisible2 = false;
                 }
-
             }
         });
 
         search_prof_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(!isAllFABVisible3){
+                if (!isAllFABVisible3) {
                     l3.setVisibility(view.VISIBLE);
                     isAllFABVisible3 = true;
-                }else{
+                } else {
                     l3.setVisibility(view.GONE);
                     isAllFABVisible3 = false;
                 }
-
             }
         });
 
@@ -184,22 +167,17 @@ public class FragmentHome_Client extends Fragment {
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-            }
+            public void onTabSelected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
-
     }
 
-    private void setUpViewPager(ViewPager viewPager){
+    private void setUpViewPager(ViewPager viewPager) {
         SectionPagerAdapter adapter = new SectionPagerAdapter(getChildFragmentManager());
 
         adapter.addFragment(new FragmentHome_NewList(), "New");
@@ -207,5 +185,4 @@ public class FragmentHome_Client extends Fragment {
 
         viewPager.setAdapter(adapter);
     }
-
 }
