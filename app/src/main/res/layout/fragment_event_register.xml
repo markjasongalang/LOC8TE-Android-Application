@@ -113,6 +113,7 @@
                 android:fontFamily="@font/open_sans_light"
                 android:textColor="@color/fifthColor"/>
             <TextView
+                android:id="@+id/event_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:justificationMode="inter_word"

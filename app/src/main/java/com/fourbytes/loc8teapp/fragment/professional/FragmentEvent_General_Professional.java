@@ -68,9 +68,9 @@ public class FragmentEvent_General_Professional extends Fragment {
                         String event_title = document.getString("event_title");
                         String event_industry = document.getString("event_industry");
                         String event_location = document.getString("event_location");
-                        String event_host = document.getString("hosted_by"); //change later by event_host
-                        String event_time = document.getString("time");
-                        String event_date = document.getString("date");
+                        String event_host = document.getString("event_host");
+                        String event_time = document.getString("event_time");
+                        String event_date = document.getString("event_date");
 
 
                         if(event_industry.equals(event_general)){
@@ -85,6 +85,8 @@ public class FragmentEvent_General_Professional extends Fragment {
                             Log.d("EVENTS", "Event Time: " + event_time);
                             Log.d("EVENTS", "--------------------------------");
                             //Remove Logs Later
+
+                            break;
 
                         }
                     }
