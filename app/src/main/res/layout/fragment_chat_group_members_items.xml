@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/group_img"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/anya"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder"/>
+
+    <RelativeLayout
+        android:id="@+id/rellayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/group_img"
+        android:layout_marginTop="17dp">
+
+        <TextView
+            android:id="@+id/group_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_toLeftOf="@id/groups_report"
+            android:text="Anya Forger"
+            android:textSize="22sp"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/open_sans_bold"
+            android:paddingRight="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/groups_report"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/tertiary_color_round_button_report"/>
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/group_occupation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/group_img"
+        android:layout_below="@id/rellayout"
+        android:layout_marginTop="-3dp"
+        android:layout_marginStart="5dp"
+        android:text="Batang Pasaway"
+        android:textSize="13sp"
+        android:fontFamily="@font/open_sans_semi_bold"
+        android:textColor="@color/secondaryColorLight"
+        android:paddingRight="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/group_img"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+</RelativeLayout>
