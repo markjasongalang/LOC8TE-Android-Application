@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.client.FragmentChat_Client"
+    tools:context=".fragment.professional.FragmentChat_GroupMembers"
     android:background="@color/fourthColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@color/primaryColor">
+        android:background="@color/tertiaryColor">
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,9 +26,17 @@
             android:fontFamily="@font/open_sans_bold"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:text="chats"
-            android:textAllCaps="true"
+            android:text="IT Industry"
             android:textColor="@color/white"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_arrow_back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -39,13 +47,13 @@
         app:layout_constraintTop_toBottomOf="@id/cons"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="Connected Professionals"
+        android:text="Group Members"
         android:padding="20dp"
         android:fontFamily="@font/open_sans_bold"
         android:textColor="@color/tertiaryColor"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chats_recyclerview"
+        android:id="@+id/groups_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/label1"/>

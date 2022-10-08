@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/chat_container"
-    android:layout_marginTop="10dp">
+    android:id="@+id/chat_container">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/chat_img"
@@ -70,6 +69,5 @@
         android:background="@color/fifthColor"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"/>
-
 
 </RelativeLayout>
