@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/insidechat_img_right"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:padding="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/anya"
+        android:layout_alignParentRight="true"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder"/>
+
+    <TextView
+        android:id="@+id/insidechat_msg_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/insidechat_img_right"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="60dp"
+        android:text="Waku waku!"
+        android:textSize="15sp"
+        android:textColor="@color/primaryColor"
+        android:fontFamily="@font/open_sans_light"
+        android:padding="10dp"
+        android:background="@drawable/white_chat_bubble"/>
+
+</RelativeLayout>
