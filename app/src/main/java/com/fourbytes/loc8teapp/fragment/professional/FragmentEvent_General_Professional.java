@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fourbytes.loc8teapp.GeneralEventsItems;
+import com.fourbytes.loc8teapp.generaleventsrecycler.GeneralEventsItems;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.adapter.GeneralEventsAdapter;
 

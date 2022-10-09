@@ -1,7 +1,7 @@
 package com.fourbytes.loc8teapp.adapter;
 
-import static com.fourbytes.loc8teapp.InsideChatItems.layout_left;
-import static com.fourbytes.loc8teapp.InsideChatItems.layout_right;
+import static com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems.layout_left;
+import static com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems.layout_right;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fourbytes.loc8teapp.InsideChatItems;
+import com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems;
 import com.fourbytes.loc8teapp.R;
 
 

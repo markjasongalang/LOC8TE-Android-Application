@@ -9,8 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fourbytes.loc8teapp.NewListItems;
-import com.fourbytes.loc8teapp.NewListViewHolder;
+import com.fourbytes.loc8teapp.newlistrecycler.NewListItems;
+import com.fourbytes.loc8teapp.newlistrecycler.NewListViewHolder;
 import com.fourbytes.loc8teapp.R;
 
 import java.util.List;

@@ -1,10 +1,12 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.reviewforprorecycler;
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.fourbytes.loc8teapp.R;
 
 public class ReviewForProfessionalViewHolder extends RecyclerView.ViewHolder {
     public TextView tvFullName;

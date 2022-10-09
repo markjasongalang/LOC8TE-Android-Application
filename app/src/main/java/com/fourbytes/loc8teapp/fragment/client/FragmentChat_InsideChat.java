@@ -10,10 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fourbytes.loc8teapp.ChatsItems;
-import com.fourbytes.loc8teapp.InsideChatItems;
+import com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems;
 import com.fourbytes.loc8teapp.R;
-import com.fourbytes.loc8teapp.adapter.ChatAdapter;
 import com.fourbytes.loc8teapp.adapter.InsideChatAdapter;
 
 import java.util.ArrayList;

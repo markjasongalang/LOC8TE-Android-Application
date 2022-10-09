@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.generaleventsrecycler;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.fourbytes.loc8teapp.R;
 
 public class GeneralEventsViewHolder extends RecyclerView.ViewHolder{
     public ImageView host_image;

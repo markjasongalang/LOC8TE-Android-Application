@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fourbytes.loc8teapp.GeneralEventsItems;
-import com.fourbytes.loc8teapp.GeneralEventsViewHolder;
+import com.fourbytes.loc8teapp.generaleventsrecycler.GeneralEventsItems;
+import com.fourbytes.loc8teapp.generaleventsrecycler.GeneralEventsViewHolder;
 import com.fourbytes.loc8teapp.R;
 
 import java.util.List;

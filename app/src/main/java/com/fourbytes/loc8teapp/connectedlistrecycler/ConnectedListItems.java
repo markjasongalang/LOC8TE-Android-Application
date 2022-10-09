@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.connectedlistrecycler;
 
 public class ConnectedListItems {
     String connectedlist_name;

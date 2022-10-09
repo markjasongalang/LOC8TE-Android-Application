@@ -33,41 +33,41 @@
         android:id="@+id/chat_occupation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/chat_img"
         android:layout_below="@id/chat_name"
-        android:layout_marginTop="-3dp"
         android:layout_marginStart="20dp"
-        android:text="Batang Pasaway"
-        android:textSize="13sp"
-        android:fontFamily="@font/open_sans_semi_bold"
-        android:textColor="@color/secondaryColorLight"
-        android:paddingRight="10dp"
+        android:layout_marginTop="-3dp"
+        android:layout_toEndOf="@id/chat_img"
         android:ellipsize="end"
-        android:maxLines="1"/>
+        android:fontFamily="@font/open_sans_semi_bold"
+        android:maxLines="1"
+        android:paddingRight="10dp"
+        android:text="Batang Pasaway"
+        android:textColor="@color/secondaryColorLight"
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/chat_msgprev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/chat_img"
         android:layout_below="@id/chat_occupation"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
-        android:text="Anya: Waku waku!"
-        android:paddingRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/chat_img"
         android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="15sp"
         android:fontFamily="@font/open_sans_light"
-        android:textColor="@color/fifthColor"/>
+        android:maxLines="1"
+        android:paddingRight="10dp"
+        android:text="Anya: Waku waku!"
+        android:textColor="@color/fifthColor"
+        android:textSize="15sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/chat_img"
-        android:layout_marginTop="10dp"
-        android:background="@color/fifthColor"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/fifthColor" />
 
 </RelativeLayout>

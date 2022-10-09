@@ -9,8 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fourbytes.loc8teapp.ChatsItems;
-import com.fourbytes.loc8teapp.ChatsViewHolder;
+import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
+import com.fourbytes.loc8teapp.chatsrecycler.ChatsViewHolder;
 import com.fourbytes.loc8teapp.R;
 
 import java.util.List;

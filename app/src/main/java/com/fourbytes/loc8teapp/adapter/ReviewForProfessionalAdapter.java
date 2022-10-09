@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fourbytes.loc8teapp.R;
-import com.fourbytes.loc8teapp.ReviewForProfessional;
-import com.fourbytes.loc8teapp.ReviewForProfessionalViewHolder;
+import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
+import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessionalViewHolder;
 
 import java.util.List;
 

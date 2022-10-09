@@ -44,6 +44,7 @@
         <entry key="app/src/main/res/drawable/edit_profile_round_corners.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/fourth_color_round_corners.xml" value="0.2335" />
         <entry key="app/src/main/res/drawable/fourth_color_round_corners_40.xml" value="0.2335" />
+        <entry key="app/src/main/res/drawable/gradient_secondary_color_bg.xml" value="0.1925" />
         <entry key="app/src/main/res/drawable/gradient_white_bg.xml" value="0.2405" />
         <entry key="app/src/main/res/drawable/icon_add_review.xml" value="0.226" />
         <entry key="app/src/main/res/drawable/icon_full_star.xml" value="0.238" />
@@ -73,11 +74,17 @@
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.33" />
         <entry key="app/src/main/res/layout/client_fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_spinner_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_about.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_about_object.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_certification.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_chat__professional.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_chat_client.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_chat_items.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_culture_tab.xml" value="0.18558558558558558" />
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_event__client.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_event_general.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_experience.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home_client.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home_connected.xml" value="0.1990990990990991" />
@@ -90,10 +97,16 @@
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile__professional.xml" value="0.18558558558558558" />
         <entry key="app/src/main/res/layout/fragment_profile_client.xml" value="0.20462962962962963" />
+        <entry key="app/src/main/res/layout/fragment_profile_pro_about.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_profile_pro_culture.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_profile_pro_experience.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_profile_pro_rate.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile_professional.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_rate.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/item_review_for_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/professional_fragment_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rate_professional_popup.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/service_item_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/spinner_dropdown_layout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/spinner_item_layout.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.23020833333333332" />

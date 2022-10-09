@@ -9,13 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 
-import com.fourbytes.loc8teapp.ChatsItems;
-import com.fourbytes.loc8teapp.ConnectedListItems;
+import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.adapter.ChatAdapter;
-import com.fourbytes.loc8teapp.adapter.ConnectedListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
