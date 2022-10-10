@@ -74,6 +74,7 @@
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.33" />
         <entry key="app/src/main/res/layout/client_fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_spinner_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/experience_item_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_about.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_about_object.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_certification.xml" value="0.1990990990990991" />
