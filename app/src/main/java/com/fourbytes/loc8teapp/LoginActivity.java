@@ -47,7 +47,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
+
                 intent.putExtra("accountType", "professional");
+
                 startActivity(intent);
             }
         });

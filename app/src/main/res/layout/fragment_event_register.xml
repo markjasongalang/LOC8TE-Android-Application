@@ -1,0 +1,322 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header_event"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fourthColor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_general"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/primaryColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/open_sans_light"
+            android:text="@string/event_header"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_toStartOf="@+id/header_text"
+            android:background="@drawable/icon_arrow_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".125"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/event_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/guideline_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginHorizontal="20dp"
+        app:cardCornerRadius="8dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/event_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="EVENT TITLE"
+                android:paddingTop="20dp"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/secondaryColor"
+                android:fontFamily="@font/open_sans"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/icon_location_orange" />
+
+                <TextView
+                    android:id="@+id/event_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Event Location"
+                    android:justificationMode="inter_word"
+                    android:textSize="10dp"
+                    android:textColor="@color/secondaryColor"
+                    android:fontFamily="@font/open_sans_light"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/description_header"
+                android:paddingTop="25dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/open_sans_light"
+                android:textColor="@color/fifthColor"/>
+            <TextView
+                android:id="@+id/event_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:text="@string/sample_text"
+                android:textSize="12dp"
+                android:fontFamily="@font/open_sans_light"
+                android:textColor="@color/black"/>
+
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="@color/fifthColor"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Participants"
+                android:textAlignment="center"
+                android:paddingTop="20dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/open_sans_light"/>
+
+            <TextView
+                android:id="@+id/participants_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="52"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:fontFamily="@font/open_sans_light"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:paddingVertical="5dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Hosted by"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:textColor="@color/secondaryColorLight"
+                            android:paddingBottom="5dp"/>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/host_img"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:scaleType="centerCrop"
+                                app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder"
+                                android:src="@drawable/anya"/>
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingHorizontal="2dp">
+
+                                <TextView
+                                    android:id="@+id/host_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Sample Name"
+                                    android:textSize="13dp"
+                                    android:fontFamily="@font/open_sans"
+                                    android:textColor="@color/tertiaryColor"/>
+
+                                <TextView
+                                    android:id="@+id/host_profession"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Sample Profession"
+                                    android:textSize="9dp"
+                                    android:fontFamily="@font/open_sans"
+                                    android:textColor="@color/fifthColor" />
+
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:paddingVertical="5dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Time 	&#38; Date"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:textColor="@color/secondaryColorLight"
+                            android:paddingBottom="5dp"/>
+
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingHorizontal="2dp">
+
+                                <TextView
+                                    android:id="@+id/event_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="00/00/0000"
+                                    android:textSize="13dp"
+                                    android:fontFamily="@font/open_sans"
+                                    android:textColor="@color/tertiaryColor"/>
+
+                                <TextView
+                                    android:id="@+id/event_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="00:00AM-00:00PM"
+                                    android:textSize="13dp"
+                                    android:fontFamily="@font/open_sans"
+                                    android:textColor="@color/fifthColor" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </RelativeLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="@color/fifthColor"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:text="Parking Slots Left: "
+                    android:textColor="@color/fifthColor"
+                    android:fontFamily="@font/open_sans"/>
+
+                <TextView
+                    android:id="@+id/parking_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primaryColor" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="100dp"
+        android:text="Register"
+        android:textSize="15dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:fontFamily="@font/open_sans"
+        android:textStyle="bold"
+        android:background="@drawable/sixth_color_round_corners"
+        app:layout_constraintTop_toBottomOf="@id/event_card" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

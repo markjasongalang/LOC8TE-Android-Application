@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.generaleventsrecycler;
+package com.fourbytes.loc8teapp.industryeventsrecycler;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fourbytes.loc8teapp.R;
 
-public class GeneralEventsViewHolder extends RecyclerView.ViewHolder{
+public class IndustryEventsViewHolder extends RecyclerView.ViewHolder {
     public ImageView host_image;
     public TextView event_title;
     public TextView event_location;
@@ -21,18 +21,18 @@ public class GeneralEventsViewHolder extends RecyclerView.ViewHolder{
 
     public AppCompatButton btn_view;
 
-    public GeneralEventsViewHolder(@NonNull View itemView) {
+
+    public IndustryEventsViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        event_title = itemView.findViewById(R.id.general_item_title);
-        event_location = itemView.findViewById(R.id.general_item_location);
-        event_time = itemView.findViewById(R.id.general_item_time);
-        event_date = itemView.findViewById(R.id.general_item_date);
-        host_name = itemView.findViewById(R.id.general_item_hostname);
+        event_title = itemView.findViewById(R.id.industry_item_title);
+        event_location = itemView.findViewById(R.id.industry_item_location);
+        event_time = itemView.findViewById(R.id.industry_item_time);
+        event_date = itemView.findViewById(R.id.industry_item_date);
+        host_name = itemView.findViewById(R.id.industry_item_hostname);
         host_image = itemView.findViewById(R.id.host_img);
-        host_job = itemView.findViewById(R.id.general_item_hostJob);
+        host_job = itemView.findViewById(R.id.industry_item_hostJob);
 
         btn_view = itemView.findViewById(R.id.btn_view);
-
     }
 }

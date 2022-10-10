@@ -2,6 +2,8 @@ package com.fourbytes.loc8teapp.fragment.professional;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,10 +14,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.fourbytes.loc8teapp.generaleventsrecycler.GeneralEventsItems;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.adapter.GeneralEventsAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +40,9 @@ public class FragmentEvent_General_Professional extends Fragment {
     private AppCompatButton btnBack;
     private AppCompatButton btnView;
     private RecyclerView recyclerView;
+    private final String event_general = "general";
+    private FirebaseFirestore db;
+    List <GeneralEventsItems> items = new ArrayList<GeneralEventsItems>();
     public FragmentEvent_General_Professional() {
         // Required empty public constructor
     }
@@ -36,37 +51,19 @@ public class FragmentEvent_General_Professional extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_event_general_professional, container, false);
+
+        fragmentManager = getParentFragmentManager();
+
         btnBack = view.findViewById(R.id.btn_back);
         btnView = view.findViewById(R.id.btn_view);
-        List <GeneralEventsItems> items = new ArrayList<GeneralEventsItems>();
+
 
         recyclerView = view.findViewById(R.id.general_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        items.add(new GeneralEventsItems(
-                "Cooking Show",
-                "Sampaloc, Manila",
-                "Joshua Padilla",
-                "7:00AM - 9:00AM",
-                "11/03/2022",
-                "Master Chef",
-                R.drawable.anya
-        ));
-        items.add(new GeneralEventsItems(
-                "Cooking Show",
-                "Sampaloc, Manila",
-                "Joshua Padilla",
-                "7:00AM - 9:00AM",
-                "11/03/2022",
-                "Master Chef",
-                R.drawable.anya
-        ));
+        db = FirebaseFirestore.getInstance();
 
-        Log.d("EVENTS", "List size" + items.size());
-
-        recyclerView.setAdapter(new GeneralEventsAdapter(view.getContext(), items));
-
-        fragmentManager = getParentFragmentManager();
+        fetchGeneralEvents();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,16 +72,43 @@ public class FragmentEvent_General_Professional extends Fragment {
             }
         });
 
-//        btnView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-
         // Inflate the layout for this fragment
         return view;
     }
 
+    private void fetchGeneralEvents() {
+        db.collection("events").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
 
+                    return;
+                }
+
+                items.clear();
+                for (QueryDocumentSnapshot document : value) {
+                    if (document != null) {
+                        if((document.getString("event_industry")).equals(event_general)){
+                            items.add(new GeneralEventsItems(
+                                    document.getString("event_title"),
+                                    document.getString("event_location"),
+                                    document.getString("event_host"),
+                                    document.getString("event_time"),
+                                    document.getString("event_date"),
+                                    document.getString("event_host_job"),
+                                    document.getId(),
+                                    R.drawable.anya
+                            ));
+                        }
+                    }
+                }
+                updateEvents();
+            }
+
+        });
+    }
+
+    private void updateEvents(){
+        recyclerView.setAdapter(new GeneralEventsAdapter(view.getContext(), items));
+    }
 }
