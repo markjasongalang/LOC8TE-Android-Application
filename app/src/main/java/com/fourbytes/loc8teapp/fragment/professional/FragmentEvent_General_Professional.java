@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.fourbytes.loc8teapp.GeneralEventsItems;
+import com.fourbytes.loc8teapp.generaleventsrecycler.GeneralEventsItems;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.adapter.GeneralEventsAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;

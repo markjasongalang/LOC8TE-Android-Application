@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.chatsrecycler;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.fourbytes.loc8teapp.R;
 
 public class ChatsViewHolder extends RecyclerView.ViewHolder {
 

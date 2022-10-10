@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.reviewforprorecycler;
 
 public class ReviewForProfessional {
     private String firstName;

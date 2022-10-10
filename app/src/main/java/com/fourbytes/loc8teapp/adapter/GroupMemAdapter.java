@@ -9,9 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fourbytes.loc8teapp.ChatsViewHolder;
-import com.fourbytes.loc8teapp.GroupMemItems;
-import com.fourbytes.loc8teapp.GroupMemViewHolder;
+import com.fourbytes.loc8teapp.groupmemrecycler.GroupMemItems;
+import com.fourbytes.loc8teapp.groupmemrecycler.GroupMemViewHolder;
 import com.fourbytes.loc8teapp.R;
 
 import java.util.List;

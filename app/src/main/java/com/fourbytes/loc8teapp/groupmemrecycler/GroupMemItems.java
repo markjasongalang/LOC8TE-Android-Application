@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.groupmemrecycler;
 
 public class GroupMemItems {
     String groups_name;

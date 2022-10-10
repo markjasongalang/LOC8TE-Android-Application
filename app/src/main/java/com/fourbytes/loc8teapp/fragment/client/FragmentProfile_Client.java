@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fourbytes.loc8teapp.R;
-import com.fourbytes.loc8teapp.ReviewForProfessional;
+import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
 import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
 
 import java.util.ArrayList;
