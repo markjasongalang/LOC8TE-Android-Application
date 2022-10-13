@@ -57,7 +57,8 @@ public class GeneralEventsAdapter extends RecyclerView.Adapter<GeneralEventsView
                 FragmentManager fragmentManager = ((HostActivity) view.getContext()).getSupportFragmentManager();
                 FragmentEvent_Register fragment = new FragmentEvent_Register();
 
-                fragmentManager.beginTransaction().replace(R.id.fragment, fragment)
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment, fragment)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
