@@ -76,20 +76,86 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/white_round_corners_10"
-            android:drawableRight="@drawable/icon_add"
+            android:drawableRight="@drawable/icon_edit"
             android:fontFamily="@font/glacial_indifference"
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
-            android:text="Add Culture"
+            android:text="Edit Info"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/secondaryColor"
             android:textSize="16sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_culture"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/glacial_indifference"
+            android:text="Religion"
+            android:textColor="@color/secondaryColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="Catholic"
+            android:textColor="@color/fifthColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/glacial_indifference"
+            android:text="Life Motto"
+            android:textColor="@color/secondaryColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="Time is of the essence."
+            android:textColor="@color/fifthColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/glacial_indifference"
+            android:text="Languages"
+            android:textColor="@color/secondaryColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="- English \n- Filipino"
+            android:textColor="@color/fifthColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/glacial_indifference"
+            android:text="From the Professional:"
+            android:textColor="@color/secondaryColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="I usually spend my weekends saving people."
+            android:textColor="@color/fifthColor"
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>

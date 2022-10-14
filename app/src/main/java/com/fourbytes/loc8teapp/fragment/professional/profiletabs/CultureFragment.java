@@ -20,7 +20,7 @@ public class CultureFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile_pro_culture, container, false);
 
-        // TODO: Add RecyclerView for Culture Tab
+        // TODO: Add editable input box
 
         return view;
     }
