@@ -39,6 +39,8 @@ public class FragmentEvent_Register_Success extends Fragment {
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment, FragmentEvent_Professional.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
                         .commit();
             }
         });

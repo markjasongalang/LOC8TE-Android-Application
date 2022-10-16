@@ -1,5 +1,6 @@
 package com.fourbytes.loc8teapp.fragment.professional;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,22 +34,30 @@ public class FragmentEvent_MyEvents_Professional extends Fragment {
         view = inflater.inflate(R.layout.fragment_event_myevents_professional, container, false);
 
         fragmentManager = getParentFragmentManager();
-        fragmentManager2 = getChildFragmentManager();
         btnBack = view.findViewById(R.id.btn_back);
         btnRegistered = view.findViewById(R.id.btn_registered);
         btnCreated = view.findViewById(R.id.btn_created);
 
+        //default fragment
+        replaceFragment(new FragmentEvent_RegisteredEvents());
+
         btnRegistered.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
                 replaceFragment(new FragmentEvent_RegisteredEvents());
+                btnRegistered.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+                btnCreated.setBackgroundColor(getResources().getColor(R.color.tertiaryColor));
             }
         });
 
         btnCreated.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
                 replaceFragment(new FragmentEvent_CreatedEvents());
+                btnRegistered.setBackgroundColor(getResources().getColor(R.color.tertiaryColor));
+                btnCreated.setBackgroundColor(getResources().getColor(R.color.primaryColor));
             }
         });
 

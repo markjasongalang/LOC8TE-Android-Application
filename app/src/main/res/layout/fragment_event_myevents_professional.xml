@@ -50,7 +50,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:background="@color/fourthColor">
 
         <TextView
             android:layout_width="match_parent"
