@@ -102,6 +102,6 @@ public class FragmentEvent_Industry_Professional extends Fragment {
         });
     }
     public void updateEvents(){
-        recyclerView.setAdapter(new IndustryEventsAdapter(view.getContext(), items));
+        recyclerView.setAdapter(new IndustryEventsAdapter(view.getContext(), items, fragmentManager));
     }
 }

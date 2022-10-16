@@ -25,11 +25,12 @@ public class GeneralEventsAdapter extends RecyclerView.Adapter<GeneralEventsView
 
     Context context;
     private List<GeneralEventsItems> general_items;
+    private FragmentManager fragmentManager;
 
-    public GeneralEventsAdapter(Context context, List<GeneralEventsItems> general_items) {
-
+    public GeneralEventsAdapter(Context context, List<GeneralEventsItems> general_items, FragmentManager fragmentManager) {
         this.context = context;
         this.general_items = general_items;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -54,10 +55,10 @@ public class GeneralEventsAdapter extends RecyclerView.Adapter<GeneralEventsView
             public void onClick(View view) {
 
                 //TODO: Pass data into fragments
-                FragmentManager fragmentManager = ((HostActivity) view.getContext()).getSupportFragmentManager();
                 FragmentEvent_Register fragment = new FragmentEvent_Register();
 
-                fragmentManager.beginTransaction().replace(R.id.fragment, fragment)
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment, fragment)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,10 +25,12 @@ public class IndustryEventsAdapter extends RecyclerView.Adapter<IndustryEventsVi
 
     Context context;
     private List<IndustryEventsItems> industry_items;
+    private FragmentManager fragmentManager;
 
-    public IndustryEventsAdapter(Context context, List<IndustryEventsItems> industry_items){
+    public IndustryEventsAdapter(Context context, List<IndustryEventsItems> industry_items, FragmentManager fragmentManager){
         this.context = context;
         this.industry_items = industry_items;
+        this.fragmentManager = fragmentManager;
     }
     @NonNull
     @Override
@@ -51,10 +54,10 @@ public class IndustryEventsAdapter extends RecyclerView.Adapter<IndustryEventsVi
             public void onClick(View view) {
 
                 //TODO: Pass data into fragments
-                FragmentManager fragmentManager = ((HostActivity) view.getContext()).getSupportFragmentManager();
                 FragmentEvent_Register fragment = new FragmentEvent_Register();
 
-                fragmentManager.beginTransaction().replace(R.id.fragment, fragment)
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment, fragment)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();

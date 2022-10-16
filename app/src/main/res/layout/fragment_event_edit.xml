@@ -1,0 +1,307 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header_event"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fourthColor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_general"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/primaryColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/open_sans_light"
+            android:text="@string/event_header"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_toStartOf="@+id/header_text"
+            android:background="@drawable/icon_arrow_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".125"/>
+
+    <TextView
+        android:id="@+id/edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/guideline_top"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="20dp"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/white"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        android:text="editing.."
+        android:background="@drawable/secondary_color_round_corners2"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/event_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginHorizontal="20dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginTop="10dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:textStyle="italic"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/open_sans"
+                android:textSize="13dp"/>
+
+            <EditText
+                android:id="@+id/edit_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fourth_color_round_corners_10"
+                android:fontFamily="@font/open_sans_light"
+                android:hint="Example Title"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="@color/primaryColor"
+                android:textColorHint="@color/primaryColor"
+                android:textSize="13dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="location"
+                android:textStyle="italic"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/open_sans"
+                android:textSize="13dp"/>
+
+            <EditText
+                android:id="@+id/edit_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fourth_color_round_corners_10"
+                android:fontFamily="@font/open_sans_light"
+                android:hint="Example Location"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="@color/primaryColor"
+                android:textColorHint="@color/primaryColor"
+                android:textSize="13dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="description (500 chars. max.)"
+                android:textStyle="italic"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/open_sans"
+                android:textSize="13dp"/>
+
+            <EditText
+                android:id="@+id/edit_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="150dp"
+                android:background="@drawable/fourth_color_round_corners_10"
+                android:fontFamily="@font/open_sans_light"
+                android:hint="@string/sample_text"
+                android:inputType="textMultiLine"
+                android:padding="10dp"
+                android:textColor="@color/primaryColor"
+                android:textColorHint="@color/primaryColor"
+                android:textSize="13dp"
+                android:gravity="top|left"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="date (mm/dd/yyyy)"
+                android:textStyle="italic"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/open_sans"
+                android:textSize="13dp"/>
+
+            <EditText
+                android:id="@+id/edit_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fourth_color_round_corners_10"
+                android:fontFamily="@font/open_sans_light"
+                android:hint="mm/dd/yyyy"
+                android:inputType="date"
+                android:padding="10dp"
+                android:textColor="@color/primaryColor"
+                android:textColorHint="@color/primaryColor"
+                android:textSize="13dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="time"
+                android:textStyle="italic"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/open_sans"
+                android:textSize="13dp"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edit_time_start"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fourth_color_round_corners_10"
+                    android:fontFamily="@font/open_sans_light"
+                    android:hint="00:00 AM"
+                    android:inputType="time"
+                    android:padding="10dp"
+                    android:textColor="@color/primaryColor"
+                    android:textColorHint="@color/primaryColor"
+                    android:textSize="13dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="to"
+                    android:textStyle="italic"
+                    android:textColor="@color/primaryColor"
+                    android:fontFamily="@font/open_sans"
+                    android:textSize="13dp"
+                    android:paddingHorizontal="10dp"/>
+
+                <EditText
+                    android:id="@+id/edit_time_end"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fourth_color_round_corners_10"
+                    android:fontFamily="@font/open_sans_light"
+                    android:hint="00:00 PM"
+                    android:inputType="time"
+                    android:padding="10dp"
+                    android:textColor="@color/primaryColor"
+                    android:textColorHint="@color/primaryColor"
+                    android:textSize="13dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="parking slots (optional)"
+                android:textStyle="italic"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/open_sans"
+                android:textSize="13dp"/>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edit_parkingslots"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fourth_color_round_corners_10"
+                    android:fontFamily="@font/open_sans_light"
+                    android:hint="15"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:textColor="@color/primaryColor"
+                    android:textColorHint="@color/primaryColor"
+                    android:textSize="13dp"
+                    android:layout_gravity="center"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/fifth_color_round_corners"
+                    android:text="set current location&#10;as parking"
+                    android:textSize="7dp"
+                    android:fontFamily="@font/open_sans"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:textFontWeight="1000"
+                    android:textColor="@color/white"
+                    android:layout_gravity="top"
+                    android:layout_marginLeft="10dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="100dp"
+        android:text="Save"
+        android:textSize="15dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:fontFamily="@font/open_sans"
+        android:textStyle="bold"
+        android:background="@drawable/sixth_color_round_corners"
+        app:layout_constraintTop_toBottomOf="@id/event_card" />
+
+    <TextView
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_save"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="cancel"
+        android:textSize="15dp"
+        android:textColor="@color/fifthColor"
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
