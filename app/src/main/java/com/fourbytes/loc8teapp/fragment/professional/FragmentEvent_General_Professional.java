@@ -109,6 +109,6 @@ public class FragmentEvent_General_Professional extends Fragment {
     }
 
     private void updateEvents(){
-        recyclerView.setAdapter(new GeneralEventsAdapter(view.getContext(), items));
+        recyclerView.setAdapter(new GeneralEventsAdapter(view.getContext(), items, fragmentManager));
     }
 }
