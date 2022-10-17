@@ -92,6 +92,7 @@
                         app:strokeWidth="10dp" />
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_reviews"
                         android:layout_width="90dp"
                         android:layout_height="90dp"
                         android:layout_marginLeft="-60dp"

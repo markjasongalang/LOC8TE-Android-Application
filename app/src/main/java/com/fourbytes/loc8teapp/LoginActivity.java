@@ -26,7 +26,13 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -49,13 +55,20 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
         tvDontHaveAccount = findViewById(R.id.tv_dont_have_account);
 
+        Map<String, Object> city = new HashMap<>();
+        city.put("name", "Los Angeles");
+        city.put("state", "CA");
+        city.put("country", "USA");
+
+        db.collection("users").document().set(city);
+
         getLocationPermission();
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
 
-                intent.putExtra("accountType", "professional");
+                intent.putExtra("accountType", "client");
 
                 startActivity(intent);
             }
