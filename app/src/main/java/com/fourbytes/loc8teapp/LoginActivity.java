@@ -55,13 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
         tvDontHaveAccount = findViewById(R.id.tv_dont_have_account);
 
-        Map<String, Object> city = new HashMap<>();
-        city.put("name", "Los Angeles");
-        city.put("state", "CA");
-        city.put("country", "USA");
-
-        db.collection("users").document().set(city);
-
         getLocationPermission();
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,7 +2,9 @@ package com.fourbytes.loc8teapp;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -71,31 +73,30 @@ public class Signup1Activity extends AppCompatActivity {
             public void onClick(View view) {
 
                 // TODO: Apply a Hash Function on the password
+                // TODO: Check username if it already exists in the database
 
-                Map<String, Object> client = new HashMap<>();
-                client.put("password", edtPassword.getText().toString());
-                client.put("first_name", edtFirstName.getText().toString());
-                client.put("middle_name", edtMiddleName.getText().toString());
-                client.put("last_name", edtLastName.getText().toString());
-                client.put("birth_date", btnDate.getText().toString());
+                String username = edtUsername.getText().toString();
+                String password = edtPassword.getText().toString();
+                String firstName = edtFirstName.getText().toString();
+                String middleName = edtMiddleName.getText().toString();
+                String lastName = edtLastName.getText().toString();
+                String birthdate = btnDate.getText().toString();
 
-                db.collection("clients").document(edtUsername.getText().toString())
-                        .set(client)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(Signup1Activity.this, "Successful", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(Signup1Activity.this, "Unsuccessful", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+//                if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() ||
+//                    middleName.isEmpty() || lastName.isEmpty() || birthdate.isEmpty()) {
+//
+//                    Toast.makeText(Signup1Activity.this, "Please answer all fields.", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
 
-
-                //startActivity(new Intent(getApplicationContext(), Signup2Activity.class));
+                Intent intent = new Intent(getApplicationContext(), Signup2Activity.class);
+                intent.putExtra("username", username);
+                intent.putExtra("password", password);
+                intent.putExtra("firstName", firstName);
+                intent.putExtra("middleName", middleName);
+                intent.putExtra("lastName", lastName);
+                intent.putExtra("birthdate", birthdate);
+                startActivity(intent);
             }
         });
     }
@@ -122,7 +123,7 @@ public class Signup1Activity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        int style = AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
+        int style = AlertDialog.THEME_DEVICE_DEFAULT_DARK;
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
     }
 
