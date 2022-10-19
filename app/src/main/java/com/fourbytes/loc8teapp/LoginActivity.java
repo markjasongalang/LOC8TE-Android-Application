@@ -5,11 +5,13 @@ import static com.fourbytes.loc8teapp.Constants.ERROR_DIALOG_REQUEST;
 import static com.fourbytes.loc8teapp.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.fourbytes.loc8teapp.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +28,12 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -36,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
 
     private TextView tvDontHaveAccount;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +52,20 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Firebase database
         db = FirebaseFirestore.getInstance();
-
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         // Find views from the layout
         btnLogin = findViewById(R.id.btn_login);
         tvDontHaveAccount = findViewById(R.id.tv_dont_have_account);
 
+        //Permission Checker
         getLocationPermission();
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
 
-                intent.putExtra("accountType", "professional");
+                intent.putExtra("accountType", "client");
 
                 startActivity(intent);
             }
