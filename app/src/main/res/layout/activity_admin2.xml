@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor"
+    android:orientation="vertical"
+    tools:context=".AdminActivity">
+
+
+    <TextView
+        android:id="@+id/front_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tertiaryColor"
+        android:fontFamily="@font/open_sans_bold"
+        android:paddingTop="15dp"
+        android:text="Admin Mode"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="800dp"
+        android:layout_marginVertical="40dp"
+        android:layout_marginLeft="30dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="50dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/prof_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="175dp"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Name"
+            android:textColor="@color/primaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/prof_name2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="180dp"
+            android:layout_marginTop="120dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Joshua Padilla"
+            android:textColor="@color/secondaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/prof_work"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="175dp"
+            android:layout_marginTop="155dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Occupation"
+            android:textColor="@color/primaryColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/prof_work2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="180dp"
+            android:layout_marginTop="175dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Class S Hero"
+            android:textColor="@color/secondaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+
+        <TextView
+            android:id="@+id/prof_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="255dp"
+            android:fontFamily="@font/open_sans"
+            android:text="First Name"
+            android:textColor="@color/primaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/prof_middle_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="280dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Middle Name"
+            android:textColor="@color/primaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/prof_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="305dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Last Name"
+            android:textColor="@color/primaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/prof_bday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="345dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Date of Birth"
+            android:textColor="@color/primaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/prof_fist_name2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="145dp"
+            android:layout_marginTop="255dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Joshua"
+            android:textColor="@color/secondaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+
+        <TextView
+            android:id="@+id/prof_middle_name2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="145dp"
+            android:layout_marginTop="280dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Saitama"
+            android:textColor="@color/secondaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/prof_last_name2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="145dp"
+            android:layout_marginTop="305dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Padilla"
+            android:textColor="@color/secondaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/prof_bday2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="145dp"
+            android:layout_marginTop="345dp"
+            android:fontFamily="@font/open_sans"
+            android:text="February 29, 1990"
+            android:textColor="@color/secondaryColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+
+
+
+
+
+        <Button
+            android:id="@+id/accept_admin"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="100dp"
+            android:background="@drawable/accept_button"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="approved"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+
+            />
+
+
+        <Button
+            android:id="@+id/reject_admin"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="195dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="100dp"
+            android:background="@drawable/reject_button"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="reject"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginVertical="90dp"
+                android:layout_marginLeft="30dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="500dp"
+                app:cardElevation="50dp">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginVertical="0dp"
+                    android:src="@drawable/juswa_hearts" />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>
