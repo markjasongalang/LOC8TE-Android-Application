@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/primaryColor"
@@ -132,6 +132,30 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/white_round_corners_10" />
 
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light_italic"
+                    android:text="what's your specific job?"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/edt_specific_job"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/white_round_corners_10"
+                    android:fontFamily="@font/open_sans_light"
+                    android:hint="specific job"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textColor="@color/primaryColor"
+                    android:textColorHint="@color/primaryColor"
+                    android:textSize="18sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -140,6 +164,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/open_sans_light_italic"
                         android:text="proof of valid ID"
@@ -167,6 +192,7 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_attach"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/tertiary_color_round_corners"
@@ -177,13 +203,14 @@
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/tv_image_status"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="-40dp"
                         android:background="@drawable/fourth_color_round_corners_40"
                         android:fontFamily="@font/open_sans_light"
                         android:gravity="center"
-                        android:text="name of the file"
+                        android:text="no image attached"
                         android:textAlignment="center"
                         android:textColor="@color/primaryColor" />
                 </LinearLayout>
@@ -208,7 +235,6 @@
                 android:layout_marginRight="70dp"
                 android:background="@drawable/secondary_color_round_corners"
                 android:fontFamily="@font/glacial_indifference"
-                android:onClick="openNextSignUp"
                 android:text="next"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

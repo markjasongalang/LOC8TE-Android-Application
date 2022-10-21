@@ -3,10 +3,14 @@ package com.fourbytes.loc8teapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Signup3Activity extends AppCompatActivity {
     private TextView tvAccountType;
@@ -20,6 +24,8 @@ public class Signup3Activity extends AppCompatActivity {
         // Get views from the layout
         tvAccountType = findViewById(R.id.tv_account_type);
         tvAttachReminder = findViewById(R.id.tv_attach_reminder);
+
+
 
         // Change some text based on the previous activity
         setTextBasedOnPrevious();
