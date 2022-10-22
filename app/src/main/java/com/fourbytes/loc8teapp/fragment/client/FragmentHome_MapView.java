@@ -5,6 +5,7 @@ import static com.fourbytes.loc8teapp.Constants.MAPVIEW_BUNDLE_KEY;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -41,6 +42,7 @@ import com.fourbytes.loc8teapp.UserDistance;
 import com.fourbytes.loc8teapp.Vertex;
 import com.fourbytes.loc8teapp.VertexInfo;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentProfile_Professional;
+import com.fourbytes.loc8teapp.fragment.professional.FragmentSetLocation_Professional;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -50,6 +52,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -103,11 +106,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private MapView map_view;
 
-    private Location location;
-
     private GoogleMap map_instance;
     private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private DistanceMatrix matrix;
@@ -164,8 +164,14 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         btnFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findNearestUser();
+                //findNearestUser();
                 //getUserDistance();
+                parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, FragmentSetLocation_Professional.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+
                 Toast.makeText(view.getContext(), "Find is clicked", Toast.LENGTH_SHORT).show();
 
             }
@@ -292,7 +298,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                                                     routes,
                                                                     distance_parsed
                                                             ));
-                                                            System.out.println(userCount);
+                                                            System.out.println(userDistanceList.size());
                                                             if(userCount == userDistanceList.size()){
                                                                 try {
                                                                     drawPolyline();
@@ -454,6 +460,18 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        try {
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            view.getContext(), R.raw.style_json));
+
+            if (!success) {
+                Log.e("MAP", "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e("MAP", "Can't find style. Error: ", e);
+        }
+
         map_instance = googleMap;
         retrieveNodes();
         retrieveUsers();
