@@ -7,11 +7,21 @@
     android:background="@color/fourthColor"
     tools:context=".fragment.client.FragmentHome_MapView">
 
+
     <com.google.android.gms.maps.MapView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_find"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find Nearest"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid3"
@@ -352,5 +362,8 @@
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
+
     </FrameLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
