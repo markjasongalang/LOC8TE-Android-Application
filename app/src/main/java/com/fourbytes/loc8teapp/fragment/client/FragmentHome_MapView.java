@@ -348,6 +348,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
         for (int i=0;i<routes.length();i++){
             points = new ArrayList<>();
+            if(i == 0){
+                points.add(new LatLng(currentUserLat, currentUserLong));
+            }
             polylineOptions = new PolylineOptions();
             JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
 
@@ -647,7 +650,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
                 int count = 0;
                 if (e != null) {
-
                     return;
                 }
 
