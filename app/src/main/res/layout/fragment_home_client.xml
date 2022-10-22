@@ -11,29 +11,28 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/tertiaryColor"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="@color/tertiaryColor"
-            app:tabTextColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorColor="@color/primaryColor"
             app:tabIndicatorHeight="70sp"
-            app:tabIndicatorColor="@color/primaryColor">
-        </com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="@color/white"></com.google.android.material.tabs.TabLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid3"
@@ -47,14 +46,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.65" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.74"/>
+        app:layout_constraintGuide_percent="0.74" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid"
@@ -69,48 +68,6 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.3" />
-
-    <!-- search professional FAB -->
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/mid5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/search_prof_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:outlineProvider="none"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/icon_search_person"
-            app:borderWidth="0dp"
-            app:tint="@color/secondaryColorLight"
-            android:layout_gravity="bottom"/>
-
-        <EditText
-            android:id="@+id/search_prof_field"
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/white_round_corners_10"
-            android:fontFamily="@font/open_sans_light_italic"
-            android:hint="search professional by name"
-            android:inputType="text"
-            android:paddingTop="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp"
-            android:paddingLeft="40dp"
-            android:textColor="@color/fifthColor"
-            android:textColorHint="@color/fifthColor"
-            android:textSize="18sp"
-            android:layout_marginStart="35dp"
-            android:layout_marginRight="20dp"
-            android:layout_gravity="bottom|left" />
-
-    </FrameLayout>
 
     <!-- location FAB -->
     <FrameLayout
@@ -158,34 +115,11 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/fourth_color_round_corners_40_2"
-                        android:fontFamily="@font/open_sans_light_italic"
-                        android:hint="search for address"
-                        android:inputType="text"
-                        android:textColor="@color/primaryColor"
-                        android:textColorHint="@color/primaryColor"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:fontFamily="@font/open_sans_light_italic"
-                        android:text="or"
-                        android:textAlignment="center"
-                        android:textColor="@color/primaryColor"
-                        android:textSize="20sp" />
-
                     <androidx.appcompat.widget.AppCompatButton
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
+                        android:layout_marginTop="15dp"
                         android:layout_marginRight="40dp"
                         android:background="@drawable/tertiary_color_round_corners"
                         android:fontFamily="@font/glacial_indifference"
@@ -261,27 +195,27 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/map_view_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="map view"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/map_view_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="map view"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/list_view_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/secondaryColor"
-                    android:fontFamily="@font/open_sans_light"
-                    android:minHeight="0dp"
-                    android:text="list view"
-                    android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/list_view_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/secondaryColor"
+                        android:fontFamily="@font/open_sans_light"
+                        android:minHeight="0dp"
+                        android:text="list view"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -308,7 +242,7 @@
                         android:buttonTint="@color/secondaryColor"
                         android:fontFamily="@font/open_sans_light"
                         android:minHeight="0dp"
-                        android:text="graphic design"
+                        android:text="technology"
                         android:textColor="@color/white"
                         android:textSize="17sp" />
 
@@ -318,7 +252,7 @@
                         android:buttonTint="@color/secondaryColor"
                         android:fontFamily="@font/open_sans_light"
                         android:minHeight="0dp"
-                        android:text="photography"
+                        android:text="skilled trade"
                         android:textColor="@color/white"
                         android:textSize="17sp" />
 
@@ -328,7 +262,7 @@
                         android:buttonTint="@color/secondaryColor"
                         android:fontFamily="@font/open_sans_light"
                         android:minHeight="0dp"
-                        android:text="social media manager"
+                        android:text="business administration"
                         android:textColor="@color/white"
                         android:textSize="17sp" />
 
@@ -338,7 +272,7 @@
                         android:buttonTint="@color/secondaryColor"
                         android:fontFamily="@font/open_sans_light"
                         android:minHeight="0dp"
-                        android:text="virtual assistant"
+                        android:text="education"
                         android:textColor="@color/white"
                         android:textSize="17sp" />
 
@@ -348,7 +282,7 @@
                         android:buttonTint="@color/secondaryColor"
                         android:fontFamily="@font/open_sans_light"
                         android:minHeight="0dp"
-                        android:text="accounting and finance"
+                        android:text="law"
                         android:textColor="@color/white"
                         android:textSize="17sp" />
 
@@ -358,7 +292,7 @@
                         android:buttonTint="@color/secondaryColor"
                         android:fontFamily="@font/open_sans_light"
                         android:minHeight="0dp"
-                        android:text="website development"
+                        android:text="food, culinary, events"
                         android:textColor="@color/white"
                         android:textSize="17sp" />
 
@@ -368,7 +302,7 @@
                         android:buttonTint="@color/secondaryColor"
                         android:fontFamily="@font/open_sans_light"
                         android:minHeight="0dp"
-                        android:text="copywriting"
+                        android:text="arts, humanities, liberal arts"
                         android:textColor="@color/white"
                         android:textSize="17sp" />
                 </LinearLayout>

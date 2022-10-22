@@ -137,10 +137,10 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         listViewCheckBox = view.findViewById(R.id.list_view_checkbox);
         home_settings_FAB = view.findViewById(R.id.home_settings);
         location_settings_FAB = view.findViewById(R.id.location_settings);
-        search_prof_FAB = view.findViewById(R.id.search_prof_button);
+//        search_prof_FAB = view.findViewById(R.id.search_prof_button);
         l = view.findViewById(R.id.home_settings_toolbar);
         l2 = view.findViewById(R.id.location_settings_toolbar);
-        l3 = view.findViewById(R.id.search_prof_field);
+//        l3 = view.findViewById(R.id.search_prof_field);
         logoutButton = view.findViewById(R.id.logout);
         btnFind = view.findViewById(R.id.btn_find);
         map_view = view.findViewById(R.id.map_view);
@@ -150,7 +150,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
         l.setVisibility(view.GONE);
         l2.setVisibility(view.GONE);
-        l3.setVisibility(view.GONE);
+//        l3.setVisibility(view.GONE);
         home_settings_FAB.shrink();
         location_settings_FAB.shrink();
 
@@ -170,6 +170,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
             }
         });
+
         listViewCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -212,18 +213,18 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             }
         });
 
-        search_prof_FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isAllFABVisible3) {
-                    l3.setVisibility(view.VISIBLE);
-                    isAllFABVisible3 = true;
-                } else {
-                    l3.setVisibility(view.GONE);
-                    isAllFABVisible3 = false;
-                }
-            }
-        });
+//        search_prof_FAB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!isAllFABVisible3) {
+//                    l3.setVisibility(view.VISIBLE);
+//                    isAllFABVisible3 = true;
+//                } else {
+//                    l3.setVisibility(view.GONE);
+//                    isAllFABVisible3 = false;
+//                }
+//            }
+//        });
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -410,7 +411,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     }
 
     public void setCurrentLocation(double latitude, double longitude){
-
         currentUserLat = latitude;
         currentUserLong = longitude;
     }
@@ -656,11 +656,13 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 for (QueryDocumentSnapshot document : value) {
                     if (document != null) {
 
+
                         try{
                             String id = document.getId();
                             String origin = document.getString("start");
                             String destination = document.getString("end");
                             double distance = document.getDouble("distance");
+                            E.add(new Edge(origin, destination, distance, id));
                             E.add(new Edge(origin, destination, distance, id));
 
                         }catch (Exception error){
@@ -758,5 +760,4 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         super.onLowMemory();
         map_view.onLowMemory();
     }
-
 }

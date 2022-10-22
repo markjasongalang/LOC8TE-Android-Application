@@ -120,6 +120,7 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_attach"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/tertiary_color_round_corners"
@@ -130,6 +131,7 @@
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/tv_image_status"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="-40dp"
@@ -161,7 +163,6 @@
                 android:layout_marginRight="70dp"
                 android:background="@drawable/secondary_color_round_corners"
                 android:fontFamily="@font/glacial_indifference"
-                android:onClick="openNextSignup"
                 android:text="next"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

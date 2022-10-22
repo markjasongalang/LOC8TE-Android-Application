@@ -69,10 +69,10 @@ public class FragmentHome_ListView extends Fragment {
         listViewCheckBox = view.findViewById(R.id.list_view_checkbox);
         home_settings_FAB = view.findViewById(R.id.home_settings);
         location_settings_FAB = view.findViewById(R.id.location_settings);
-        search_prof_FAB = view.findViewById(R.id.search_prof_button);
+//        search_prof_FAB = view.findViewById(R.id.search_prof_button);
         l = view.findViewById(R.id.home_settings_toolbar);
         l2 = view.findViewById(R.id.location_settings_toolbar);
-        l3 = view.findViewById(R.id.search_prof_field);
+//        l3 = view.findViewById(R.id.search_prof_field);
         logoutButton = view.findViewById(R.id.logout);
 
         // Get parent fragment manager (from host activity)
@@ -80,7 +80,7 @@ public class FragmentHome_ListView extends Fragment {
 
         l.setVisibility(view.GONE);
         l2.setVisibility(view.GONE);
-        l3.setVisibility(view.GONE);
+//        l3.setVisibility(view.GONE);
         home_settings_FAB.shrink();
         location_settings_FAB.shrink();
 
@@ -135,18 +135,18 @@ public class FragmentHome_ListView extends Fragment {
             }
         });
 
-        search_prof_FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isAllFABVisible3) {
-                    l3.setVisibility(view.VISIBLE);
-                    isAllFABVisible3 = true;
-                } else {
-                    l3.setVisibility(view.GONE);
-                    isAllFABVisible3 = false;
-                }
-            }
-        });
+//        search_prof_FAB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!isAllFABVisible3) {
+//                    l3.setVisibility(view.VISIBLE);
+//                    isAllFABVisible3 = true;
+//                } else {
+//                    l3.setVisibility(view.GONE);
+//                    isAllFABVisible3 = false;
+//                }
+//            }
+//        });
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
