@@ -44,6 +44,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.EnumSet;
+
+import io.radar.sdk.Radar;
+import io.radar.sdk.model.RadarRoutes;
+
 public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
@@ -58,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         // Initialize Firebase database
         db = FirebaseFirestore.getInstance();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
