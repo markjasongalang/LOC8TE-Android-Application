@@ -7,11 +7,10 @@
     android:background="@color/fourthColor"
     tools:context=".fragment.client.FragmentHome_MapView">
 
-    <com.google.android.gms.maps.MapView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.google.android.gms.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid3"
@@ -47,6 +46,8 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.3" />
+
+
 
     <!-- search professional FAB -->
     <FrameLayout
@@ -174,7 +175,6 @@
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
-
     </FrameLayout>
 
     <!-- home settings FAB -->

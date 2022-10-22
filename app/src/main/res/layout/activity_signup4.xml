@@ -73,46 +73,12 @@
                 android:textColor="@color/fifthColor"
                 android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/open_sans_light_italic"
-                android:text="search for your address"
-                android:textAlignment="textStart"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/edt_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/white_round_corners_10"
-                android:fontFamily="@font/open_sans_light"
-                android:hint="address"
-                android:inputType="text"
-                android:padding="10dp"
-                android:textColor="@color/primaryColor"
-                android:textColorHint="@color/primaryColor"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/open_sans_light_italic"
-                android:text="or"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_next"
+                android:id="@+id/btn_gps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="70dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginRight="70dp"
                 android:background="@drawable/secondary_color_round_corners2"
                 android:fontFamily="@font/glacial_indifference"
@@ -158,6 +124,16 @@
                 android:text="terms of service"
                 android:textAlignment="center"
                 android:textColor="@color/fifthColor"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/open_sans_light_italic"
+                android:text="by signing up, you are agreeing to our"
+                android:textAlignment="center"
+                android:textColor="@color/white"
                 android:textSize="15sp" />
 
             <androidx.appcompat.widget.AppCompatButton

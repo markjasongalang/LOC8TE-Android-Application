@@ -286,11 +286,15 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                double latitude = document.getDouble("lat");
-                                double longitude = document.getDouble("long");
-                                String id = document.getId();
-                                String name = document.getString("first");
-                                setMarkers(latitude, longitude, 0, name, id);
+                                try {
+                                    double latitude = document.getDouble("lat");
+                                    double longitude = document.getDouble("long");
+                                    String id = document.getId();
+                                    String name = document.getString("first");
+                                    setMarkers(latitude, longitude, 0, name, id);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         } else {
                             Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
