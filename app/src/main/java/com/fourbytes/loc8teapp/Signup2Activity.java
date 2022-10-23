@@ -2,7 +2,6 @@ package com.fourbytes.loc8teapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -74,13 +73,10 @@ public class Signup2Activity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
         initSpinnerFields();
-
-        // Put message for validation
         initTextValidation();
 
         btnAttach.setOnClickListener(new View.OnClickListener() {
@@ -91,21 +87,22 @@ public class Signup2Activity extends AppCompatActivity {
             }
         });
 
-
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Signup3Activity.class);
-
-                // TODO: Separate conditions for client and professional (for passing data)
 
                 String email = edtEmail.getText().toString();
                 String contactNumber = edtContactNumber.getText().toString();
                 String field = spFields.getSelectedItem().toString();
                 String specificJob = edtSpecificJob.getText().toString();
 
-//                if (email.isEmpty() || contactNumber.isEmpty() || field.isEmpty() || specificJob.isEmpty()) {
+//                if (email.isEmpty() || contactNumber.isEmpty()) {
+//                    Toast.makeText(Signup2Activity.this, "Please answer all fields.", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//                if ((accountType.equals("professional")) && (field.isEmpty() || specificJob.isEmpty())) {
 //                    Toast.makeText(Signup2Activity.this, "Please answer all fields.", Toast.LENGTH_SHORT).show();
 //                    return;
 //                }
@@ -127,9 +124,12 @@ public class Signup2Activity extends AppCompatActivity {
                 intent.putExtra("email", email);
                 intent.putExtra("contactNumber", contactNumber);
                 intent.putExtra("accountType", accountType);
-                intent.putExtra("field", field);
-                intent.putExtra("specificJob", specificJob);
-                intent.putExtra("idPicture", byteArray);
+                if (accountType.equals("professional")) {
+                    intent.putExtra("field", field);
+                    intent.putExtra("specificJob", specificJob);
+                    intent.putExtra("idPicture", byteArray);
+                }
+
                 startActivity(intent);
             }
         });
@@ -147,6 +147,7 @@ public class Signup2Activity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byteArray = stream.toByteArray();
@@ -160,8 +161,8 @@ public class Signup2Activity extends AppCompatActivity {
 
     private void initTextValidation() {
         String message = "** validation process can take <b>3 - 5 business days</b>." +
-                "you will receive an email once your account is verified. " +
-                "<b>you may not use the account while it is in the process of verification</b>.";
+                         "you will receive an email once your account is verified. " +
+                         "<b>you may not use the account while it is in the process of verification</b>.";
 
         tvValidation.setText(Html.fromHtml(message));
     }

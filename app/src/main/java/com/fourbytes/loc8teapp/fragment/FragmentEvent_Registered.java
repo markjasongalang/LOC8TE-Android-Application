@@ -1,10 +1,13 @@
 package com.fourbytes.loc8teapp.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,6 +15,18 @@ import androidx.fragment.app.FragmentManager;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_MyEvents_Professional;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_Professional;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 
 public class FragmentEvent_Registered extends Fragment {
@@ -21,6 +36,7 @@ public class FragmentEvent_Registered extends Fragment {
     private AppCompatButton btnBack;
     private AppCompatButton btnUnregister;
 
+    private FirebaseFirestore db;
     private FragmentManager fragmentManager;
     public FragmentEvent_Registered() {
         // Required empty public constructor
@@ -35,7 +51,9 @@ public class FragmentEvent_Registered extends Fragment {
         btnBack = view.findViewById(R.id.btn_back);
         btnUnregister = view.findViewById(R.id.btn_unregister);
 
+        db = FirebaseFirestore.getInstance();
         fragmentManager = getParentFragmentManager();
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,17 +64,10 @@ public class FragmentEvent_Registered extends Fragment {
         btnUnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
 
-                //TODO: Unregister function
-
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentEvent_MyEvents_Professional.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
             }
         });
-
         return view;
     }
 }
