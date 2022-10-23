@@ -181,7 +181,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     public void openSignupActivity(View view) {
         startActivity(new Intent(this, Signup1Activity.class));
     }
