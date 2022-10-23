@@ -3,8 +3,9 @@ package com.fourbytes.loc8teapp.fragment.client;
 import static com.fourbytes.loc8teapp.Constants.MAPVIEW_BUNDLE_KEY;
 
 import android.Manifest;
-import android.content.Intent;
+import android.app.AlertDialog;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -35,12 +36,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fourbytes.loc8teapp.DistanceMatrix;
 import com.fourbytes.loc8teapp.Edge;
-import com.fourbytes.loc8teapp.LoginActivity;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.UserDistance;
 import com.fourbytes.loc8teapp.Vertex;
 import com.fourbytes.loc8teapp.VertexInfo;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentProfile_Professional;
+import com.fourbytes.loc8teapp.fragment.professional.FragmentSetLocation_Professional;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -50,6 +51,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -58,7 +60,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -70,13 +71,9 @@ import com.google.maps.android.PolyUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import io.grpc.internal.JsonParser;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private View view;
@@ -94,6 +91,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private Button logoutButton;
     private AppCompatButton btnFind;
+    private AppCompatButton btn_ok;
 
     private Boolean isAllFABVisible;
     private Boolean isAllFABVisible2;
@@ -103,11 +101,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private MapView map_view;
 
-    private Location location;
-
     private GoogleMap map_instance;
     private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private DistanceMatrix matrix;
@@ -121,14 +116,18 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private double currentUserLong = 0;
 
     private int userCount = 0;
-    private int checkCount = 0;
-    public FragmentHome_MapView() {
-        // Required empty public constructor
+
+    private boolean isGPSEnabled = false;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+
+    private String path;
+    public FragmentHome_MapView(String path) {
+        this.path = path;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_home_map_view, container, false);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
 
@@ -164,10 +163,20 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         btnFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findNearestUser();
-                //getUserDistance();
-                Toast.makeText(view.getContext(), "Find is clicked", Toast.LENGTH_SHORT).show();
 
+                //check first if gps is okay
+                getLastLocation();
+                if(isGPSEnabled){
+                    if(path == null){
+                        parentFragmentManager.beginTransaction()
+                                .replace(R.id.fragment, FragmentSetLocation_Professional.class, null)
+                                .commit();
+                    }else{
+                        findNearestUser();
+                    }
+
+                    Toast.makeText(view.getContext(), "Find is clicked", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -292,7 +301,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                                                     routes,
                                                                     distance_parsed
                                                             ));
-                                                            System.out.println(userCount);
+                                                            System.out.println(userDistanceList.size());
                                                             if(userCount == userDistanceList.size()){
                                                                 try {
                                                                     drawPolyline();
@@ -349,6 +358,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
         for (int i=0;i<routes.length();i++){
             points = new ArrayList<>();
+            if(i == 0){
+                points.add(new LatLng(currentUserLat, currentUserLong));
+            }
             polylineOptions = new PolylineOptions();
             JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
 
@@ -398,13 +410,39 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onComplete(@NonNull Task<Location> task) {
                 if(task.isSuccessful()){
-                    Location location = task.getResult();
-                    GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                    setCurrentLocation(geopoint.getLatitude(), geopoint.getLongitude());
+
+                    try {
+                        Location location = task.getResult();
+                        GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                        setCurrentLocation(geopoint.getLatitude(), geopoint.getLongitude());
+                        isGPSEnabled = true;
+                    }catch (Exception e){
+                        showGPSPopUp();
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
         return;
+    }
+
+    public void showGPSPopUp(){
+        dialogBuilder = new AlertDialog.Builder(view.getContext());
+        final View popup_view = getLayoutInflater().inflate(R.layout.no_gps_popup, null);
+
+        btn_ok = popup_view.findViewById(R.id.btn_ok);
+        dialogBuilder.setView(popup_view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
     public void setCurrentLocation(double latitude, double longitude){
@@ -424,8 +462,13 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             public void onComplete(@NonNull Task<Location> task) {
                 if(task.isSuccessful()){
                     Location location = task.getResult();
-                    GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                    setLocationCamera(geopoint.getLatitude(), geopoint.getLongitude());
+                    try {
+                        GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                        setLocationCamera(geopoint.getLatitude(), geopoint.getLongitude());
+                    }catch (Exception e){
+                        setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LONGITUDE);
+                    }
+
                 }
             }
         });
@@ -451,6 +494,18 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        try {
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            view.getContext(), R.raw.style_json));
+
+            if (!success) {
+                Log.e("MAP", "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e("MAP", "Can't find style. Error: ", e);
+        }
+
         map_instance = googleMap;
         retrieveNodes();
         retrieveUsers();
@@ -460,6 +515,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        getLastLocation();
         getLastLocationCamera();
         googleMap.setMyLocationEnabled(true);
         googleMap.setOnMarkerClickListener(this);
@@ -647,7 +703,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
                 int count = 0;
                 if (e != null) {
-
                     return;
                 }
 

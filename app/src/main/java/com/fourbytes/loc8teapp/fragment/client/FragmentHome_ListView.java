@@ -97,7 +97,7 @@ public class FragmentHome_ListView extends Fragment {
                 if (buttonView.isChecked()) {
                     listViewCheckBox.setChecked(false);
                     parentFragmentManager.beginTransaction()
-                            .replace(R.id.fragment, FragmentHome_MapView.class, null)
+                            .replace(R.id.fragment, new FragmentHome_MapView(null), null)
                             .setReorderingAllowed(true)
                             .addToBackStack(null)
                             .commit();
