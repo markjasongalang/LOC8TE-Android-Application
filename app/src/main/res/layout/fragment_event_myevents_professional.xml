@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:fontFamily="@font/open_sans_light"
+            android:fontFamily="@font/open_sans_bold"
             android:text="@string/event_header"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -42,14 +42,84 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Events"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/header_myEvents"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_myEvents" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@color/fourthColor">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My Events"
+            android:textFontWeight="1000"
+            android:textColor="@color/primaryColor"
+            android:textStyle="bold"
+            android:fontFamily="@font/open_sans"
+            android:textSize="20dp"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:padding="10dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_registered"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Registered"
+                    android:fontFamily="@font/open_sans"
+                    android:textStyle="bold
+"                   android:textFontWeight="1000"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textSize="15dp"
+                    android:background="@color/primaryColor"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:padding="10dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_created"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Created"
+                    android:fontFamily="@font/open_sans"
+                    android:textStyle="bold
+"                   android:textFontWeight="1000"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textSize="15dp"
+                    android:background="@color/tertiaryColor"/>
+
+            </RelativeLayout>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="500dp">
+
+        </FrameLayout>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

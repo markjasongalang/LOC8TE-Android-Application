@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.reviewaboutclientrecycler;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,13 +6,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ReviewForProfessionalViewHolder extends RecyclerView.ViewHolder {
+import com.fourbytes.loc8teapp.R;
+
+public class ReviewAboutClientViewHolder extends RecyclerView.ViewHolder {
     public TextView tvFullName;
     public TextView tvProfession;
     public TextView tvReview;
     public TextView tvTimestamp;
 
-    public ReviewForProfessionalViewHolder(@NonNull View itemView) {
+    public ReviewAboutClientViewHolder(@NonNull View itemView) {
         super(itemView);
 
         tvFullName = itemView.findViewById(R.id.tv_full_name);

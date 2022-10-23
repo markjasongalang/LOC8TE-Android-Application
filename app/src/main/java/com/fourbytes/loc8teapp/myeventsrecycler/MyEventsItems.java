@@ -1,18 +1,21 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.myeventsrecycler;
 
-public class GeneralEventsItems {
+public class MyEventsItems {
 
     String event_title;
     String event_location;
+    String event_id;
     String hosted_by;
     String time;
     String date;
     String job_title;
     int image;
 
-    public GeneralEventsItems(String event_title, String event_location, String hosted_by, String time, String date, String job_title, int image) {
+    public MyEventsItems(String event_title, String event_location, String event_id,
+                         String hosted_by, String time, String date, String job_title, int image) {
         this.event_title = event_title;
         this.event_location = event_location;
+        this.event_id = event_id;
         this.hosted_by = hosted_by;
         this.time = time;
         this.date = date;
@@ -34,6 +37,14 @@ public class GeneralEventsItems {
 
     public void setEvent_location(String event_location) {
         this.event_location = event_location;
+    }
+
+    public String getEvent_id() {
+        return event_id;
+    }
+
+    public void setEvent_id(String event_id) {
+        this.event_id = event_id;
     }
 
     public String getHosted_by() {
@@ -75,5 +86,4 @@ public class GeneralEventsItems {
     public void setImage(int image) {
         this.image = image;
     }
-
 }

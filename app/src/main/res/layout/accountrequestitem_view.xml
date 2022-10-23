@@ -10,6 +10,17 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp" />
 
+    <Button
+        android:id="@+id/check_prof"
+        android:layout_width="65dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/tertiary_color_round_corners_button"
+        android:fontFamily="@font/glacial_indifference"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
     <TextView
         android:id="@+id/prof1"
         android:layout_width="match_parent"
@@ -22,6 +33,8 @@
         android:textStyle="bold"
 
         />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"

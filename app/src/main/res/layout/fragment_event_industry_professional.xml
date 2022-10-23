@@ -2,7 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/header_event"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/fourthColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_industry"
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:fontFamily="@font/open_sans_light"
+            android:fontFamily="@font/open_sans_bold"
             android:text="@string/event_header"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -42,14 +43,41 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Industry Event"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_industry"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_industry" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:paddingHorizontal="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Industry Events"
+            android:textSize="20dp"
+            android:textColor="@color/primaryColor"
+            android:paddingTop="15dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/open_sans" />
+
+        <TextView
+            android:id="@+id/user_industry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="IT Industry"
+            android:padding="15dp"
+            android:textSize="20dp"
+            android:fontFamily="@font/open_sans"
+            android:textStyle="bold"
+            android:textColor="@color/secondaryColor"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/industry_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

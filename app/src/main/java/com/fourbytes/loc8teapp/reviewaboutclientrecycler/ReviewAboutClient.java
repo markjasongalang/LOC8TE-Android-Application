@@ -1,6 +1,6 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.reviewaboutclientrecycler;
 
-public class ReviewForProfessional {
+public class ReviewAboutClient {
     private String firstName;
     private String middleName;
     private String lastName;
@@ -9,7 +9,7 @@ public class ReviewForProfessional {
     private String timestamp;
     private double rating;
 
-    public ReviewForProfessional(String firstName, String middleName, String lastName, String profession, String review, String timestamp, double rating) {
+    public ReviewAboutClient(String firstName, String middleName, String lastName, String profession, String review, String timestamp, double rating) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;

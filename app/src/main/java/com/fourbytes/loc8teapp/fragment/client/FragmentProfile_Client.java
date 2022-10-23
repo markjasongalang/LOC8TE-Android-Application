@@ -12,12 +12,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fourbytes.loc8teapp.R;
-import com.fourbytes.loc8teapp.ReviewForProfessional;
+import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
 import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ import java.util.List;
 
 public class FragmentProfile_Client extends Fragment implements AdapterView.OnItemSelectedListener {
     private View view;
+
+    private FragmentManager parentFragmentManager;
 
     private RecyclerView rvReviewForProfessional;
 
@@ -39,6 +43,8 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
+    private CardView cvReviews;
+
     public FragmentProfile_Client() {}
 
     @Override
@@ -48,6 +54,10 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
         // Get views from layout
         rvReviewForProfessional = view.findViewById(R.id.rv_review_for_professional);
         btnAddReview = view.findViewById(R.id.btn_add_review);
+        cvReviews = view.findViewById(R.id.cv_reviews);
+
+        // Parent fragment manager
+        parentFragmentManager = getParentFragmentManager();
 
         rvReviewForProfessional.setLayoutManager(new LinearLayoutManager(view.getContext()));
         List<ReviewForProfessional> reviewForProfessionals = new ArrayList<>();
@@ -124,6 +134,17 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
                         dialog.dismiss();
                     }
                 });
+            }
+        });
+
+        cvReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, Fragment_Reviews_About_Client.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

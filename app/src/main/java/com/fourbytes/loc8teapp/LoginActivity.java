@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,12 +26,22 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
+
     private boolean LocationPermission = false;
+
     private Button btnLogin;
+
+    private TextView tvDontHaveAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +53,24 @@ public class LoginActivity extends AppCompatActivity {
 
         // Find views from the layout
         btnLogin = findViewById(R.id.btn_login);
+        tvDontHaveAccount = findViewById(R.id.tv_dont_have_account);
+
         getLocationPermission();
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
+
                 intent.putExtra("accountType", "client");
+
+                startActivity(intent);
+            }
+        });
+
+        tvDontHaveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, AdminActivity2.class);
                 startActivity(intent);
             }
         });

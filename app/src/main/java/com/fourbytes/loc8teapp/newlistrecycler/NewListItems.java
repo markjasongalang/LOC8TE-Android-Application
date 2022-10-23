@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp;
+package com.fourbytes.loc8teapp.newlistrecycler;
 
 public class NewListItems {
     String newlist_name;
