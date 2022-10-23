@@ -3,18 +3,15 @@ package com.fourbytes.loc8teapp.fragment.professional;
 import static com.fourbytes.loc8teapp.Constants.MAPVIEW_BUNDLE_KEY;
 
 import android.Manifest;
-import android.app.WallpaperColors;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -36,9 +33,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.fourbytes.loc8teapp.Edge;
 import com.fourbytes.loc8teapp.R;
-import com.fourbytes.loc8teapp.VertexInfo;
+import com.fourbytes.loc8teapp.fragment.client.FragmentHome_MapView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -74,8 +70,11 @@ import java.util.List;
 public class FragmentSetLocation_Professional extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private View view;
     private MapView map_view;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
     private AppCompatButton btn_set_location;
     private AppCompatButton btn_back;
+    private AppCompatButton btn_ok;
 
     private FragmentManager parentFragmentManager;
 
@@ -86,26 +85,47 @@ public class FragmentSetLocation_Professional extends Fragment implements OnMapR
     private double currentUserLat;
     private double currentUserLong;
 
+    private double clickedLat;
+    private double clickedLong;
+
     private Polyline polyline;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_set_location_professional, container, false);
+        final View popup_view = getLayoutInflater().inflate(R.layout.set_location_popup, null);
+
+        dialogBuilder = new AlertDialog.Builder(view.getContext());
         map_view = view.findViewById(R.id.map_view);
         btn_set_location = view.findViewById(R.id.btn_set_location);
         btn_back = view.findViewById(R.id.btn_back);
+        btn_ok = popup_view.findViewById(R.id.btn_ok);
 
         btn_set_location.setEnabled(false);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
 
         parentFragmentManager = getParentFragmentManager();
+        getLastLocation();
         initGoogleMap(savedInstanceState);
+
+        dialogBuilder.setView(popup_view);
+        dialog = dialogBuilder.create();
+        dialog.show();
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                parentFragmentManager.popBackStack();
+                parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, new FragmentHome_MapView("path"), null)
+                        .commit();
+            }
+        });
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
 
