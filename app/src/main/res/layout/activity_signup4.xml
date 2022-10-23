@@ -127,11 +127,12 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tv_confirmation_note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/open_sans_light_italic"
-                android:text="by signing up, you are agreeing to our"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/open_sans_medium"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="15sp" />

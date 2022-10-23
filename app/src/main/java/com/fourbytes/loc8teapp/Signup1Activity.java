@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,11 +74,10 @@ public class Signup1Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // TODO: Apply a Hash Function on the password
                 // TODO: Check username if it already exists in the database
 
                 String username = edtUsername.getText().toString();
-                String password = edtPassword.getText().toString();
+                String password = sha1(edtPassword.getText().toString());
                 String firstName = edtFirstName.getText().toString();
                 String middleName = edtMiddleName.getText().toString();
                 String lastName = edtLastName.getText().toString();
@@ -99,6 +100,25 @@ public class Signup1Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private String sha1(String input) {
+        MessageDigest mDigest = null;
+
+        try {
+            mDigest = MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        byte[] result = mDigest.digest(input.getBytes());
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = 0; i < result.length; i++) {
+            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return sb.toString();
     }
 
     private String getDateToday() {
