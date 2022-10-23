@@ -122,6 +122,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private AlertDialog dialog;
 
     private String path;
+    private String parse;
     public FragmentHome_MapView(String path) {
         this.path = path;
     }
@@ -163,20 +164,22 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         btnFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //check first if gps is okay
                 getLastLocation();
                 if(isGPSEnabled){
-                    if(path == null){
-                        parentFragmentManager.beginTransaction()
-                                .replace(R.id.fragment, FragmentSetLocation_Professional.class, null)
-                                .commit();
-                    }else{
-                        findNearestUser();
-                    }
 
-                    Toast.makeText(view.getContext(), "Find is clicked", Toast.LENGTH_SHORT).show();
+                    //showGPSPopUp();
+                    //getDistanceMatrixVertex();
+//                    parentFragmentManager.beginTransaction()
+//                            .replace(R.id.fragment, FragmentSetLocation_Professional.class, null)
+//                            .commit();
+                    findNearestUser();
+
+                }else{
+                    showGPSPopUp();
                 }
+
+                Toast.makeText(view.getContext(), "Find is clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -247,6 +250,90 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
         return view;
     }
+
+//    public void getDistanceMatrixVertex() {
+//        parse = "";
+//        String TAG = "MAP Markers";
+//        db = FirebaseFirestore.getInstance();
+//        db.collection("vertex").addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+//                int count = 0;
+//                if (e != null) {
+//
+//                    return;
+//                }
+//                for (QueryDocumentSnapshot document : value) {
+//                    if (document != null) {
+//                        double latitude = document.getDouble("lat");
+//                        double longitude = document.getDouble("long");
+//                        count++;
+//                        if (count != 25){
+//                            parse +=  String.valueOf(latitude) + "," + String.valueOf(longitude) + "|";
+//                        }else{
+//                            parse +=  String.valueOf(latitude) + "," + String.valueOf(longitude) + "|";
+//                            getDistanceMatrix(parse);
+//                            count = 0;
+//                            parse = "";
+//                        }
+//
+//                    }
+//                }
+//
+//                if(parse != ""){
+//                    getDistanceMatrix(parse);
+//                }
+//
+//            }
+//        });
+//
+//    }
+
+//    public void getDistanceMatrix(String destination){
+//        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+//        final String API_KEY = getString(R.string.google_maps_api_key);
+//        System.out.println("DESTINATION \n" + destination);
+//        String origin = "14.605325,120.987651";
+//        String url = Uri.parse("https://maps.googleapis.com/maps/api/distancematrix/json")
+//                .buildUpon()
+//                .appendQueryParameter("destinations", destination)
+//                .appendQueryParameter("origins", origin)
+//                .appendQueryParameter("mode", "driving")
+//                .appendQueryParameter("key", API_KEY)
+//                .toString();
+//
+//
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+//                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+//
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        try{
+//                            String status = response.getString("status");
+//
+//                            System.out.println(status);
+//                            System.out.println(response);
+//                            if(status.equals("OK")){
+//
+//                            }
+//
+//                        }catch (JSONException e){
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        // TODO: Handle error
+//
+//                    }
+//                });
+//
+//        requestQueue.add(jsonObjectRequest);
+//
+//        return;
+//    }
 
     public void findNearestUser(){
 
