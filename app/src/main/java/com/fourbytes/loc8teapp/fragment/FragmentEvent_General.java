@@ -36,9 +36,7 @@ public class FragmentEvent_General extends Fragment {
     private final String event_general = "general";
     private FirebaseFirestore db;
     List <GeneralEventsItems> items = new ArrayList<GeneralEventsItems>();
-    public FragmentEvent_General() {
-        // Required empty public constructor
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -19,11 +19,9 @@ public class FragmentEvent_MyEvents_Client extends Fragment {
     private View view;
 
     private FragmentManager fragmentManager;
-    private FragmentManager fragmentManager2;
 
     private AppCompatButton btnBack;
     private AppCompatButton btnRegistered;
-    private AppCompatButton btnCreated;
 
     public FragmentEvent_MyEvents_Client() {
         // Required empty public constructor
@@ -32,12 +30,12 @@ public class FragmentEvent_MyEvents_Client extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_event_myevents_professional, container, false);
+        view = inflater.inflate(R.layout.fragment_event_myevents_client, container, false);
 
         fragmentManager = getParentFragmentManager();
         btnBack = view.findViewById(R.id.btn_back);
         btnRegistered = view.findViewById(R.id.btn_registered);
-        btnCreated = view.findViewById(R.id.btn_created);
+
 
         //default fragment
         replaceFragment(new FragmentEvent_RegisteredEvents());
@@ -48,17 +46,6 @@ public class FragmentEvent_MyEvents_Client extends Fragment {
             public void onClick(View view) {
                 replaceFragment(new FragmentEvent_RegisteredEvents());
                 btnRegistered.setBackgroundColor(getResources().getColor(R.color.primaryColor));
-                btnCreated.setBackgroundColor(getResources().getColor(R.color.tertiaryColor));
-            }
-        });
-
-        btnCreated.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onClick(View view) {
-                replaceFragment(new FragmentEvent_CreatedEvents());
-                btnRegistered.setBackgroundColor(getResources().getColor(R.color.tertiaryColor));
-                btnCreated.setBackgroundColor(getResources().getColor(R.color.primaryColor));
             }
         });
 
@@ -75,9 +62,9 @@ public class FragmentEvent_MyEvents_Client extends Fragment {
 
     public void replaceFragment(Fragment fragment){
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
-        fragmentTransaction.commit();
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_layout,fragment)
+                .commit();
 
     }
 }
