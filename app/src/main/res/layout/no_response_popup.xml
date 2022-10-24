@@ -22,7 +22,7 @@
         android:padding="10dp"
         android:lines="2"
         android:gravity="center"
-        android:text="@string/set_path_text"/>
+        android:text="@string/no_internet_popup_text"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_ok"

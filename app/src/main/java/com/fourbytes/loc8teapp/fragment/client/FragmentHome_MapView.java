@@ -40,8 +40,8 @@ import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.UserDistance;
 import com.fourbytes.loc8teapp.Vertex;
 import com.fourbytes.loc8teapp.VertexInfo;
+import com.fourbytes.loc8teapp.fragment.MarkerTag;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentProfile_Professional;
-import com.fourbytes.loc8teapp.fragment.professional.FragmentSetLocation_Professional;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -92,6 +92,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private Button logoutButton;
     private AppCompatButton btnFind;
     private AppCompatButton btn_ok;
+    private AppCompatButton btn_ok2;
 
     private Boolean isAllFABVisible;
     private Boolean isAllFABVisible2;
@@ -116,6 +117,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private double currentUserLong = 0;
 
     private int userCount = 0;
+    private int noResponseCount = 0;
 
     private boolean isGPSEnabled = false;
     private AlertDialog.Builder dialogBuilder;
@@ -167,7 +169,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 //check first if gps is okay
                 getLastLocation();
                 if(isGPSEnabled){
-
+                    System.out.println("GPS is activated");
                     //showGPSPopUp();
                     //getDistanceMatrixVertex();
 //                    parentFragmentManager.beginTransaction()
@@ -336,7 +338,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 //    }
 
     public void findNearestUser(){
-
+        noResponseCount = 0;
         userDistanceList = new ArrayList<>();
         getLastLocation();
 
@@ -353,7 +355,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                     double latitude = document.getDouble("lat");
                                     double longitude = document.getDouble("long");
                                     String findId = document.getId();
-
                                     RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
                                     final String API_KEY = getString(R.string.google_maps_api_key);
 
@@ -383,6 +384,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                                             JSONObject distance = legs.getJSONObject(0).getJSONObject("distance");
                                                             double distance_parsed = Double.parseDouble(String.valueOf(distance.get("value")));
 
+                                                            System.out.println(routes);
                                                             Log.d("DISTANCE", "ADDED" + routes);
                                                             userDistanceList.add(new UserDistance(
                                                                     routes,
@@ -407,6 +409,14 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                                 @Override
                                                 public void onErrorResponse(VolleyError error) {
                                                     // TODO: Handle error
+                                                    if(noResponseCount == 0){
+
+                                                        showNoResponsePopUp();
+
+                                                    }
+
+                                                    noResponseCount++;
+                                                    error.printStackTrace();
 
                                                 }
                                             });
@@ -418,8 +428,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                 }
 
                             }
-
-                            System.out.println(userDistanceList.size());
 
                         } else {
                             Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
@@ -516,14 +524,32 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     public void showGPSPopUp(){
         dialogBuilder = new AlertDialog.Builder(view.getContext());
-        final View popup_view = getLayoutInflater().inflate(R.layout.no_gps_popup, null);
+        final View noGPS_view = getLayoutInflater().inflate(R.layout.no_gps_popup, null);
 
-        btn_ok = popup_view.findViewById(R.id.btn_ok);
-        dialogBuilder.setView(popup_view);
+        btn_ok = noGPS_view.findViewById(R.id.btn_ok);
+        dialogBuilder.setView(noGPS_view);
         dialog = dialogBuilder.create();
         dialog.show();
 
         btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    public void showNoResponsePopUp(){
+        dialogBuilder = new AlertDialog.Builder(view.getContext());
+        final View noResponse_view = getLayoutInflater().inflate(R.layout.no_response_popup, null);
+
+        btn_ok2 = noResponse_view.findViewById(R.id.btn_ok);
+        dialogBuilder.setView(noResponse_view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btn_ok2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
@@ -835,7 +861,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 //    }
 
     public void setMarkers(double latitude, double longitude, double filter, String name, String id) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.juswa_hearts);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.icon_pro_marker);
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 100, 100, false);
         map_instance.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))

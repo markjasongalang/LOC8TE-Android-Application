@@ -1,10 +1,10 @@
-package com.fourbytes.loc8teapp.fragment.client;
+package com.fourbytes.loc8teapp.fragment;
 
 public class MarkerTag {
 
     private String id;
 
-    MarkerTag(String id){
+    public MarkerTag(String id){
         this.id = id;
     }
 
