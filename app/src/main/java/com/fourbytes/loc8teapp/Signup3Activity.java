@@ -29,6 +29,8 @@ public class Signup3Activity extends AppCompatActivity {
 
     private byte[] curByteArray;
 
+    private Uri imageUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +85,7 @@ public class Signup3Activity extends AppCompatActivity {
 
                 // New data to be passed
                 intent.putExtra("profilePicture", curByteArray);
+                intent.putExtra("imageUri", imageUri.toString());
 
                 // Problem: Not proceeding to SignUpActivity4 :(
                 startActivity(intent);
@@ -97,11 +100,11 @@ public class Signup3Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
+            imageUri = data.getData();
 
             Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -97,6 +97,8 @@ public class Signup2Activity extends AppCompatActivity {
                 String field = spFields.getSelectedItem().toString();
                 String specificJob = edtSpecificJob.getText().toString();
 
+                // TODO: Check database if email already exists
+
 //                if (email.isEmpty() || contactNumber.isEmpty()) {
 //                    Toast.makeText(Signup2Activity.this, "Please answer all fields.", Toast.LENGTH_SHORT).show();
 //                    return;

@@ -107,7 +107,10 @@
         <entry key="app/src/main/res/layout/fragment_profile_pro_rate.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_rate.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_reviews_about__professional.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_reviews_about_client.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_reviews_about_pro.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_reviews_about_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_review_about_client.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_review_for_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/professional_fragment_profile.xml" value="0.25" />

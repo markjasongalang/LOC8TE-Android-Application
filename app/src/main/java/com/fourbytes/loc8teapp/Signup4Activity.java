@@ -2,10 +2,15 @@ package com.fourbytes.loc8teapp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +27,19 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Signup4Activity extends AppCompatActivity {
     private FirebaseFirestore db;
+
+    private StorageReference storageReference;
 
     private AppCompatButton btnGps;
     private AppCompatButton btnSignup;
@@ -110,8 +122,6 @@ public class Signup4Activity extends AppCompatActivity {
                 data.put("account_type", accountType);
                 data.put("verified", false);
 
-                // TODO: Save pictures in database
-
                 if (accountType.equals("professional")) {
                     data.put("field", field);
                     data.put("specific_job", specificJob);
@@ -121,22 +131,37 @@ public class Signup4Activity extends AppCompatActivity {
                 data.put("longitude", currentUserLong);
 
                 String type = (accountType.equals("professional") ? "professionals" : "clients");
-                db.collection(type).document(username)
-                        .set(data)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(Signup4Activity.this, "Successfully signed up!", Toast.LENGTH_SHORT).show();
-                                Log.d("FSUCCESS", "DocumentSnapshot successfully written!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(Signup4Activity.this, "An error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
-                                Log.w("FERROR", "Error writing document", e);
-                            }
-                        });
+//                db.collection(type).document(username)
+//                        .set(data)
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//                                Toast.makeText(Signup4Activity.this, "Successfully signed up!", Toast.LENGTH_SHORT).show();
+//                                Log.d("FSUCCESS", "DocumentSnapshot successfully written!");
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Toast.makeText(Signup4Activity.this, "An error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
+//                                Log.w("FERROR", "Error writing document", e);
+//                            }
+//                        });
+
+                // todo: UPLOAD PICTURES IN DATABASE
+                storageReference = FirebaseStorage.getInstance().getReference("images/" + username);
+                UploadTask uploadTask = storageReference.putBytes(profilePicByteArray);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(Signup4Activity.this, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(Signup4Activity.this, "Success", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
