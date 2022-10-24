@@ -94,7 +94,7 @@ public class FragmentSetLocation_Professional extends Fragment implements OnMapR
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_set_location_professional, container, false);
-        final View popup_view = getLayoutInflater().inflate(R.layout.set_location_popup, null);
+        final View popup_view = getLayoutInflater().inflate(R.layout.no_response_popup, null);
 
         dialogBuilder = new AlertDialog.Builder(view.getContext());
         map_view = view.findViewById(R.id.map_view);
