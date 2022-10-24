@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.fragment.FragmentEvent_General;
 
 public class FragmentEvent_Professional extends Fragment{
     private View view;
@@ -35,7 +36,7 @@ public class FragmentEvent_Professional extends Fragment{
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentEvent_General_Professional.class, null)
+                        .replace(R.id.fragment, FragmentEvent_General.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
