@@ -14,13 +14,24 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_find"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:background="@drawable/secondary_color_light_button_find"
+        android:layout_margin="10dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_refresh"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/btn_find"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:background="@drawable/secondary_color_light_button_refresh"
         android:layout_margin="10dp"/>
 
     <androidx.constraintlayout.widget.Guideline

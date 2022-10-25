@@ -5,4 +5,5 @@ public class MapServiceInfo {
     private double currentLat;
     private double currentLong;
     private String currentPathNode;
+
 }
