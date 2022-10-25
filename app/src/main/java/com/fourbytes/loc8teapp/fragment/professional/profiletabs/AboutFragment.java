@@ -25,8 +25,6 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile_pro_about, container, false);
 
-        parentFragmentManager = getParentFragmentManager();
-
         // Get views from layout
         cvReviews = view.findViewById(R.id.cv_reviews);
 
@@ -35,7 +33,11 @@ public class AboutFragment extends Fragment {
         cvReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+//                parentFragmentManager.beginTransaction()
+//                        .setReorderingAllowed(true)
+//                        .replace(R.id.fragment, Fragment_Reviews_About_Pro.class, null)
+//                        .addToBackStack(null)
+//                        .commit();
             }
         });
 
