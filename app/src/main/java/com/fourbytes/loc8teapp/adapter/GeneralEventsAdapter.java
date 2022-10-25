@@ -27,10 +27,12 @@ public class GeneralEventsAdapter extends RecyclerView.Adapter<GeneralEventsView
     private List<GeneralEventsItems> general_items;
     private FragmentManager fragmentManager;
 
+
     public GeneralEventsAdapter(Context context, List<GeneralEventsItems> general_items, FragmentManager fragmentManager) {
         this.context = context;
         this.general_items = general_items;
         this.fragmentManager = fragmentManager;
+
     }
 
     @NonNull

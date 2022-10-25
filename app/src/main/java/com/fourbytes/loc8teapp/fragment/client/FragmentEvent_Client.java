@@ -17,20 +17,17 @@ import com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_MyEvents_Prof
 public class FragmentEvent_Client extends Fragment{
     private View view;
 
-    private CardView card_general, card_industry, card_myEvents;
+    private CardView card_general, card_myEvents;
 
     public FragmentManager fragmentManager;
 
-    public FragmentEvent_Client() {}
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_event_professional, container, false);
+        view = inflater.inflate(R.layout.fragment_event_client, container, false);
 
         fragmentManager = getParentFragmentManager();
 
         card_general = view.findViewById(R.id.general_events_view);
-        card_industry = view.findViewById(R.id.industry_events_view);
         card_myEvents = view.findViewById(R.id.my_events_view);
 
         card_general.setOnClickListener(new View.OnClickListener() {
@@ -44,22 +41,12 @@ public class FragmentEvent_Client extends Fragment{
             }
         });
 
-        card_industry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentEvent_Industry_Professional.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
 
         card_myEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentEvent_MyEvents_Professional.class, null)
+                        .replace(R.id.fragment, FragmentEvent_MyEvents_Client.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();

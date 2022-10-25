@@ -86,36 +86,7 @@ public class DistanceMatrix {
         return;
     }
 
-    public void setUserEdgeValue(String origin, String destination, double distance){
-        ArrayList<VertexInfo> edge;
-        for(int i = 0; i < userDistance.size(); i ++){
-            if(userDistance.get(i).getId().equals(destination)){
-                edge = new ArrayList<>();
-                for(VertexInfo vertexClone : userDistance.get(i).getEdge()) {
-                    edge.add(vertexClone.clone(vertexClone.getId(), vertexClone.getLongitude(), vertexClone.getLatitude()));
-                }
 
-                for(int j = 0; j < userDistance.get(i).getEdge().size(); j++){
-                    if (userDistance.get(i).getEdge().get(j).getId().equals(origin)){
-                        userDistance.get(i).getEdge().get(j).setDistance(distance);
-                    }
-                }
-
-            }
-        }
-    }
-
-    public boolean checkEdge(String checkId, String findId){
-
-        for(int i = 0; i < V.size(); i++){
-
-            if(V.get(i).getId().equals(checkId)){
-
-            }
-        }
-
-        return false;
-    }
 
     public void printUserDistance(){
         for(int i = 0; i < userDistance.size(); i++){

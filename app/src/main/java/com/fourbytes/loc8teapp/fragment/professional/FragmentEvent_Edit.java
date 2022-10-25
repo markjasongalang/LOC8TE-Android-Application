@@ -19,6 +19,7 @@ public class FragmentEvent_Edit extends Fragment {
 
     private AppCompatButton btnBack;
     private AppCompatButton btnSave;
+    private AppCompatButton btnSetLocation;
     private TextView btnCancel;
 
     private FragmentManager fragmentManager;
@@ -35,7 +36,7 @@ public class FragmentEvent_Edit extends Fragment {
         btnBack = view.findViewById(R.id.btn_back);
         btnSave = view.findViewById(R.id.btn_save);
         btnCancel = view.findViewById(R.id.btn_cancel);
-
+        btnSetLocation = view.findViewById(R.id.btn_set_location);
         fragmentManager = getParentFragmentManager();
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +64,17 @@ public class FragmentEvent_Edit extends Fragment {
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment, FragmentEvent_MyEvents_Professional.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        btnSetLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment, FragmentEvent_SetLocation.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();

@@ -4,6 +4,7 @@ import static com.fourbytes.loc8teapp.Constants.MAPVIEW_BUNDLE_KEY;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -36,8 +37,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fourbytes.loc8teapp.DistanceMatrix;
 import com.fourbytes.loc8teapp.Edge;
+import com.fourbytes.loc8teapp.LoginActivity;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.UserDistance;
+import com.fourbytes.loc8teapp.UserInfo;
 import com.fourbytes.loc8teapp.Vertex;
 import com.fourbytes.loc8teapp.VertexInfo;
 import com.fourbytes.loc8teapp.fragment.MarkerTag;
@@ -54,6 +57,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,6 +70,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 import com.google.maps.android.PolyUtil;
 
 import org.json.JSONArray;
@@ -75,7 +80,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
     private View view;
     private View l;
     private View l2;
@@ -93,6 +98,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private AppCompatButton btnFind;
     private AppCompatButton btn_ok;
     private AppCompatButton btn_ok2;
+    private AppCompatButton btn_ok3;
+    private AppCompatButton btn_refresh;
 
     private Boolean isAllFABVisible;
     private Boolean isAllFABVisible2;
@@ -108,16 +115,17 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private DistanceMatrix matrix;
 
-    private ArrayList<UserDistance> userDistanceList;
+
 
     private final double CAMERA_DEFAULT_LATITUDE = 14.603760;
     private final double CAMERA_DEFAULT_LONGITUDE = 120.989200;
+    private final double BOUNDING_BOX_LAT1 = 14.600165;
+    private final double BOUNDING_BOX_LONG1 = 120.984364;
+    private final double BOUNDING_BOX_LAT2 = 14.607744;
+    private final double BOUNDING_BOX_LONG2 = 120.993569;
 
     private double currentUserLat = 0;
     private double currentUserLong = 0;
-
-    private int userCount = 0;
-    private int noResponseCount = 0;
 
     private boolean isGPSEnabled = false;
     private AlertDialog.Builder dialogBuilder;
@@ -125,6 +133,10 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private String path;
     private String parse;
+    private boolean isVertexInit = false;
+
+    private Marker currentLocationMarker;
+    private Polyline polyline;
     public FragmentHome_MapView(String path) {
         this.path = path;
     }
@@ -145,6 +157,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 //        l3 = view.findViewById(R.id.search_prof_field);
         logoutButton = view.findViewById(R.id.logout);
         btnFind = view.findViewById(R.id.btn_find);
+        btn_refresh = view.findViewById(R.id.btn_refresh);
         map_view = view.findViewById(R.id.map_view);
 
         // Get parent fragment manager (from host activity)
@@ -166,15 +179,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         btnFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //check first if gps is okay
                 getLastLocation();
                 if(isGPSEnabled){
                     System.out.println("GPS is activated");
-                    //showGPSPopUp();
-                    //getDistanceMatrixVertex();
-//                    parentFragmentManager.beginTransaction()
-//                            .replace(R.id.fragment, FragmentSetLocation_Professional.class, null)
-//                            .commit();
                     findNearestUser();
 
                 }else{
@@ -182,6 +189,13 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 }
 
                 Toast.makeText(view.getContext(), "Find is clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btn_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refreshMap();
             }
         });
 
@@ -227,24 +241,10 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             }
         });
 
-//        search_prof_FAB.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!isAllFABVisible3) {
-//                    l3.setVisibility(view.VISIBLE);
-//                    isAllFABVisible3 = true;
-//                } else {
-//                    l3.setVisibility(view.GONE);
-//                    isAllFABVisible3 = false;
-//                }
-//            }
-//        });
-
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(getActivity(), LoginActivity.class));
-                matrix.printUserDistance();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
 
@@ -253,96 +253,14 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         return view;
     }
 
-//    public void getDistanceMatrixVertex() {
-//        parse = "";
-//        String TAG = "MAP Markers";
-//        db = FirebaseFirestore.getInstance();
-//        db.collection("vertex").addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-//                int count = 0;
-//                if (e != null) {
-//
-//                    return;
-//                }
-//                for (QueryDocumentSnapshot document : value) {
-//                    if (document != null) {
-//                        double latitude = document.getDouble("lat");
-//                        double longitude = document.getDouble("long");
-//                        count++;
-//                        if (count != 25){
-//                            parse +=  String.valueOf(latitude) + "," + String.valueOf(longitude) + "|";
-//                        }else{
-//                            parse +=  String.valueOf(latitude) + "," + String.valueOf(longitude) + "|";
-//                            getDistanceMatrix(parse);
-//                            count = 0;
-//                            parse = "";
-//                        }
-//
-//                    }
-//                }
-//
-//                if(parse != ""){
-//                    getDistanceMatrix(parse);
-//                }
-//
-//            }
-//        });
-//
-//    }
-
-//    public void getDistanceMatrix(String destination){
-//        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-//        final String API_KEY = getString(R.string.google_maps_api_key);
-//        System.out.println("DESTINATION \n" + destination);
-//        String origin = "14.605325,120.987651";
-//        String url = Uri.parse("https://maps.googleapis.com/maps/api/distancematrix/json")
-//                .buildUpon()
-//                .appendQueryParameter("destinations", destination)
-//                .appendQueryParameter("origins", origin)
-//                .appendQueryParameter("mode", "driving")
-//                .appendQueryParameter("key", API_KEY)
-//                .toString();
-//
-//
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-//                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-//
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        try{
-//                            String status = response.getString("status");
-//
-//                            System.out.println(status);
-//                            System.out.println(response);
-//                            if(status.equals("OK")){
-//
-//                            }
-//
-//                        }catch (JSONException e){
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // TODO: Handle error
-//
-//                    }
-//                });
-//
-//        requestQueue.add(jsonObjectRequest);
-//
-//        return;
-//    }
-
     public void findNearestUser(){
-        noResponseCount = 0;
-        userDistanceList = new ArrayList<>();
         getLastLocation();
-
-        //retrieve users
+        //Check if current location is supported
+        if(!isLocationSupported()){
+            return;
+        }
+        ArrayList<UserInfo> Users = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
         db.collection("users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -351,102 +269,121 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                try{
+                                try {
                                     double latitude = document.getDouble("lat");
                                     double longitude = document.getDouble("long");
-                                    String findId = document.getId();
-                                    RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-                                    final String API_KEY = getString(R.string.google_maps_api_key);
+                                    String userId = document.getId();
 
-                                    String origin = currentUserLat + ", " + currentUserLong;
-                                    String destination = latitude + ", " + longitude;
-                                    String url = Uri.parse("https://maps.googleapis.com/maps/api/directions/json")
-                                            .buildUpon()
-                                            .appendQueryParameter("destination", destination)
-                                            .appendQueryParameter("origin", origin)
-                                            .appendQueryParameter("mode", "driving")
-                                            .appendQueryParameter("key", API_KEY)
-                                            .toString();
-
-
-                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                                            (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                                                @Override
-                                                public void onResponse(JSONObject response) {
-                                                    try{
-                                                        String status = response.getString("status");
-
-                                                        if(status.equals("OK")){
-
-                                                            JSONArray routes = response.getJSONArray("routes");
-                                                            JSONArray legs = routes.getJSONObject(0).getJSONArray("legs");
-                                                            JSONObject distance = legs.getJSONObject(0).getJSONObject("distance");
-                                                            double distance_parsed = Double.parseDouble(String.valueOf(distance.get("value")));
-
-                                                            System.out.println(routes);
-                                                            Log.d("DISTANCE", "ADDED" + routes);
-                                                            userDistanceList.add(new UserDistance(
-                                                                    routes,
-                                                                    distance_parsed
-                                                            ));
-                                                            System.out.println(userDistanceList.size());
-                                                            if(userCount == userDistanceList.size()){
-                                                                try {
-                                                                    drawPolyline();
-                                                                } catch (JSONException e) {
-                                                                    e.printStackTrace();
-                                                                }
-                                                            }
-                                                        }
-
-                                                    }catch (JSONException e){
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            }, new Response.ErrorListener() {
-
-                                                @Override
-                                                public void onErrorResponse(VolleyError error) {
-                                                    // TODO: Handle error
-                                                    if(noResponseCount == 0){
-
-                                                        showNoResponsePopUp();
-
-                                                    }
-
-                                                    noResponseCount++;
-                                                    error.printStackTrace();
-
-                                                }
-                                            });
-
-                                    requestQueue.add(jsonObjectRequest);
-
-                                }catch (Exception e){
-                                    Log.d("NODES",  document.getId());
+                                    Users.add(new UserInfo(
+                                            userId,
+                                            longitude,
+                                            latitude
+                                    ));
+                                } catch (Exception e) {
+                                    Log.d("USER", document.getId() + " is Invalid User Format");
+                                    e.printStackTrace();
                                 }
-
                             }
-
+                            getDistanceMatrix(Users);
                         } else {
+                            showNoResponsePopUp();
                             Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 });
+    }
+
+    public void getDistanceMatrix(ArrayList<UserInfo> Users){
+        String origin = "";
+        String destination = "";
+        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+        final String API_KEY = getString(R.string.google_maps_api_key);
+
+        if(isGPSEnabled){
+            origin = currentUserLat + "," + currentUserLong;
+
+            if(Users.size() == 0){
+                //TODO: Show no users found popup
+
+                return;
+            }else{
+
+                for(int i = 0; i < Users.size(); i++){
+                    destination += Users.get(i).getLatitude() + "," + Users.get(i).getLongitude() + "|";
+                }
+            }
+        }else{
+            showGPSPopUp();
+            return;
+        }
+
+        System.out.println(origin);
+        System.out.println(destination);
+
+        String url = Uri.parse("https://maps.googleapis.com/maps/api/distancematrix/json")
+                .buildUpon()
+                .appendQueryParameter("destinations", destination)
+                .appendQueryParameter("origins", origin)
+                .appendQueryParameter("mode", "driving")
+                .appendQueryParameter("key", API_KEY)
+                .toString();
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            String status = response.getString("status");
+                            System.out.println(status);
+                            if(status.equals("OK")){
+                                checkNearestUser(response, Users);
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        showNoResponsePopUp();
+                        error.printStackTrace();
+                    }
+                });
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void checkNearestUser(JSONObject response, ArrayList<UserInfo> Users) throws JSONException {
+        JSONArray elements = response.getJSONArray("rows").getJSONObject(0).getJSONArray("elements");
+
+        System.out.println(elements);
+        System.out.println(elements.length());
+        for(int i = 0; i < elements.length(); i++){
+            JSONObject distance = elements.getJSONObject(i).getJSONObject("distance");
+            double distance_parsed = Double.parseDouble(String.valueOf(distance.get("value")));
+
+            Users.get(i).setDistance(distance_parsed);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Users.sort((o1, o2) -> Double.compare(o1.getDistance(), o2.getDistance()));
+        }
+        String destinationLat = String.valueOf(Users.get(0).getLatitude());
+        String destinationLong = String.valueOf(Users.get(0).getLongitude());
+        System.out.println(Users.get(0).getId() + " " + Users.get(0).getDistance());
+
+        getDirections(destinationLat, destinationLong);
 
     }
 
-
-    public void drawPolyline() throws JSONException {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            userDistanceList.sort((o1, o2) -> Double.compare(o1.getDistance(), o2.getDistance()));
+    public void drawPolyline(JSONArray routes) throws JSONException {
+        if(polyline != null){
+            polyline.remove();
         }
-
-        System.out.println(userDistanceList.size());
-
-        JSONArray routes = userDistanceList.get(0).getRoutes();
 
         ArrayList<LatLng> points;
         PolylineOptions polylineOptions = null;
@@ -477,7 +414,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             polylineOptions.color(getResources().getColor(R.color.secondaryColor));
             polylineOptions.geodesic(true);
 
-            map_instance.addPolyline(polylineOptions);
+            polyline = map_instance.addPolyline(polylineOptions);
 
         }
 
@@ -509,17 +446,76 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                     try {
                         Location location = task.getResult();
                         GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+
+                        if(polyline != null){
+                            polyline.remove();
+                        }
+
+                        setLocationCamera(geopoint.getLatitude(), geopoint.getLongitude());
                         setCurrentLocation(geopoint.getLatitude(), geopoint.getLongitude());
+                        setCurrentLocationMarker(geopoint.getLatitude(), geopoint.getLongitude());
                         isGPSEnabled = true;
                     }catch (Exception e){
                         showGPSPopUp();
+                        setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LONGITUDE);
                         e.printStackTrace();
                     }
 
+                }else{
+                    isGPSEnabled = false;
                 }
             }
         });
-        return;
+    }
+
+    public void refreshMap(){
+        map_instance.clear();
+        retrieveUsers();
+        getLastLocation();
+
+    }
+
+    private void setCurrentLocationMarker(double latitude, double longitude){
+        if(currentLocationMarker != null){
+            currentLocationMarker.remove();
+        }
+        String id = "current";
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.icon_client_marker);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 50, 50, false);
+        currentLocationMarker = map_instance.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
+                .title("You are Here").icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
+
+    }
+
+    private boolean isLocationSupported(){
+
+        if(BOUNDING_BOX_LAT1 <= currentUserLat
+            && currentUserLat <= BOUNDING_BOX_LAT2
+            && BOUNDING_BOX_LONG1 <= currentUserLong
+            && currentUserLong <= BOUNDING_BOX_LONG2){
+            System.out.println("SUPPORTED");
+            return true;
+        }else{
+            showNoServicePopUp();
+            return false;
+        }
+    }
+
+    public void showNoServicePopUp(){
+        dialogBuilder = new AlertDialog.Builder(view.getContext());
+        final View noGPS_view = getLayoutInflater().inflate(R.layout.no_service_popup, null);
+
+        btn_ok3 = noGPS_view.findViewById(R.id.btn_ok);
+        dialogBuilder.setView(noGPS_view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btn_ok3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 
     public void showGPSPopUp(){
@@ -590,7 +586,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private void setLocationCamera(double latitude, double longitude){
         CameraUpdate point = CameraUpdateFactory.newLatLngZoom
-                (new LatLng(latitude, longitude), 20);
+                (new LatLng(latitude, longitude), 18);
         map_instance.moveCamera(point);
     }
     @Override
@@ -620,83 +616,28 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         }
 
         map_instance = googleMap;
-        retrieveNodes();
-        retrieveUsers();
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
+        if(!isVertexInit){
+            retrieveNodes();
+        }
+
+        retrieveUsers();
         getLastLocation();
-        getLastLocationCamera();
-        googleMap.setMyLocationEnabled(true);
         googleMap.setOnMarkerClickListener(this);
     }
 
-    public void getUserDistanceRoad(){
-        ArrayList<Vertex> userDistance = new ArrayList<>();
-        ArrayList<VertexInfo> userEdge;
-        userDistance = matrix.getUserDistance();
-        for(int i = 0; i < userDistance.size(); i++){
-            userEdge = userDistance.get(i).getEdge();
-
-            String desId = userDistance.get(i).getId();
-            String desLong = String.valueOf(userDistance.get(i).getLongitude());
-            String desLat = String.valueOf(userDistance.get(i).getLatitude());
-
-            System.out.println(desId);
-            for(int j = 0; j < userEdge.size(); j++){
-                String originId = userEdge.get(j).getId();
-                String originLong = String.valueOf(userEdge.get(j).getLongitude());
-                String originLat = String.valueOf(userEdge.get(j).getLatitude());
-
-                getDirections(originLat, originLong, desLat, desLong, originId, desId);
-            }
-        }
-    }
-
-    public void getUserDistance(){
-
-        ArrayList<VertexInfo> U = new ArrayList<>();
-        db = FirebaseFirestore.getInstance();
-
-        db.collection("users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                try{
-                                    double latitude = document.getDouble("lat");
-                                    double longitude = document.getDouble("long");
-                                    String id = document.getId();
-                                    String name = document.getString("first");
-                                    U.add(new VertexInfo(id, longitude, latitude));
-                                }catch (Exception e){
-                                    Log.d("NODES",  document.getId());
-                                }
-
-                            }
-
-                            matrix.getDistanceLongLat(U);
-                            getUserDistanceRoad();
-                        } else {
-                            Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
-    }
-
-    public void getDirections(String oLat, String oLong, String dLat, String dLong, String originId, String desId){
+    public void getDirections(String destinationLat, String destinationLong){
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
         final String API_KEY = getString(R.string.google_maps_api_key);
 
-        String origin = oLat + ", " + oLong;
-        String destination = dLat + ", " + dLong;
+        String origin = currentUserLat + ", " + currentUserLong;
+        String destination = destinationLat + ", " + destinationLong;
         String url = Uri.parse("https://maps.googleapis.com/maps/api/directions/json")
                 .buildUpon()
                 .appendQueryParameter("destination", destination)
@@ -721,7 +662,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                 JSONObject distance = legs.getJSONObject(0).getJSONObject("distance");
 
                                 String distance_parsed = String.valueOf(distance.get("value"));
-//                                matrix.setUserEdgeValue(originId, desId, Double.parseDouble(distance_parsed));
+
+                                drawPolyline(routes);
                             }
 
                         }catch (JSONException e){
@@ -745,7 +687,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         String lat;
         int longtitude;
         String TAG = "MAP USERS";
-        userCount = 0;
         ArrayList<VertexInfo> U = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
@@ -763,7 +704,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                     String id = document.getId();
                                     String name = document.getString("first");
                                     U.add(new VertexInfo(id, longitude, latitude));
-                                    userCount++;
                                     setMarkers(latitude, longitude, 0, name, id);
                                 }catch (Exception e){
                                     Log.d("NODES",  document.getId());
@@ -855,14 +795,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         matrix.initUsers(U);
     }
 
-//    public void setNodeMarkers(double latitude, double longitude){
-//        map_instance.addMarker(new MarkerOptions()
-//                .position(new LatLng(latitude, longitude)).title("nodes"));
-//    }
-
     public void setMarkers(double latitude, double longitude, double filter, String name, String id) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.icon_pro_marker);
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 100, 100, false);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 50, 50, false);
         map_instance.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .title(name).icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap))).setTag(new MarkerTag(id));
@@ -873,20 +808,22 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     public boolean onMarkerClick(@NonNull Marker marker) {
         MarkerTag tag = (MarkerTag) marker.getTag(); //Gets the object to retrieve id/infos
 
-        String TAG = "Marker";
-        String name = marker.getTitle();
-        String id = tag.getId(); //id from database documents("users")
+        if(tag != null){
+            String TAG = "Marker";
+            String name = marker.getTitle();
+            String id = tag.getId(); //id from database documents("users")
 
-        // Delete this later
-        Toast.makeText(view.getContext(), name + "is clicked", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, id);
+            // Delete this later
+            Toast.makeText(view.getContext(), name + "is clicked", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, id);
 
-        // Open Profile Fragment here
-        parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment, FragmentProfile_Professional.class, null)
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
-                .commit();
+            // Open Profile Fragment here
+            parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment, FragmentProfile_Professional.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .commit();
+        }
 
         return false;
     }
@@ -927,3 +864,73 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         map_view.onLowMemory();
     }
 }
+
+//        search_prof_FAB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!isAllFABVisible3) {
+//                    l3.setVisibility(view.VISIBLE);
+//                    isAllFABVisible3 = true;
+//                } else {
+//                    l3.setVisibility(view.GONE);
+//                    isAllFABVisible3 = false;
+//                }
+//            }
+//        });
+
+//    public void getUserDistanceRoad(){
+//        ArrayList<Vertex> userDistance = new ArrayList<>();
+//        ArrayList<VertexInfo> userEdge;
+//        userDistance = matrix.getUserDistance();
+//        for(int i = 0; i < userDistance.size(); i++){
+//            userEdge = userDistance.get(i).getEdge();
+//
+//            String desId = userDistance.get(i).getId();
+//            String desLong = String.valueOf(userDistance.get(i).getLongitude());
+//            String desLat = String.valueOf(userDistance.get(i).getLatitude());
+//
+//            System.out.println(desId);
+//            for(int j = 0; j < userEdge.size(); j++){
+//                String originId = userEdge.get(j).getId();
+//                String originLong = String.valueOf(userEdge.get(j).getLongitude());
+//                String originLat = String.valueOf(userEdge.get(j).getLatitude());
+//
+//                getDirections(originLat, originLong, desLat, desLong, originId, desId);
+//            }
+//        }
+//    }
+
+//    public void getUserDistance(){
+//
+//        ArrayList<VertexInfo> U = new ArrayList<>();
+//        db = FirebaseFirestore.getInstance();
+//
+//        db.collection("users")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//                                try{
+//                                    double latitude = document.getDouble("lat");
+//                                    double longitude = document.getDouble("long");
+//                                    String id = document.getId();
+//                                    String name = document.getString("first");
+//                                    U.add(new VertexInfo(id, longitude, latitude));
+//                                }catch (Exception e){
+//                                    Log.d("NODES",  document.getId());
+//                                }
+//
+//                            }
+//
+//                            matrix.getDistanceLongLat(U);
+//                            getUserDistanceRoad();
+//                        } else {
+//                            Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                    }
+//                });
+//    }

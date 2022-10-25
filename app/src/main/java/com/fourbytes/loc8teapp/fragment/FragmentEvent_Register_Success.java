@@ -1,5 +1,6 @@
 package com.fourbytes.loc8teapp.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.fourbytes.loc8teapp.HostActivity;
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.fragment.client.FragmentEvent_Client;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_Industry_Professional;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_Professional;
 
@@ -36,12 +39,12 @@ public class FragmentEvent_Register_Success extends Fragment {
         done_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment, FragmentEvent_Professional.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
+
             }
         });
 
