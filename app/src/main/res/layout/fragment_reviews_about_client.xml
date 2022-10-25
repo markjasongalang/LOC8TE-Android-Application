@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/blue_green_diagonal_background"
     android:orientation="vertical"
-    tools:context=".fragment.professional.profiletabs.RateFragment">
+    tools:context=".fragment.client.Fragment_Reviews_About_Client">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,11 +22,11 @@
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:visibility="gone"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/close_button_round_corners" />
+            android:background="@drawable/close_button_round_corners"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout

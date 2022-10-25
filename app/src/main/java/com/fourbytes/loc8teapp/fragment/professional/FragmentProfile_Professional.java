@@ -22,7 +22,7 @@ import com.google.android.material.tabs.TabLayout;
 public class FragmentProfile_Professional extends Fragment {
     private View view;
 
-    private FragmentManager fragmentManager;
+    private FragmentManager parentFragmentManager;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -35,12 +35,18 @@ public class FragmentProfile_Professional extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile_professional, container, false);
 
-        fragmentManager = getParentFragmentManager();
+        parentFragmentManager = getParentFragmentManager();
 
         // Get views from layout
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
 
+        assembleTabLayout();
+
+        return view;
+    }
+
+    private void assembleTabLayout() {
         profileTabAdapter = new ProfileTabAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         profileTabAdapter.addFragment(new AboutFragment(), "About");
         profileTabAdapter.addFragment(new RateFragment(), "Rate");
@@ -50,7 +56,5 @@ public class FragmentProfile_Professional extends Fragment {
         viewPager.setAdapter(profileTabAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
-
-        return view;
     }
 }

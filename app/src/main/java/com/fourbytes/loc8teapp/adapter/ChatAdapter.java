@@ -4,25 +4,29 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsViewHolder;
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.fragment.FragmentChat_InsideChat;
 
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
+    private FragmentManager parentFragmentManager;
 
-    Context chats_context;
-    List<ChatsItems> chat_items;
+    private Context chats_context;
 
-    public ChatAdapter(Context chats_context, List<ChatsItems> chat_items) {
+    private List<ChatsItems> chat_items;
+
+    public ChatAdapter(Context chats_context, List<ChatsItems> chat_items, FragmentManager parentFragmentManager) {
         this.chats_context = chats_context;
         this.chat_items = chat_items;
+        this.parentFragmentManager = parentFragmentManager;
     }
 
     @NonNull
@@ -41,7 +45,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
         holder.chats_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Chat clicked", Toast.LENGTH_SHORT).show();
+                parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, FragmentChat_InsideChat.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }
