@@ -43,6 +43,7 @@ import com.fourbytes.loc8teapp.UserDistance;
 import com.fourbytes.loc8teapp.UserInfo;
 import com.fourbytes.loc8teapp.Vertex;
 import com.fourbytes.loc8teapp.VertexInfo;
+import com.fourbytes.loc8teapp.VertexMatrix;
 import com.fourbytes.loc8teapp.fragment.MarkerTag;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentProfile_Professional;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -77,6 +78,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,6 +139,10 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private Marker currentLocationMarker;
     private Polyline polyline;
+
+    private VertexMatrix vertex;
+
+    private int checkCount = 0;
     public FragmentHome_MapView(String path) {
         this.path = path;
     }
@@ -145,7 +151,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_map_view, container, false);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
-
         // Get views from layout
         mapViewCheckBox = view.findViewById(R.id.map_view_checkbox);
         listViewCheckBox = view.findViewById(R.id.list_view_checkbox);
@@ -249,8 +254,18 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         });
 
         initGoogleMap(savedInstanceState);
-
+        initVertices();
         return view;
+    }
+
+    public void initVertices(){
+        try {
+            vertex = new VertexMatrix(view.getContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void findNearestUser(){
@@ -259,6 +274,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         if(!isLocationSupported()){
             return;
         }
+        refreshMap();
         ArrayList<UserInfo> Users = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         db.collection("users")
@@ -284,6 +300,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                     e.printStackTrace();
                                 }
                             }
+                            snapVertices(Users);
                             getDistanceMatrix(Users);
                         } else {
                             showNoResponsePopUp();
@@ -292,6 +309,112 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                     }
                 });
+    }
+
+    public void snapVertices(ArrayList<UserInfo> Users){
+
+        for(int i = 0; i < Users.size(); i++){
+            double latitude = Users.get(i).getLatitude();
+            double longitude = Users.get(i).getLongitude();
+
+            List<VertexInfo> distanceLongLat = vertex.getDistanceLatLong(latitude, longitude);
+
+            System.out.println(Users.get(i).getId() + "---------------------------------------");
+
+            getDistanceMatrix(distanceLongLat, latitude, longitude, Users.size());
+        }
+    }
+
+    public void snapCurrentUserVertex(){
+
+
+    }
+
+    public void getDistanceMatrix(List<VertexInfo> distanceLongLat, double latitude, double longitude, int user_count){
+        String origin = "";
+        String destination = "";
+        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+        final String API_KEY = getString(R.string.google_maps_api_key);
+
+        if(isGPSEnabled){
+            destination = latitude + "," + longitude;
+
+            for(int i = 0; i < distanceLongLat.size(); i++){
+                origin += distanceLongLat.get(i).getLatitude() + "," + distanceLongLat.get(i).getLongitude() + "|";
+            }
+        }else{
+            showGPSPopUp();
+            return;
+        }
+
+        String url = Uri.parse("https://maps.googleapis.com/maps/api/distancematrix/json")
+                .buildUpon()
+                .appendQueryParameter("destinations", destination)
+                .appendQueryParameter("origins", origin)
+                .appendQueryParameter("mode", "driving")
+                .appendQueryParameter("key", API_KEY)
+                .toString();
+
+
+        String finalOrigin = origin;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            String status = response.getString("status");
+                            System.out.println(status);
+                            if(status.equals("OK")){
+                                System.out.println(finalOrigin);
+                                checkNearestNode(response, distanceLongLat);
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        showNoResponsePopUp();
+                        error.printStackTrace();
+                    }
+                });
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void checkNearestNode(JSONObject response, List<VertexInfo> distanceLongLat) throws JSONException {
+        ArrayList<Edge> edge = vertex.getEdges();
+        JSONArray rows = response.getJSONArray("rows");
+
+        System.out.println(response);
+        System.out.println(rows.length());
+        for(int i = 0; i < rows.length(); i++){
+            JSONArray elements = rows.getJSONObject(i).getJSONArray("elements");
+            JSONObject distance = elements.getJSONObject(0).getJSONObject("distance");
+            double distance_parsed = Double.parseDouble(String.valueOf(distance.get("value")));
+
+            distanceLongLat.get(i).setDistance(distance_parsed);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            distanceLongLat.sort((o1, o2) -> Double.compare(o1.getDistance(), o2.getDistance()));
+        }
+        String destinationLat = String.valueOf(distanceLongLat.get(0).getLatitude());
+        String destinationLong = String.valueOf(distanceLongLat.get(0).getLongitude());
+
+        for(int i = distanceLongLat.size() - 1; i > 0; i --){
+            System.out.println(distanceLongLat.get(i).getId());
+            System.out.println(distanceLongLat.get(i).getDistance());
+
+            for (int j = i - 1; j >= 0; j--){
+
+                //TODO: finish tom
+            }
+        }
+
     }
 
     public void getDistanceMatrix(ArrayList<UserInfo> Users){
@@ -318,9 +441,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             return;
         }
 
-        System.out.println(origin);
-        System.out.println(destination);
-
         String url = Uri.parse("https://maps.googleapis.com/maps/api/distancematrix/json")
                 .buildUpon()
                 .appendQueryParameter("destinations", destination)
@@ -337,7 +457,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                     public void onResponse(JSONObject response) {
                         try{
                             String status = response.getString("status");
-                            System.out.println(status);
+                            //System.out.println(status);
                             if(status.equals("OK")){
                                 checkNearestUser(response, Users);
                             }
@@ -360,8 +480,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     public void checkNearestUser(JSONObject response, ArrayList<UserInfo> Users) throws JSONException {
         JSONArray elements = response.getJSONArray("rows").getJSONObject(0).getJSONArray("elements");
 
-        System.out.println(elements);
-        System.out.println(elements.length());
+        //System.out.println(elements);
+        //System.out.println(elements.length());
         for(int i = 0; i < elements.length(); i++){
             JSONObject distance = elements.getJSONObject(i).getJSONObject("distance");
             double distance_parsed = Double.parseDouble(String.valueOf(distance.get("value")));
@@ -374,7 +494,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         }
         String destinationLat = String.valueOf(Users.get(0).getLatitude());
         String destinationLong = String.valueOf(Users.get(0).getLongitude());
-        System.out.println(Users.get(0).getId() + " " + Users.get(0).getDistance());
+        //System.out.println(Users.get(0).getId() + " " + Users.get(0).getDistance());
 
         getDirections(destinationLat, destinationLong);
 
@@ -684,8 +804,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     }
 
     public void retrieveUsers() {
-        String lat;
-        int longtitude;
         String TAG = "MAP USERS";
         ArrayList<VertexInfo> U = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
