@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -30,6 +32,8 @@ public class FragmentProfile_Professional extends Fragment {
 
     private ProfileTabAdapter profileTabAdapter;
 
+    private AppCompatButton btnViewReviews;
+
     public FragmentProfile_Professional() {}
 
     @Override
@@ -41,8 +45,20 @@ public class FragmentProfile_Professional extends Fragment {
         // Get views from layout
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
+        btnViewReviews = view.findViewById(R.id.btn_view_reviews);
 
         assembleTabLayout();
+
+        btnViewReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, Fragment_Reviews_About_Pro.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         return view;
     }

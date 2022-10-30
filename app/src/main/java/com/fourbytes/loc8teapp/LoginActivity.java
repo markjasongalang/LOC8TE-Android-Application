@@ -63,23 +63,23 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         // Initialize Firebase database
         db = FirebaseFirestore.getInstance();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        // Find views from the layout
+
+        // Get views from the layout
         btnLogin = findViewById(R.id.btn_login);
         tvDontHaveAccount = findViewById(R.id.tv_dont_have_account);
 
-        //Permission Checker
+        // Permission Checker
         getLocationPermission();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
-
-                intent.putExtra("accountType", "professional");
-
+                intent.putExtra("accountType", "client");
                 startActivity(intent);
             }
         });
@@ -148,28 +148,27 @@ public class LoginActivity extends AppCompatActivity {
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(LoginActivity.this);
 
-        if(available == ConnectionResult.SUCCESS){
-            //everything is fine and the user can make map requests
+        if (available == ConnectionResult.SUCCESS){
+            // Everything is fine and the user can make map requests
             Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
-        }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-            //an error occured but we can resolve it
-            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
+        }  else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+            // An error occurred but we can resolve it
+            Log.d(TAG, "isServicesOK: an error occurred but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(LoginActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        }else{
+        } else {
             Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
+
         return false;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         LocationPermission = false;
+
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.

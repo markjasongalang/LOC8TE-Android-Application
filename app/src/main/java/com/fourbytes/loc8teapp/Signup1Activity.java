@@ -7,24 +7,30 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Signup1Activity extends AppCompatActivity {
     private FirebaseFirestore db;
+
+    private TextView tvAlert;
 
     private EditText edtUsername;
     private EditText edtPassword;
@@ -40,6 +46,8 @@ public class Signup1Activity extends AppCompatActivity {
 
     private Calendar calendar;
 
+    private boolean doneChecking;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +57,7 @@ public class Signup1Activity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // Get views from layout
+        tvAlert = findViewById(R.id.tv_alert);
         edtUsername = findViewById(R.id.edt_username);
         edtPassword = findViewById(R.id.edt_password);
         edtFirstName = findViewById(R.id.edt_first_name);
@@ -73,9 +82,6 @@ public class Signup1Activity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // TODO: Check username if it already exists in the database
-
                 String username = edtUsername.getText().toString();
                 String password = sha1(edtPassword.getText().toString());
                 String firstName = edtFirstName.getText().toString();
@@ -83,23 +89,122 @@ public class Signup1Activity extends AppCompatActivity {
                 String lastName = edtLastName.getText().toString();
                 String birthdate = btnDate.getText().toString();
 
-//                if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() ||
-//                    middleName.isEmpty() || lastName.isEmpty() || birthdate.isEmpty()) {
-//
-//                    Toast.makeText(Signup1Activity.this, "Please answer all fields.", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
+                if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() ||
+                    middleName.isEmpty() || lastName.isEmpty() || birthdate.isEmpty()) {
 
-                Intent intent = new Intent(getApplicationContext(), Signup2Activity.class);
-                intent.putExtra("username", username);
-                intent.putExtra("password", password);
-                intent.putExtra("firstName", firstName);
-                intent.putExtra("middleName", middleName);
-                intent.putExtra("lastName", lastName);
-                intent.putExtra("birthdate", birthdate);
-                startActivity(intent);
+                    tvAlert.setText("Please answer all fields.");
+                    tvAlert.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                if (isPasswordWeak(edtPassword.getText().toString())) {
+                    tvAlert.setText(
+                        "** Password is too weak. **\n" +
+                        "A password is said to be strong if:\n" +
+                        "- It contains at least one lowercase English character.\n" +
+                        "- It contains at least one uppercase English character.\n" +
+                        "- It contains at least one special character. The special characters are: !@#$%^&*()-+" +
+                        "- Its length is at least 8.\n" +
+                        "- It contains at least one digit."
+                    );
+                    tvAlert.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                db.collection("clients").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            boolean usernameExists = false;
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getData().get("username").equals(username)) {
+                                    usernameExists = true;
+                                    break;
+                                }
+                            }
+
+                            if (usernameExists) {
+                                tvAlert.setText("Username already exists.");
+                                tvAlert.setVisibility(View.VISIBLE);
+                                return;
+                            }
+
+                            db.collection("professionals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        boolean usernameExists = false;
+
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            if (document.getData().get("username").equals(username)) {
+                                                usernameExists = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (usernameExists) {
+                                            tvAlert.setText("Username already exists.");
+                                            tvAlert.setVisibility(View.VISIBLE);
+                                            return;
+                                        }
+
+                                        tvAlert.setVisibility(View.GONE);
+                                        passIntent(username, password, firstName, middleName, lastName, birthdate);
+                                    } else {
+                                        Log.d("READ_CLIENT_ERR", "Failed to retrieve the clients collection...");
+                                    }
+                                }
+                            });
+                        } else {
+                            Log.d("READ_CLIENT_ERR", "Failed to retrieve the clients collection...");
+                        }
+                    }
+                });
+
             }
         });
+    }
+
+    private boolean isPasswordWeak(String password) {
+        int n = password.length();
+
+        boolean hasLower = false;
+        boolean hasUpper = false;
+        boolean hasDigit = false;
+        boolean hasSpecialChar = false;
+        Set<Character> set = new HashSet<Character>( Arrays.asList('!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+'));
+
+        for (char ch : password.toCharArray()) {
+            if (Character.isLowerCase(ch)) {
+                hasLower = true;
+            }
+
+            if (Character.isUpperCase(ch)) {
+                hasUpper = true;
+            }
+
+            if (Character.isDigit(ch)) {
+                hasDigit = true;
+            }
+
+            if (set.contains(ch)) {
+                hasSpecialChar = true;
+            }
+        }
+
+        return !(hasDigit && hasLower && hasUpper && hasSpecialChar && (n >= 8));
+    }
+
+    private void passIntent(String username, String password, String firstName, String middleName, String lastName, String birthdate) {
+        Intent intent = new Intent(getApplicationContext(), Signup2Activity.class);
+        intent.putExtra("username", username);
+        intent.putExtra("password", password);
+        intent.putExtra("firstName", firstName);
+        intent.putExtra("middleName", middleName);
+        intent.putExtra("lastName", lastName);
+        intent.putExtra("birthdate", birthdate);
+        startActivity(intent);
     }
 
     private String sha1(String input) {

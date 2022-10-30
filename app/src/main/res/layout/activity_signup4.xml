@@ -127,17 +127,6 @@
                 android:textColor="@color/fifthColor"
                 android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/tv_confirmation_note"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/open_sans_medium"
-                android:text=""
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_signup"
                 android:layout_width="match_parent"

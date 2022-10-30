@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.fragment.professional.profiletabs.AboutFragment;
 
 public class Fragment_Reviews_About_Pro extends Fragment {
     private View view;

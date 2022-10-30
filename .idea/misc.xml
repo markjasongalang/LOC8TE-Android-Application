@@ -65,6 +65,7 @@
         <entry key="app/src/main/res/drawable/white_round_corners_20.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/white_round_corners_40.xml" value="0.2405" />
         <entry key="app/src/main/res/layout/activity_admin.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_extra.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_home1.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/layout/activity_host.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />

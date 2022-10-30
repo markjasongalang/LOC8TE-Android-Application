@@ -1,16 +1,15 @@
 package com.fourbytes.loc8teapp;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,21 +24,26 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class Signup4Activity extends AppCompatActivity {
     private FirebaseFirestore db;
 
-    private StorageReference storageReference;
+    private FirebaseStorage storage;
+
+    private FirebaseAuth mAuth;
+
+    private StorageReference storageRef;
 
     private AppCompatButton btnGps;
     private AppCompatButton btnSignup;
@@ -49,8 +53,6 @@ public class Signup4Activity extends AppCompatActivity {
     private Double currentUserLat;
     private Double currentUserLong;
 
-    private TextView tvConfirmationNote;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,17 +61,14 @@ public class Signup4Activity extends AppCompatActivity {
         // Get views from layout
         btnGps = findViewById(R.id.btn_gps);
         btnSignup = findViewById(R.id.btn_signup);
-        tvConfirmationNote = findViewById(R.id.tv_confirmation_note);
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         currentUserLat = currentUserLong = null;
-
-        if (getIntent().getStringExtra("accountType").equals("professional")) {
-            tvConfirmationNote.setText("After signing up, we will send the confirmation/verification of your account in the email that you have provided." + "\n" +
-                    "Note: the account cannot be used if it's not yet verified");
-        }
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+        mAuth = FirebaseAuth.getInstance();
 
         btnGps.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +87,8 @@ public class Signup4Activity extends AppCompatActivity {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Get all data
                 String username = getIntent().getStringExtra("username");
                 String password = getIntent().getStringExtra("password");
                 String firstName = getIntent().getStringExtra("firstName");
@@ -110,6 +111,7 @@ public class Signup4Activity extends AppCompatActivity {
 
                 byte[] profilePicByteArray = extras.getByteArray("profilePicture");
 
+                // Put data in HashMap
                 Map<String, Object> data = new HashMap<>();
                 data.put("username", username);
                 data.put("password", password);
@@ -120,59 +122,114 @@ public class Signup4Activity extends AppCompatActivity {
                 data.put("email", email);
                 data.put("contact_number", contactNumber);
                 data.put("account_type", accountType);
-                data.put("verified", false);
 
                 if (accountType.equals("professional")) {
                     data.put("field", field);
                     data.put("specific_job", specificJob);
+                    data.put("verified", false);
                 }
 
                 data.put("latitude", currentUserLat);
                 data.put("longitude", currentUserLong);
 
                 String type = (accountType.equals("professional") ? "professionals" : "clients");
-//                db.collection(type).document(username)
-//                        .set(data)
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                Toast.makeText(Signup4Activity.this, "Successfully signed up!", Toast.LENGTH_SHORT).show();
-//                                Log.d("FSUCCESS", "DocumentSnapshot successfully written!");
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Toast.makeText(Signup4Activity.this, "An error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
-//                                Log.w("FERROR", "Error writing document", e);
-//                            }
-//                        });
 
-                // todo: UPLOAD PICTURES IN DATABASE
-                storageReference = FirebaseStorage.getInstance().getReference("images/" + username);
-                UploadTask uploadTask = storageReference.putBytes(profilePicByteArray);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(Signup4Activity.this, "Error", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                /* Cloud Firestore */
+                db.collection(type).document(email)
+                        .set(data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(Signup4Activity.this, "Successfully signed up!", Toast.LENGTH_SHORT).show();
+                                Log.d("SIGNUP_SUCCESS", "DocumentSnapshot successfully written!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(Signup4Activity.this, "An error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
+                                Log.w("SIGNUP_ERROR", "Error writing document", e);
+                            }
+                        });
+
+                /* Firebase Authentication */
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(Signup4Activity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    Log.d("AUTH_SUCCESS", "Authentication Success");
+                                } else {
+                                    Log.d("AUTH_ERROR", "Authentication Error");
+                                }
+                            }
+                        });
+
+                /* Firebase Storage */
+
+                // Upload id picture
+                if (accountType.equals("professional")) {
+                    Uri idPicUri = Uri.parse(getIntent().getStringExtra("idPicUri"));
+                    StorageReference idPicRef = storageRef.child("idPics/" + username + "_id." + getFileExtension(idPicUri));
+                    UploadTask uploadTask = idPicRef.putBytes(idPicByteArray);
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Log.d("ID_PIC_SUCCESS", "Successfully uploaded the id picture.");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("ID_PIC_ERROR", "Error in uploading the id picture.");
+                            }
+                        });
+                }
+
+                // Upload profile picture
+                Uri profilePicUri = Uri.parse(getIntent().getStringExtra("profilePicUri"));
+                StorageReference profileRef = storageRef.child("profilePics/" + username + "_profile." + getFileExtension(profilePicUri));
+                UploadTask uploadTask = profileRef.putBytes(profilePicByteArray);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(Signup4Activity.this, "Success", Toast.LENGTH_SHORT).show();
+                        Log.d("PROFILE_PIC_SUCCESS", "Successfully uploaded the profile picture.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("PROFILE_PIC_ERROR", "Error in uploading the profile picture.");
                     }
                 });
+
+                Intent intent = null;
+                if (accountType.equals("client")) {
+                    intent = new Intent(Signup4Activity.this, LoginActivity.class);
+                } else {
+                    intent = new Intent(Signup4Activity.this, ExtraActivity.class);
+                }
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
     }
 
+    private String getFileExtension(Uri uri) {
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(uri));
+    }
+
     private void getLastLocation() {
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             return;
         }
+
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
@@ -183,6 +240,7 @@ public class Signup4Activity extends AppCompatActivity {
                 }
             }
         });
+
         return;
     }
 

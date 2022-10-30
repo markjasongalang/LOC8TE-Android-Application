@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/tertiaryColor"
     tools:context=".fragment.professional.FragmentProfile_Professional">
 
     <com.google.android.material.tabs.TabLayout
@@ -31,6 +32,17 @@
             android:layout_height="wrap_content"
             android:text="Culture" />
     </com.google.android.material.tabs.TabLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_view_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/secondaryColor"
+        android:fontFamily="@font/open_sans_medium"
+        android:text="View Reviews About Professional"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
