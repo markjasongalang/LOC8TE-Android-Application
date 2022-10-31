@@ -357,6 +357,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
 
         String finalOrigin = origin;
+        String finalDestination = destination;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -366,7 +367,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                             String status = response.getString("status");
                             System.out.println(status);
                             if(status.equals("OK")){
-                                System.out.println(finalOrigin);
+                                System.out.println(finalDestination);
                                 checkNearestNode(response, distanceLongLat);
                             }
                         }catch (JSONException e){
@@ -389,8 +390,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         ArrayList<Edge> edge = vertex.getEdges();
         JSONArray rows = response.getJSONArray("rows");
 
-        System.out.println(response);
-        System.out.println(rows.length());
         for(int i = 0; i < rows.length(); i++){
             JSONArray elements = rows.getJSONObject(i).getJSONArray("elements");
             JSONObject distance = elements.getJSONObject(0).getJSONObject("distance");
@@ -402,8 +401,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             distanceLongLat.sort((o1, o2) -> Double.compare(o1.getDistance(), o2.getDistance()));
         }
-        String destinationLat = String.valueOf(distanceLongLat.get(0).getLatitude());
-        String destinationLong = String.valueOf(distanceLongLat.get(0).getLongitude());
 
         for(int i = distanceLongLat.size() - 1; i > 0; i --){
             System.out.println(distanceLongLat.get(i).getId());
@@ -412,6 +409,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             for (int j = i - 1; j >= 0; j--){
 
                 //TODO: finish tom
+
             }
         }
 
