@@ -63,11 +63,22 @@
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/tv_alert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
+                android:text="sample text"
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
             <EditText
                 android:id="@+id/edt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/white_round_corners_10"
                 android:fontFamily="@font/open_sans_light"
                 android:hint="email"
@@ -151,11 +162,23 @@
                     android:background="@drawable/white_round_corners_10"
                     android:fontFamily="@font/open_sans_light"
                     android:hint="specific job"
-                    android:inputType="text"
+                    android:inputType="textCapWords"
                     android:padding="10dp"
                     android:textColor="@color/primaryColor"
                     android:textColorHint="@color/primaryColor"
                     android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_image_alert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/open_sans"
+                    android:text="sample text"
+                    android:textAlignment="center"
+                    android:textColor="@color/red"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -127,16 +127,6 @@
                 android:textColor="@color/fifthColor"
                 android:textSize="15sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/open_sans_light_italic"
-                android:text="by signing up, you are agreeing to our"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_signup"
                 android:layout_width="match_parent"

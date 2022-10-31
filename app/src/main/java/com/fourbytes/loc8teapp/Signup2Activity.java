@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,14 +16,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class Signup2Activity extends AppCompatActivity {
+    private FirebaseFirestore db;
+
     private Spinner spAccount;
     private Spinner spFields;
 
@@ -30,6 +42,8 @@ public class Signup2Activity extends AppCompatActivity {
 
     private TextView tvValidation;
     private TextView tvImageStatus;
+    private TextView tvAlert;
+    private TextView tvImageAlert;
 
     private String accountType;
 
@@ -42,10 +56,15 @@ public class Signup2Activity extends AppCompatActivity {
 
     private byte[] byteArray;
 
+    private Uri idPicUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup2);
+
+        // Initialize Firebase database
+        db = FirebaseFirestore.getInstance();
 
         // Get views from the layout
         spAccount = findViewById(R.id.sp_account);
@@ -58,6 +77,8 @@ public class Signup2Activity extends AppCompatActivity {
         edtSpecificJob = findViewById(R.id.edt_specific_job);
         btnAttach = findViewById(R.id.btn_attach);
         tvImageStatus = findViewById(R.id.tv_image_status);
+        tvAlert = findViewById(R.id.tv_alert);
+        tvImageAlert = findViewById(R.id.tv_image_alert);
 
         initSpinnerAccount();
         spAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -97,53 +118,116 @@ public class Signup2Activity extends AppCompatActivity {
                 String field = spFields.getSelectedItem().toString();
                 String specificJob = edtSpecificJob.getText().toString();
 
-//                if (email.isEmpty() || contactNumber.isEmpty()) {
-//                    Toast.makeText(Signup2Activity.this, "Please answer all fields.", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                if ((accountType.equals("professional")) && (field.isEmpty() || specificJob.isEmpty())) {
-//                    Toast.makeText(Signup2Activity.this, "Please answer all fields.", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-                
-                if (accountType.equals("professional") && byteArray == null) {
-                    Toast.makeText(Signup2Activity.this, "Please select an image first.", Toast.LENGTH_SHORT).show();
+                if (email.isEmpty() || contactNumber.isEmpty()) {
+                    tvAlert.setText("Please answer all fields.");
+                    tvAlert.setVisibility(View.VISIBLE);
                     return;
                 }
 
-                // Previous data to be passed
-                intent.putExtra("username", getIntent().getStringExtra("username"));
-                intent.putExtra("password", getIntent().getStringExtra("password"));
-                intent.putExtra("firstName", getIntent().getStringExtra("firstName"));
-                intent.putExtra("middleName", getIntent().getStringExtra("middleName"));
-                intent.putExtra("lastName", getIntent().getStringExtra("lastName"));
-                intent.putExtra("birthdate", getIntent().getStringExtra("birthdate"));
-
-                // New data to be passed
-                intent.putExtra("email", email);
-                intent.putExtra("contactNumber", contactNumber);
-                intent.putExtra("accountType", accountType);
-                if (accountType.equals("professional")) {
-                    intent.putExtra("field", field);
-                    intent.putExtra("specificJob", specificJob);
-                    intent.putExtra("idPicture", byteArray);
+                if (accountType.equals("professional") && byteArray == null) {
+                    tvImageAlert.setText("Please attach an image.");
+                    tvImageAlert.setVisibility(View.VISIBLE);
+                    return;
                 }
 
-                startActivity(intent);
+                if ((accountType.equals("professional")) && (field.isEmpty() || specificJob.isEmpty())) {
+                    tvAlert.setText("Please answer all fields.");
+                    tvAlert.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                if (!isEmailCorrect(email)) {
+                    tvAlert.setText("Email is not in correct format.");
+                    tvAlert.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                db.collection("clients").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                tvAlert.setText("Email already exists.");
+                                tvAlert.setVisibility(View.VISIBLE);
+                                return;
+                            }
+
+                            db.collection("professionals").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            tvAlert.setText("Email already exists.");
+                                            tvAlert.setVisibility(View.VISIBLE);
+                                            return;
+                                        }
+
+                                        tvAlert.setVisibility(View.GONE);
+
+                                        // Previous data to be passed
+                                        intent.putExtra("username", getIntent().getStringExtra("username"));
+                                        intent.putExtra("password", getIntent().getStringExtra("password"));
+                                        intent.putExtra("firstName", getIntent().getStringExtra("firstName"));
+                                        intent.putExtra("middleName", getIntent().getStringExtra("middleName"));
+                                        intent.putExtra("lastName", getIntent().getStringExtra("lastName"));
+                                        intent.putExtra("birthdate", getIntent().getStringExtra("birthdate"));
+
+                                        // New data to be passed
+                                        intent.putExtra("email", email);
+                                        intent.putExtra("contactNumber", contactNumber);
+                                        intent.putExtra("accountType", accountType);
+                                        if (accountType.equals("professional")) {
+                                            tvImageAlert.setVisibility(View.GONE);
+
+                                            intent.putExtra("field", field);
+                                            intent.putExtra("specificJob", specificJob);
+                                            intent.putExtra("idPicture", byteArray);
+                                            intent.putExtra("idPicUri", idPicUri.toString());
+                                        }
+
+                                        startActivity(intent);
+                                    } else {
+                                        Log.d("CHECK_EMAIL", "Failed to read the data...");
+                                    }
+                                }
+                            });
+                        } else {
+                            Log.d("CHECK_EMAIL", "Failed to read the data...");
+                        }
+                    }
+                });
+
             }
         });
+    }
+
+    private boolean isEmailCorrect(String email) {
+        String emailRegex =
+                "^[a-zA-Z0-9_+&*-]+(?:\\." +
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        if (email == null) {
+            return false;
+        }
+
+        return pattern.matcher(email).matches();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
+            idPicUri = data.getData();
 
             Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), idPicUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }

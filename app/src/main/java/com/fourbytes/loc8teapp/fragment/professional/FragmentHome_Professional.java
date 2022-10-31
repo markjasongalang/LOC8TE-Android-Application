@@ -49,15 +49,15 @@ public class FragmentHome_Professional extends Fragment {
 
         home_settings_FAB = view.findViewById(R.id.home_settings_prof);
         location_settings_FAB = view.findViewById(R.id.location_settings_prof);
-        search_cli_FAB = view.findViewById(R.id.search_cli_button);
+//        search_cli_FAB = view.findViewById(R.id.search_cli_button);
 
         View l = view.findViewById(R.id.home_settings_toolbar_prof);
         View l2 = view.findViewById(R.id.location_settings_toolbar_prof);
-        View l3 = view.findViewById(R.id.search_cli_field);
+//        View l3 = view.findViewById(R.id.search_cli_field);
 
         l.setVisibility(view.GONE);
         l2.setVisibility(view.GONE);
-        l3.setVisibility(view.GONE);
+//        l3.setVisibility(view.GONE);
         home_settings_FAB.shrink();
         location_settings_FAB.shrink();
 
@@ -102,20 +102,20 @@ public class FragmentHome_Professional extends Fragment {
             }
         });
 
-        search_cli_FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(!isAllFABVisible3){
-                    l3.setVisibility(view.VISIBLE);
-                    isAllFABVisible3 = true;
-                }else{
-                    l3.setVisibility(view.GONE);
-                    isAllFABVisible3 = false;
-                }
-
-            }
-        });
+//        search_cli_FAB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                if(!isAllFABVisible3){
+//                    l3.setVisibility(view.VISIBLE);
+//                    isAllFABVisible3 = true;
+//                }else{
+//                    l3.setVisibility(view.GONE);
+//                    isAllFABVisible3 = false;
+//                }
+//
+//            }
+//        });
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override

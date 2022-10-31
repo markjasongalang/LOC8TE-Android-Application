@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/blue_green_diagonal_background"
     android:orientation="vertical"
-    tools:context=".fragment.client.Fragment_Reviews_About_Client">
+    tools:context=".fragment.professional.Fragment_Reviews_About_Pro">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/glacial_indifference"
-                android:text="Reviews about Client"
+                android:text="Reviews about Professional"
                 android:textAlignment="center"
                 android:textColor="@color/secondaryColor"
                 android:textSize="20sp" />
@@ -64,7 +64,7 @@
             android:layout_height="150dp"
             android:padding="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/anya"
+            android:src="@drawable/juswa_hearts"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder"
             app:strokeColor="@color/primaryColor"
             app:strokeWidth="5dp" />
@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/glacial_indifference"
-            android:text="Anya Forger"
+            android:text="Joshua Padilla"
             android:textAlignment="center"
             android:textColor="@color/primaryColor"
             android:textSize="20sp" />
@@ -120,7 +120,7 @@
             android:textColor="@color/fifthColor" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_reviews_about_client"
+            android:id="@+id/rv_reviews_about_pro"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp" />

@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -21,12 +25,14 @@ import com.google.android.material.tabs.TabLayout;
 public class FragmentProfile_Professional extends Fragment {
     private View view;
 
-    private FragmentManager fragmentManager;
+    private FragmentManager parentFragmentManager;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
     private ProfileTabAdapter profileTabAdapter;
+
+    private AppCompatButton btnViewReviews;
 
     public FragmentProfile_Professional() {}
 
@@ -34,11 +40,30 @@ public class FragmentProfile_Professional extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile_professional, container, false);
 
-        fragmentManager = getParentFragmentManager();
+        parentFragmentManager = getParentFragmentManager();
 
+        // Get views from layout
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
+        btnViewReviews = view.findViewById(R.id.btn_view_reviews);
 
+        assembleTabLayout();
+
+        btnViewReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, Fragment_Reviews_About_Pro.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        return view;
+    }
+
+    private void assembleTabLayout() {
         profileTabAdapter = new ProfileTabAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         profileTabAdapter.addFragment(new AboutFragment(), "About");
         profileTabAdapter.addFragment(new RateFragment(), "Rate");
@@ -48,7 +73,5 @@ public class FragmentProfile_Professional extends Fragment {
         viewPager.setAdapter(profileTabAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
-
-        return view;
     }
 }

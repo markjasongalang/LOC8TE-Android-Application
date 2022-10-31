@@ -3,6 +3,7 @@ package com.fourbytes.loc8teapp.fragment.professional;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentChat_Professional extends Fragment {
+    private FragmentManager parentFragmentManager;
 
     private View view;
     private RecyclerView chats_recyclerView1, chats_recyclerView2;
@@ -25,6 +27,9 @@ public class FragmentChat_Professional extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chat_professional, container, false);
+
+        parentFragmentManager = getParentFragmentManager();
+
         List<ChatsItems> chats_items_industry = new ArrayList<>();
         List<ChatsItems> chats_items_clients = new ArrayList<>();
 
@@ -57,8 +62,8 @@ public class FragmentChat_Professional extends Fragment {
                 R.drawable.yor
         ));
 
-        chats_recyclerView1.setAdapter(new ChatAdapter(view.getContext(), chats_items_industry));
-        chats_recyclerView2.setAdapter(new ChatAdapter(view.getContext(), chats_items_clients));
+        chats_recyclerView1.setAdapter(new ChatAdapter(view.getContext(), chats_items_industry, parentFragmentManager));
+        chats_recyclerView2.setAdapter(new ChatAdapter(view.getContext(), chats_items_clients, parentFragmentManager));
 
         return view;
     }
