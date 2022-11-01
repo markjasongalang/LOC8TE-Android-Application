@@ -39,28 +39,28 @@ public class FragmentChat_Professional extends Fragment {
         chats_recyclerView2 = view.findViewById(R.id.chats_recyclerview2);
         chats_recyclerView2.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        //industry chat
-        chats_items_industry.add(new ChatsItems(
-                "IT Industry",
-                "Industry Chat",
-                "Juswa: Gawa tayo software guys",
-                R.drawable.juswa_hearts
-        ));
-
-        //clients chat
-        chats_items_clients.add(new ChatsItems(
-                "Anya Forger",
-                "Client",
-                "Anya: Waku waku!",
-                R.drawable.anya
-        ));
-
-        chats_items_clients.add(new ChatsItems(
-                "Yor Forger",
-                "Client",
-                "Yor: Henlo",
-                R.drawable.yor
-        ));
+//        //industry chat
+//        chats_items_industry.add(new ChatsItems(
+//                "IT Industry",
+//                "Industry Chat",
+//                "Juswa: Gawa tayo software guys",
+//                R.drawable.juswa_hearts
+//        ));
+//
+//        //clients chat
+//        chats_items_clients.add(new ChatsItems(
+//                "Anya Forger",
+//                "Client",
+//                "Anya: Waku waku!",
+//                R.drawable.anya
+//        ));
+//
+//        chats_items_clients.add(new ChatsItems(
+//                "Yor Forger",
+//                "Client",
+//                "Yor: Henlo",
+//                R.drawable.yor
+//        ));
 
         chats_recyclerView1.setAdapter(new ChatAdapter(view.getContext(), chats_items_industry, parentFragmentManager));
         chats_recyclerView2.setAdapter(new ChatAdapter(view.getContext(), chats_items_clients, parentFragmentManager));

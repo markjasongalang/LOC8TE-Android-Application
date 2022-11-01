@@ -1,6 +1,7 @@
 package com.fourbytes.loc8teapp.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,11 +41,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
         holder.chats_name.setText(chat_items.get(position).getChat_name());
         holder.chats_occupation.setText(chat_items.get(position).getChat_occupation());
         holder.chats_msgpreview.setText(chat_items.get(position).getChat_msgpreview());
-        holder.chats_image.setImageResource(chat_items.get(position).getChat_image());
+        holder.chats_image.setImageBitmap(chat_items.get(position).getChat_image());
 
         holder.chats_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle result = new Bundle();
+                result.putString("pro_username", holder.chats_name.getText().toString());
+                parentFragmentManager.setFragmentResult("data_from_prev", result);
                 parentFragmentManager.beginTransaction()
                         .replace(R.id.fragment, FragmentChat_InsideChat.class, null)
                         .setReorderingAllowed(true)

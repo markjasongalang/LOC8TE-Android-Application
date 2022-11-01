@@ -1,5 +1,7 @@
 package com.fourbytes.loc8teapp.fragment.client;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +36,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +49,8 @@ public class FragmentHome_NewList extends Fragment {
     private View view;
 
     private FirebaseFirestore db;
+
+    private FirebaseStorage storage;
 
     private RecyclerView rvNewList;
 
@@ -67,6 +73,7 @@ public class FragmentHome_NewList extends Fragment {
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
 
         // Get username of current user
         username = "";
@@ -143,21 +150,41 @@ public class FragmentHome_NewList extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
+
                                 newList = new ArrayList<>();
                                 for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                     if (!connected.contains(documentSnapshot.getId())) {
                                         String fullName = documentSnapshot.getData().get("first_name") + " " + documentSnapshot.getData().get("last_name");
                                         String specific_job = documentSnapshot.getData().get("specific_job").toString();
                                         String field = documentSnapshot.getData().get("field").toString();
-                                        newList.add(new NewListItems(
-                                                fullName,
-                                                specific_job,
-                                                field,
-                                                R.drawable.icon_profile
-                                        ));
+
+                                        // Get profile picture of current user
+                                        StorageReference storageRef = storage.getReference();
+                                        StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
+                                        final long ONE_MEGABYTE = 1024 * 1024;
+                                        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                            @Override
+                                            public void onSuccess(byte[] bytes) {
+                                                Log.d("image_stats", "Image retrieved.");
+                                                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                newList.add(new NewListItems(
+                                                        fullName,
+                                                        specific_job,
+                                                        field,
+                                                        bmp
+                                                ));
+                                                rvNewList.setAdapter(new NewListAdapter(view.getContext(), newList));
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                Log.d("image_stats", "Image not retrieved.");
+                                            }
+                                        });
+
                                     }
                                 }
-                                rvNewList.setAdapter(new NewListAdapter(view.getContext(), newList));
+
                             }
                         }
                     });

@@ -177,23 +177,23 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            String dbUsername = document.getData().get("username").toString();
-                                            String dbPassword = document.getData().get("password").toString();
+                                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                            String dbUsername = documentSnapshot.getData().get("username").toString();
+                                            String dbPassword = documentSnapshot.getData().get("password").toString();
 
                                             if (dbUsername.equals(username) && dbPassword.equals(password)) {
                                                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
                                                 intent.putExtra("accountType", "professional");
                                                 intent.putExtra("username", username);
 
-                                                mAuth.signInWithEmailAndPassword(document.getData().get("email").toString(), password)
+                                                mAuth.signInWithEmailAndPassword(documentSnapshot.getData().get("email").toString(), password)
                                                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                                 if (task.isSuccessful()) {
-                                                                    Log.d(TAG, "signInWithEmail:success");
+                                                                    Log.d("pro_login", "signInWithEmail:success");
                                                                 } else {
-                                                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                                                    Log.w("pro_login", "signInWithEmail:failure", task.getException());
                                                                 }
                                                             }
                                                         });

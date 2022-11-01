@@ -37,7 +37,6 @@
         android:id="@+id/btn_view_reviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:background="@color/secondaryColor"
         android:fontFamily="@font/open_sans_medium"
         android:text="View Reviews About Professional"

@@ -3,6 +3,8 @@ package com.fourbytes.loc8teapp.fragment.professional;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,9 +28,17 @@ import com.fourbytes.loc8teapp.adapter.ConnectedListAdapter;
 import com.fourbytes.loc8teapp.connectedclientsrecycler.ClientItem;
 import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListItems;
 import com.fourbytes.loc8teapp.fragment.client.FragmentHome_ConnectedList;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +47,10 @@ public class FragmentHome_Professional extends Fragment {
     private View view;
     private View l;
     private View l2;
+
+    private FirebaseFirestore db;
+
+    private FirebaseAuth mAuth;
 
     private ExtendedFloatingActionButton home_settings_FAB;
     private ExtendedFloatingActionButton location_settings_FAB;
@@ -68,6 +82,65 @@ public class FragmentHome_Professional extends Fragment {
         l2 = view.findViewById(R.id.location_settings_toolbar_prof);
         rvConnectedClients = view.findViewById(R.id.rv_connected_clients);
 
+        // Initialize values
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        setupViews();
+
+        username = "";
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
+            username = data;
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        rvConnectedClients.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+//        connectedClientList.add(new ClientItem(
+//                R.drawable.loid,
+//                "Loid",
+//                "Secret",
+//                "Forger"
+//        ));
+//
+//        connectedClientList.add(new ClientItem(
+//                R.drawable.yor,
+//                "Yor",
+//                "Secret",
+//                "Forger"
+//        ));
+//
+//        rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList));
+
+
+
+//        connectedClientList.add(new ClientItem(
+//                R.drawable.icon_profile,
+//                task.getResult().getData().get("first_name").toString(),
+//                task.getResult().getData().get("middle_name").toString(),
+//                task.getResult().get("last_name").toString()
+//        ));
+//        rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList));
+
+    }
+
+    private void setupViews() {
         l.setVisibility(view.GONE);
         l2.setVisibility(view.GONE);
 
@@ -76,34 +149,6 @@ public class FragmentHome_Professional extends Fragment {
 
         isAllFABVisible = false;
         isAllFABVisible2 = false;
-
-        username = "";
-        viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-        viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
-            username = data;
-        });
-
-        Log.d("ACC_USERNAME", username);
-
-        connectedClientList = new ArrayList<>();
-
-        rvConnectedClients.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-        connectedClientList.add(new ClientItem(
-                R.drawable.loid,
-                "Loid",
-                "Secret",
-                "Forger"
-        ));
-
-        connectedClientList.add(new ClientItem(
-                R.drawable.yor,
-                "Yor",
-                "Secret",
-                "Forger"
-        ));
-
-        rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList));
 
         home_settings_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,16 +179,5 @@ public class FragmentHome_Professional extends Fragment {
                 }
             }
         });
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().finish();
-            }
-        });
-
-        return view;
     }
 }

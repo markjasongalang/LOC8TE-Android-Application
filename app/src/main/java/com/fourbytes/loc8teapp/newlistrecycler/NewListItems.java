@@ -1,12 +1,14 @@
 package com.fourbytes.loc8teapp.newlistrecycler;
 
+import android.graphics.Bitmap;
+
 public class NewListItems {
     private String newlist_name;
     private String newlist_occupation;
     private String newlist_field;
-    private int newlist_image;
+    private Bitmap newlist_image;
 
-    public NewListItems(String newlist_name, String newlist_occupation, String newlist_field, int newlist_image) {
+    public NewListItems(String newlist_name, String newlist_occupation, String newlist_field, Bitmap newlist_image) {
         this.newlist_name = newlist_name;
         this.newlist_occupation = newlist_occupation;
         this.newlist_field = newlist_field;
@@ -37,11 +39,11 @@ public class NewListItems {
         this.newlist_field = newlist_field;
     }
 
-    public int getNewlist_image() {
+    public Bitmap getNewlist_image() {
         return newlist_image;
     }
 
-    public void setNewlist_image(int newlist_image) {
+    public void setNewlist_image(Bitmap newlist_image) {
         this.newlist_image = newlist_image;
     }
 }

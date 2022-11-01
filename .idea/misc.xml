@@ -85,7 +85,7 @@
         <entry key="app/src/main/res/layout/fragment_certification.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_chat__professional.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_chat_client.xml" value="0.1990990990990991" />
-        <entry key="app/src/main/res/layout/fragment_chat_inside_chat.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_chat_inside_chat.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_chat_items.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_chat_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_culture_tab.xml" value="0.18558558558558558" />

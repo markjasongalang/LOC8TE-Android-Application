@@ -35,7 +35,7 @@ public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListView
         holder.connected_list_name.setText(connectedlist_items.get(position).getConnectedlist_name());
         holder.connected_list_occupation.setText(connectedlist_items.get(position).getConnectedlist_occupation());
         holder.connected_list_field.setText(connectedlist_items.get(position).getConnectedlist_field());
-        holder.connected_list_img.setImageResource(connectedlist_items.get(position).getConnectedlist_image());
+        holder.connected_list_img.setImageBitmap(connectedlist_items.get(position).getConnectedlist_image());
 
         holder.connected_list_rate.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,12 +1,14 @@
 package com.fourbytes.loc8teapp.chatsrecycler;
 
-public class ChatsItems {
-    String chat_name;
-    String chat_occupation;
-    String chat_msgpreview;
-    int chat_image;
+import android.graphics.Bitmap;
 
-    public ChatsItems(String chat_name, String chat_occupation, String chat_msgpreview, int chat_image) {
+public class ChatsItems {
+    private String chat_name;
+    private String chat_occupation;
+    private String chat_msgpreview;
+    private Bitmap chat_image;
+
+    public ChatsItems(String chat_name, String chat_occupation, String chat_msgpreview, Bitmap chat_image) {
         this.chat_name = chat_name;
         this.chat_occupation = chat_occupation;
         this.chat_msgpreview = chat_msgpreview;
@@ -37,11 +39,11 @@ public class ChatsItems {
         this.chat_msgpreview = chat_msgpreview;
     }
 
-    public int getChat_image() {
+    public Bitmap getChat_image() {
         return chat_image;
     }
 
-    public void setChat_image(int chat_image) {
+    public void setChat_image(Bitmap chat_image) {
         this.chat_image = chat_image;
     }
 }
