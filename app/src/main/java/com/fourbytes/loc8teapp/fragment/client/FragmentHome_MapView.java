@@ -80,6 +80,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 import com.google.maps.android.PolyUtil;
 
 import org.json.JSONArray;
@@ -275,11 +276,201 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     }
 
     public void findNearestUser(){
-        map_instance.clear();
         setCurrentLocationMarker(currentUserLat, currentUserLong);
 
-        setNodeMarkers(vertex.getDistanceLatLong(currentUserLat, currentUserLong));
+        //setNodeMarkers(vertex.getDistanceLatLong(currentUserLat, currentUserLong));
 
+        if(isGPSEnabled){
+            List<VertexInfo> nearest_vertex = vertex.getDistanceLatLong(currentUserLat, currentUserLong);
+            String start_point;
+            double start_distance;
+            if(!nearest_vertex.get(0).getId().equals("vertex3")){
+                start_point = nearest_vertex.get(0).getId();
+                start_distance = nearest_vertex.get(0).getDistance();
+            }else{
+                start_point = nearest_vertex.get(1).getId();
+                start_distance = nearest_vertex.get(1).getDistance();
+            }
+
+
+            checkUserNearestNode(start_point, start_distance);
+        }else{
+            showGPSPopUp();
+            return;
+        }
+
+    }
+
+    public void checkUserNearestNode(String start_point, double start_distance){
+
+        ArrayList<UserInfo> Users = new ArrayList<>();
+        db.collection("professionals")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            ArrayList<String> meet_point_list = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                try{
+                                    if(document.getDouble("latitude") != null && document.getDouble("longitude") != null){
+                                        String nearest_point;
+                                        double nearest_distance;
+                                        double latitude = document.getDouble("latitude");
+                                        double longitude = document.getDouble("longitude");
+                                        String id = document.getId();
+                                        String fname = document.getString("first_name");
+                                        String lname = document.getString("last_name");
+                                        String name = fname + " " +lname;
+
+                                        if(vertex.getDistanceLatLong(latitude, longitude).get(0).getId() != null){
+                                            nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(0).getId();
+                                            nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(0).getDistance();
+                                        }else{
+                                            nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(1).getId();
+                                            nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(1).getDistance();
+                                        }
+
+                                        Users.add(new UserInfo(
+                                                id,
+                                                longitude,
+                                                latitude,
+                                                nearest_point,
+                                                name,
+                                                nearest_distance
+                                        ));
+                                    }
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                            if(!Users.isEmpty()){
+                                checkNearestUser(start_point, start_distance, Users);
+                            }else{
+                                System.out.println("No users");
+                            }
+
+                        } else {
+                            Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+    }
+
+    public void checkNearestUser(String start_point, double start_distance, ArrayList<UserInfo> Users){
+        final double MAX = 99999;
+        HashMap<String, VertexData> data = vertex.getVertex();
+        HashMap<String, PathVertex> origin_path = data.get(start_point).getPath();
+
+        ArrayList<LatLng> points = new ArrayList<>();
+        PolylineOptions polylineOptions = new PolylineOptions();
+        System.out.println(start_point);
+        System.out.println(data.get(start_point).getLatitude());
+        System.out.println(data.get(start_point).getLongitude());
+        for(int i = 0; i < Users.size(); i++){
+            double path_distance;
+
+            double currentUserDistance = Users.get(i).getDistance();
+            if(!start_point.equals(Users.get(i).getMeet_point())){
+
+                if(origin_path.get(Users.get(i).getMeet_point()) != null){
+                    path_distance = origin_path.get(Users.get(i).getMeet_point()).getDistance();
+                    Users.get(i).setDistance(currentUserDistance + path_distance + start_distance);
+                }else{
+                    path_distance = MAX;
+                    Users.get(i).setDistance(currentUserDistance + path_distance + start_distance);
+                }
+
+            }else{
+                points.add(new LatLng(currentUserLat, currentUserLong));
+                points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLatitude()));
+                points.add(new LatLng(Users.get(i).getLatitude(), Users.get(i).getLongitude()));
+
+                polylineOptions.addAll(points);
+                polylineOptions.width(10);
+                polylineOptions.color(getResources().getColor(R.color.secondaryColor));
+                polylineOptions.geodesic(true);
+
+                setMarkers(Users.get(i).getLatitude(), Users.get(i).getLongitude(), 0, Users.get(i).getName(), Users.get(i).getId());
+
+                map_instance.addPolyline(polylineOptions);
+
+                return;
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Users.sort((o1, o2) -> Double.compare(o1.getDistance(), o2.getDistance()));
+        }
+
+        if(origin_path.get(Users.get(0).getMeet_point()) == null){
+            showNoRoutesPopup();
+            System.out.println("no route available");
+
+        }else{
+            String nearest_user = Users.get(0).getId();
+            String nearest_user_name = Users.get(0).getName();
+            String nearest_meet_point = Users.get(0).getMeet_point();
+            String nearest_path = Users.get(0).getMeet_point();
+            double nearest_user_latitude = Users.get(0).getLatitude();
+            double nearest_path_longitude = Users.get(0).getLongitude();
+
+            double start_point_latitude = data.get(start_point).getLatitude();
+            double start_point_longitude = data.get(start_point).getLongitude();
+
+            ArrayList<String> final_path = origin_path.get(nearest_path).getPath();
+
+            points.add(new LatLng(currentUserLat, currentUserLong));
+            points.add(new LatLng(start_point_latitude, start_point_longitude));
+            for(int i = 0; i < final_path.size(); i++){
+                points.add(new LatLng(
+                        data.get(final_path.get(i)).getLatitude(),
+                        data.get(final_path.get(i)).getLongitude()
+                ));
+            }
+
+            points.add(new LatLng(
+                    data.get(nearest_meet_point).getLatitude(),
+                    data.get(nearest_meet_point).getLongitude()
+            ));
+            points.add(new LatLng(
+                    nearest_user_latitude,
+                    nearest_path_longitude
+            ));
+
+            polylineOptions.addAll(points);
+            polylineOptions.width(10);
+            polylineOptions.color(getResources().getColor(R.color.secondaryColor));
+            polylineOptions.geodesic(true);
+
+            setMarkers(nearest_user_latitude, nearest_path_longitude, 0, nearest_user_name, nearest_user);
+
+            map_instance.addPolyline(polylineOptions);
+
+        }
+
+    }
+
+    private void showNoRoutesPopup(){
+        dialogBuilder = new AlertDialog.Builder(view.getContext());
+        final View noGPS_view = getLayoutInflater().inflate(R.layout.no_route_popup, null);
+
+        AppCompatButton btn_ok_route = noGPS_view.findViewById(R.id.btn_ok);
+        dialogBuilder.setView(noGPS_view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btn_ok_route.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 
     public void setNodeMarkers(List<VertexInfo> vertexMarker){
@@ -1056,13 +1247,13 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                         String lname = document.getString("last_name");
 
                                         String name = fname + " " +lname;
-                                        Users.add(new UserInfo(
-                                                id,
-                                                longitude,
-                                                latitude,
-                                                meet_point,
-                                                name
-                                        ));
+//                                        Users.add(new UserInfo(
+//                                                id,
+//                                                longitude,
+//                                                latitude,
+//                                                meet_point,
+//                                                name
+//                                        ));
                                         if(!meet_point_list.contains(meet_point)){
                                             meet_point_list.add(meet_point);
                                         }

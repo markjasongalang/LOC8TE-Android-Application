@@ -17,13 +17,13 @@ public class UserInfo {
         this.distance = 0;
     }
 
-    public UserInfo(String id, double longitude, double latitude, String meet_point, String name){
+    public UserInfo(String id, double longitude, double latitude, String meet_point, String name, double distance){
         this.id = id;
         this.longitude = longitude;
         this.latitude = latitude;
         this.meet_point = meet_point;
         this.name = name;
-        this.distance = 0;
+        this.distance = distance;
     }
 
     public String getId() {
