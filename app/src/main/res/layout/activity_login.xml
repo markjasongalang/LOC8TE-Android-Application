@@ -72,11 +72,23 @@
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/tv_alert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/open_sans"
+                android:text="sample text"
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
             <EditText
                 android:id="@+id/edt_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/white_round_corners_10"
                 android:fontFamily="@font/open_sans_light"
                 android:hint="username"
@@ -99,16 +111,6 @@
                 android:textColor="@color/primaryColor"
                 android:textColorHint="@color/primaryColor"
                 android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_forgot_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/open_sans_light"
-                android:text="forgot password?"
-                android:textAlignment="textEnd"
-                android:textColor="@color/white" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_login"

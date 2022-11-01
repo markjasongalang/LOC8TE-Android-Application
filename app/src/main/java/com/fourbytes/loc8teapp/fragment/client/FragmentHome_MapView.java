@@ -64,6 +64,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -84,15 +85,12 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private View view;
     private View l;
     private View l2;
-    private View l3;
 
     private CheckBox mapViewCheckBox;
     private CheckBox listViewCheckBox;
 
     private ExtendedFloatingActionButton home_settings_FAB;
     private ExtendedFloatingActionButton location_settings_FAB;
-
-    private FloatingActionButton search_prof_FAB;
 
     private Button logoutButton;
     private AppCompatButton btnFind;
@@ -114,8 +112,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private DistanceMatrix matrix;
-
-
 
     private final double CAMERA_DEFAULT_LATITUDE = 14.603760;
     private final double CAMERA_DEFAULT_LONGITUDE = 120.989200;
@@ -151,10 +147,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         listViewCheckBox = view.findViewById(R.id.list_view_checkbox);
         home_settings_FAB = view.findViewById(R.id.home_settings);
         location_settings_FAB = view.findViewById(R.id.location_settings);
-//        search_prof_FAB = view.findViewById(R.id.search_prof_button);
         l = view.findViewById(R.id.home_settings_toolbar);
         l2 = view.findViewById(R.id.location_settings_toolbar);
-//        l3 = view.findViewById(R.id.search_prof_field);
         logoutButton = view.findViewById(R.id.logout);
         btnFind = view.findViewById(R.id.btn_find);
         btn_refresh = view.findViewById(R.id.btn_refresh);
@@ -165,7 +159,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
         l.setVisibility(view.GONE);
         l2.setVisibility(view.GONE);
-//        l3.setVisibility(view.GONE);
         home_settings_FAB.shrink();
         location_settings_FAB.shrink();
 
@@ -244,7 +237,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
             }
         });
 

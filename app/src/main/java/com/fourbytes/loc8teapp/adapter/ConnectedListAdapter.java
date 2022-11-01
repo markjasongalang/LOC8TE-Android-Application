@@ -16,8 +16,7 @@ import com.fourbytes.loc8teapp.R;
 import java.util.List;
 
 public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListViewHolder> {
-
-    Context connectedlist_context;
+    private Context connectedlist_context;
     private List<ConnectedListItems> connectedlist_items;
 
     public ConnectedListAdapter(Context connectedlist_context, List<ConnectedListItems> connectedlist_items) {
@@ -35,7 +34,7 @@ public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListView
     public void onBindViewHolder(@NonNull ConnectedListViewHolder holder, int position) {
         holder.connected_list_name.setText(connectedlist_items.get(position).getConnectedlist_name());
         holder.connected_list_occupation.setText(connectedlist_items.get(position).getConnectedlist_occupation());
-        holder.connected_list_distance.setText(connectedlist_items.get(position).getConnectedlist_distance());
+        holder.connected_list_field.setText(connectedlist_items.get(position).getConnectedlist_field());
         holder.connected_list_img.setImageResource(connectedlist_items.get(position).getConnectedlist_image());
 
         holder.connected_list_rate.setOnClickListener(new View.OnClickListener() {

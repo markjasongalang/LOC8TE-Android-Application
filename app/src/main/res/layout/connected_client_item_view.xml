@@ -7,7 +7,7 @@
     android:background="@drawable/fourth_color_round_corners_10">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/newlist_img"
+        android:id="@+id/iv_client_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:padding="10dp"
@@ -16,11 +16,11 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder" />
 
     <TextView
-        android:id="@+id/newlist_name"
+        android:id="@+id/tv_client_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@id/newlist_img"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/iv_client_image"
         android:ellipsize="end"
         android:fontFamily="@font/open_sans_bold"
         android:maxLines="1"
@@ -30,57 +30,50 @@
         android:textSize="17sp" />
 
     <TextView
-        android:id="@+id/newlist_occupation"
+        android:id="@+id/tv_sample_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/newlist_name"
-        android:layout_marginTop="-3dp"
-        android:layout_toEndOf="@id/newlist_img"
+        android:layout_below="@id/tv_client_name"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/iv_client_image"
         android:ellipsize="end"
         android:fontFamily="@font/open_sans_semi_bold"
         android:maxLines="1"
         android:paddingRight="10dp"
-        android:text="Batang Pasaway"
+        android:text="Client"
         android:textColor="@color/secondaryColorLight"
         android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/tv_new_list_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/newlist_occupation"
-        android:layout_marginTop="10sp"
-        android:layout_toEndOf="@id/newlist_img"
-        android:ellipsize="end"
-        android:fontFamily="@font/open_sans_light_italic"
-        android:maxLines="1"
-        android:paddingRight="10dp"
-        android:text="field"
-        android:textColor="@color/fifthColor"
-        android:textSize="12sp" />
-
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/newlist_profile"
+        android:id="@+id/btn_client_profile"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_below="@id/newlist_occupation"
+        android:layout_below="@id/tv_sample_text"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:background="@drawable/tertiary_color_round_button_profile" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/newlist_chat"
+        android:id="@+id/btn_client_chat"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_below="@id/newlist_occupation"
+        android:layout_below="@id/tv_sample_text"
         android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/newlist_profile"
+        android:layout_toLeftOf="@id/btn_client_profile"
         android:background="@drawable/tertiary_color_round_button_chat" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_client_rate"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/tv_sample_text"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/btn_client_chat"
+        android:background="@drawable/tertiary_color_round_button_rate" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/newlist_img"
+        android:layout_below="@id/iv_client_image"
         android:layout_marginTop="10dp" />
-
 </RelativeLayout>

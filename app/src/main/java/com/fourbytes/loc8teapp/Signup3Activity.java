@@ -58,6 +58,8 @@ public class Signup3Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Signup4Activity.class);
 
+                // todo: FIX PROBLEM ON DIFFERENT IMAGE FILE TYPES/FORMAT
+
                 if (curByteArray == null) {
                     tvImageAlert.setText("Please attach an image.");
                     tvImageAlert.setVisibility(View.VISIBLE);

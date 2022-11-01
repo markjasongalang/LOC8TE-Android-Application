@@ -1,15 +1,15 @@
 package com.fourbytes.loc8teapp.newlistrecycler;
 
 public class NewListItems {
-    String newlist_name;
-    String newlist_occupation;
-    String newlist_distance;
-    int newlist_image;
+    private String newlist_name;
+    private String newlist_occupation;
+    private String newlist_field;
+    private int newlist_image;
 
-    public NewListItems(String newlist_name, String newlist_occupation, String newlist_distance, int newlist_image) {
+    public NewListItems(String newlist_name, String newlist_occupation, String newlist_field, int newlist_image) {
         this.newlist_name = newlist_name;
         this.newlist_occupation = newlist_occupation;
-        this.newlist_distance = newlist_distance;
+        this.newlist_field = newlist_field;
         this.newlist_image = newlist_image;
     }
 
@@ -29,12 +29,12 @@ public class NewListItems {
         this.newlist_occupation = newlist_occupation;
     }
 
-    public String getNewlist_distance() {
-        return newlist_distance;
+    public String getNewlist_field() {
+        return newlist_field;
     }
 
-    public void setNewlist_distance(String newlist_distance) {
-        this.newlist_distance = newlist_distance;
+    public void setNewlist_field(String newlist_field) {
+        this.newlist_field = newlist_field;
     }
 
     public int getNewlist_image() {
