@@ -845,35 +845,69 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         String TAG = "MAP USERS";
         ArrayList<VertexInfo> U = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
-
-        db.collection("users")
+        db.collection("professionals")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+
+                            ArrayList<String> meet_point_list = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 try{
-                                    double latitude = document.getDouble("lat");
-                                    double longitude = document.getDouble("long");
-                                    String id = document.getId();
-                                    String name = document.getString("first");
-                                    U.add(new VertexInfo(id, longitude, latitude));
-                                    setMarkers(latitude, longitude, 0, name, id);
+                                    if(document.getString("meet_point") != null){
+                                        double latitude = document.getDouble("latitude");
+                                        double longitude = document.getDouble("longitude");
+                                        String id = document.getId();
+                                        String meet_point = document.getString("meet_point");
+                                        String fname = document.getString("first_name");
+                                        String lname = document.getString("last_name");
+                                        String name = fname + " " +lname;
+
+                                        setMarkers(latitude, longitude, 0, name, id);
+                                    }
                                 }catch (Exception e){
-                                    Log.d("NODES",  document.getId());
+                                    e.printStackTrace();
                                 }
 
                             }
 
-                            initUsers(U);
                         } else {
                             Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 });
+
+//        db.collection("users")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//                                try{
+//                                    double latitude = document.getDouble("lat");
+//                                    double longitude = document.getDouble("long");
+//                                    String id = document.getId();
+//                                    String name = document.getString("first");
+//                                    U.add(new VertexInfo(id, longitude, latitude));
+//                                    setMarkers(latitude, longitude, 0, name, id);
+//                                }catch (Exception e){
+//                                    Log.d("NODES",  document.getId());
+//                                }
+//
+//                            }
+//
+//                            initUsers(U);
+//                        } else {
+//                            Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                    }
+//                });
     }
 
     public void retrieveNodes() {
@@ -1087,16 +1121,19 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
         }
 
-        double nearest_distance = path.get(meet_point_list.get(0)).getDistance();
-
-        System.out.println(meet_point_list_filtered.size());
+        System.out.println("Meet points to check: " + meet_point_list_filtered.size());
+        double nearest_distance = path.get(meet_point_list_filtered.get(0)).getDistance();
+        nearest_path = path.get(meet_point_list_filtered.get(0)).getPath();
         for(int i = 0; i <  meet_point_list_filtered.size() - 1; i++){
 
             double check_distance = path.get(meet_point_list_filtered.get(i + 1)).getDistance();
-
-            if(check_distance > nearest_distance){
-                nearest_path = path.get( meet_point_list_filtered.get(i + 1)).getPath();
+            System.out.println(nearest_distance);
+            System.out.println(check_distance);
+            if(nearest_distance > check_distance){
+                System.out.println("new distance is: "+ check_distance);
+                nearest_path = path.get(meet_point_list_filtered.get(i + 1)).getPath();
             }
+
         }
 
         map_instance.clear();
@@ -1114,7 +1151,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         meet_point = nearest_path.get(nearest_path.size()-1);
         finalLat = vertices.get(nearest_path.get(nearest_path.size()-1)).getLatitude();
         finalLong = vertices.get(nearest_path.get(nearest_path.size()-1)).getLongitude();
-
+        getUserMeetPoint(Users, meet_point);
         setDestinationMarker(finalLat, finalLong);
 
     }
@@ -1211,7 +1248,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 }
             }
             polylineOptions.addAll(points);
-            polylineOptions.width(10);
+            polylineOptions.width(5);
             polylineOptions.color(getResources().getColor(R.color.secondaryColor));
             polylineOptions.geodesic(true);
 
