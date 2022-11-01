@@ -118,7 +118,7 @@ public class Signup1Activity extends AppCompatActivity {
                             boolean usernameExists = false;
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (document.getData().get("username").equals(username)) {
+                                if (document.getId().equals(username)) {
                                     usernameExists = true;
                                     break;
                                 }
@@ -137,7 +137,7 @@ public class Signup1Activity extends AppCompatActivity {
                                         boolean usernameExists = false;
 
                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                            if (document.getData().get("username").equals(username)) {
+                                            if (document.getId().equals(username)) {
                                                 usernameExists = true;
                                                 break;
                                             }

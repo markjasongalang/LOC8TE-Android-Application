@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -78,15 +79,17 @@
                         android:text="edit profile"
                         android:textAllCaps="false"
                         android:textColor="@color/secondaryColor"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:visibility="invisible" />
 
                     <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_profile_picture"
                         android:layout_width="200dp"
                         android:layout_height="200dp"
                         android:layout_marginLeft="-30dp"
                         android:padding="10dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/anya"
+                        android:src="@drawable/icon_profile"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder"
                         app:strokeColor="@color/white"
                         app:strokeWidth="10dp" />
@@ -131,10 +134,10 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_client_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/glacial_indifference"
-                    android:text="Anya Forger"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="22sp" />
@@ -148,7 +151,8 @@
                     android:text="East Germany"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="invisible" />
             </LinearLayout>
 
 

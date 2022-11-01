@@ -45,19 +45,19 @@
         android:maxLines="1"/>
 
     <TextView
-        android:id="@+id/connectedlist_distance"
+        android:id="@+id/tv_connected_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/connectedlist_img"
         android:layout_below="@id/connectedlist_occupation"
         android:layout_marginTop="10sp"
-        android:text="8km away"
-        android:textSize="15sp"
-        android:fontFamily="@font/open_sans_light_italic"
-        android:textColor="@color/fifthColor"
-        android:paddingRight="10dp"
+        android:layout_toEndOf="@id/connectedlist_img"
         android:ellipsize="end"
-        android:maxLines="1"/>
+        android:fontFamily="@font/open_sans_light_italic"
+        android:maxLines="1"
+        android:paddingRight="10dp"
+        android:text="field"
+        android:textColor="@color/fifthColor"
+        android:textSize="12sp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/connectedlist_profile"

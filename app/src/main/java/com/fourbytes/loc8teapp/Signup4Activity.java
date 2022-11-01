@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,7 +25,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
@@ -127,6 +125,7 @@ public class Signup4Activity extends AppCompatActivity {
                     data.put("field", field);
                     data.put("specific_job", specificJob);
                     data.put("verified", false);
+                    data.put("meet_point", null);
                 }
 
                 data.put("latitude", currentUserLat);
@@ -135,7 +134,7 @@ public class Signup4Activity extends AppCompatActivity {
                 String type = (accountType.equals("professional") ? "professionals" : "clients");
 
                 /* Cloud Firestore */
-                db.collection(type).document(email)
+                db.collection(type).document(username)
                         .set(data)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -158,7 +157,6 @@ public class Signup4Activity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    FirebaseUser user = mAuth.getCurrentUser();
                                     Log.d("AUTH_SUCCESS", "Authentication Success");
                                 } else {
                                     Log.d("AUTH_ERROR", "Authentication Error");

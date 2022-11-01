@@ -35,7 +35,7 @@ public class NewListAdapter extends RecyclerView.Adapter<NewListViewHolder> {
     public void onBindViewHolder(@NonNull NewListViewHolder holder, int position) {
         holder.new_list_name.setText(newlist_items.get(position).getNewlist_name());
         holder.new_list_occupation.setText(newlist_items.get(position).getNewlist_occupation());
-        holder.new_list_distance.setText(newlist_items.get(position).getNewlist_distance());
+        holder.new_list_field.setText(newlist_items.get(position).getNewlist_field());
         holder.new_list_img.setImageResource(newlist_items.get(position).getNewlist_image());
 
         holder.new_list_chat.setOnClickListener(new View.OnClickListener() {

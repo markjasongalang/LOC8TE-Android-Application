@@ -1,32 +1,63 @@
 package com.fourbytes.loc8teapp.fragment.client;
 
 import android.app.AlertDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
 import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentProfile_Client extends Fragment implements AdapterView.OnItemSelectedListener {
     private View view;
+
+    private FirebaseFirestore db;
+
+    private FirebaseStorage storage;
 
     private FragmentManager parentFragmentManager;
 
@@ -45,6 +76,14 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
 
     private CardView cvReviews;
 
+    private String username;
+
+    private SharedViewModel viewModel;
+
+    private TextView tvClientName;
+
+    private ShapeableImageView ivProfilePicture;
+
     public FragmentProfile_Client() {}
 
     @Override
@@ -55,9 +94,51 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
         rvReviewForProfessional = view.findViewById(R.id.rv_review_for_professional);
         btnAddReview = view.findViewById(R.id.btn_add_review);
         cvReviews = view.findViewById(R.id.cv_reviews);
+        tvClientName = view.findViewById(R.id.tv_client_name);
+        ivProfilePicture = view.findViewById(R.id.iv_profile_picture);
+
+        // Initialize values
+        db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
 
         // Parent fragment manager
         parentFragmentManager = getParentFragmentManager();
+
+        // Get username of current user
+        username = "";
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
+            username = data;
+        });
+
+        // Get full name of current user
+        db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                String firstName = value.getData().get("first_name").toString();
+                String lastName = value.getData().get("last_name").toString();
+                tvClientName.setText(firstName + " " + lastName);
+            }
+        });
+
+        // Get profile picture of current user
+        StorageReference storageRef = storage.getReference();
+        StorageReference pathReference = storageRef.child("profilePics/" + username + "_profile.jpg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                ivProfilePicture.setImageBitmap(bmp);
+                Log.d("image_stats", "Image retrieved.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("image_stats", "Image not retrieved.");
+            }
+        });
 
         rvReviewForProfessional.setLayoutManager(new LinearLayoutManager(view.getContext()));
         List<ReviewForProfessional> reviewForProfessionals = new ArrayList<>();
@@ -66,7 +147,7 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
                 "Cruz",
                 "Santos",
                 "IT Specialist",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae tellus turpis. ",
+                "She was very hardworking.",
                 "03/31/2022",
                 3.45
         ));
@@ -76,7 +157,7 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
                 "Robot",
                 "Musk",
                 "Rocket Engineer",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae tellus turpis. ",
+                "This guy is so brilliant!",
                 "05/21/2022",
                 4.3
         ));
@@ -86,7 +167,7 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
                 "Secret",
                 "Padilla",
                 "100K Android Developer",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae tellus turpis. ",
+                "He is a genius in his line of work.",
                 "12/25/2021",
                 3.78
         ));
@@ -95,8 +176,8 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
                 "Mary Angeline",
                 "",
                 "Corral",
-                "Software lang",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae tellus turpis. ",
+                "Software Tester",
+                "She did a good job.",
                 "03/31/2022",
                 3.78
         ));
@@ -124,7 +205,7 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
                 btnRate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(view.getContext(), "Nice rating tho", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Successfully rated!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -167,13 +248,8 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
         edtReview.setText("");
 
-        if (pos == 2) {
-            Toast.makeText(view.getContext(), "Pogi!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
+    public void onNothingSelected(AdapterView<?> adapterView) {}
 }

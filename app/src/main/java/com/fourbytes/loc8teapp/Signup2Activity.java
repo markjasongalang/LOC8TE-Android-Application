@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayOutputStream;
@@ -142,23 +143,99 @@ public class Signup2Activity extends AppCompatActivity {
                     return;
                 }
 
-                db.collection("clients").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                db.collection("clients").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult();
+//                            if (document.exists()) {
+//                                tvAlert.setText("Email already exists.");
+//                                tvAlert.setVisibility(View.VISIBLE);
+//                                return;
+//                            }
+//
+//                            db.collection("professionals")
+//                                .document(getIntent().getStringExtra("username"))
+//                                .get()
+//                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                        if (task.isSuccessful()) {
+//                                            DocumentSnapshot document = task.getResult();
+//                                            if (document.get) {
+//                                                tvAlert.setText("Email already exists.");
+//                                                tvAlert.setVisibility(View.VISIBLE);
+//                                                return;
+//                                            }
+//
+//                                            tvAlert.setVisibility(View.GONE);
+//
+//                                            // Previous data to be passed
+//                                            intent.putExtra("username", getIntent().getStringExtra("username"));
+//                                            intent.putExtra("password", getIntent().getStringExtra("password"));
+//                                            intent.putExtra("firstName", getIntent().getStringExtra("firstName"));
+//                                            intent.putExtra("middleName", getIntent().getStringExtra("middleName"));
+//                                            intent.putExtra("lastName", getIntent().getStringExtra("lastName"));
+//                                            intent.putExtra("birthdate", getIntent().getStringExtra("birthdate"));
+//
+//                                            // New data to be passed
+//                                            intent.putExtra("email", email);
+//                                            intent.putExtra("contactNumber", contactNumber);
+//                                            intent.putExtra("accountType", accountType);
+//                                            if (accountType.equals("professional")) {
+//                                                tvImageAlert.setVisibility(View.GONE);
+//
+//                                                intent.putExtra("field", field);
+//                                                intent.putExtra("specificJob", specificJob);
+//                                                intent.putExtra("idPicture", byteArray);
+//                                                intent.putExtra("idPicUri", idPicUri.toString());
+//                                            }
+//
+//                                            startActivity(intent);
+//                                        } else {
+//                                            Log.d("CHECK_EMAIL", "Failed to read the data...");
+//                                        }
+//                                    }
+//                                });
+//                        } else {
+//                            Log.d("CHECK_EMAIL", "Failed to read the data...");
+//                        }
+//                    }
+//                });
+
+                db.collection("clients").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
+                            boolean emailExists = false;
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getData().get("email").equals(email)) {
+                                    emailExists = true;
+                                    break;
+                                }
+                            }
+
+                            if (emailExists) {
                                 tvAlert.setText("Email already exists.");
                                 tvAlert.setVisibility(View.VISIBLE);
                                 return;
                             }
 
-                            db.collection("professionals").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            db.collection("professionals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        DocumentSnapshot document = task.getResult();
-                                        if (document.exists()) {
+                                        boolean emailExists = false;
+
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            if (document.getData().get("email").equals(email)) {
+                                                emailExists = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (emailExists) {
                                             tvAlert.setText("Email already exists.");
                                             tvAlert.setVisibility(View.VISIBLE);
                                             return;
