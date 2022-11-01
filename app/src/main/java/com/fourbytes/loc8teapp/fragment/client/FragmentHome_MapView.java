@@ -388,7 +388,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
             }else{
                 points.add(new LatLng(currentUserLat, currentUserLong));
-                points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLatitude()));
+                points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLongitude()));
+                points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLongitude()));
                 points.add(new LatLng(Users.get(i).getLatitude(), Users.get(i).getLongitude()));
 
                 polylineOptions.addAll(points);
