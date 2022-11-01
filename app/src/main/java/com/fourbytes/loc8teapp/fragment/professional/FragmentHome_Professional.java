@@ -112,21 +112,23 @@ public class FragmentHome_Professional extends Fragment {
 
         rvConnectedClients.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-//        connectedClientList.add(new ClientItem(
-//                R.drawable.loid,
-//                "Loid",
-//                "Secret",
-//                "Forger"
-//        ));
-//
-//        connectedClientList.add(new ClientItem(
-//                R.drawable.yor,
-//                "Yor",
-//                "Secret",
-//                "Forger"
-//        ));
-//
-//        rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList));
+        connectedClientList = new ArrayList<>();
+
+        connectedClientList.add(new ClientItem(
+                R.drawable.icon_profile,
+                "J",
+                "",
+                "Johnson"
+        ));
+
+        connectedClientList.add(new ClientItem(
+                R.drawable.icon_profile,
+                "John",
+                "",
+                "Cena"
+        ));
+
+        rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList));
 
 
 
