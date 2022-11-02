@@ -7,21 +7,26 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListItems;
 import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListViewHolder;
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.fragment.professional.FragmentProfile_Professional;
 
 import java.util.List;
 
 public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListViewHolder> {
     private Context connectedlist_context;
     private List<ConnectedListItems> connectedlist_items;
+    private FragmentManager parentFragmentManager;
 
-    public ConnectedListAdapter(Context connectedlist_context, List<ConnectedListItems> connectedlist_items) {
+    public ConnectedListAdapter(Context connectedlist_context, List<ConnectedListItems> connectedlist_items, FragmentManager parentFragmentManager) {
         this.connectedlist_context = connectedlist_context;
         this.connectedlist_items = connectedlist_items;
+        this.parentFragmentManager = parentFragmentManager;
     }
 
     @NonNull
@@ -37,13 +42,6 @@ public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListView
         holder.connected_list_field.setText(connectedlist_items.get(position).getConnectedlist_field());
         holder.connected_list_img.setImageBitmap(connectedlist_items.get(position).getConnectedlist_image());
 
-        holder.connected_list_rate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Rate button clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         holder.connected_list_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,10 +49,18 @@ public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListView
             }
         });
 
+        // Get username of chosen professional
+        String proUsername = connectedlist_items.get(position).getConnectedlist_username();
+
         holder.connected_list_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Profile button clicked", Toast.LENGTH_SHORT).show();
+                DataPasser.setUsername(proUsername);
+                parentFragmentManager.beginTransaction()
+                        .replace(R.id.layout_client_home, FragmentProfile_Professional.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }

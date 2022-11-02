@@ -24,6 +24,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_professional_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -34,6 +35,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_specific_job"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/glacial_indifference"
@@ -88,8 +90,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_service"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 </LinearLayout>

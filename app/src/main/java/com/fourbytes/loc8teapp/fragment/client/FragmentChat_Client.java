@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.ConnectedListAdapter;
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
@@ -59,7 +60,10 @@ public class FragmentChat_Client extends Fragment {
 
     private SharedViewModel viewModel;
 
+    private Pair pair;
+
     private String username;
+    private String accountType;
 
     public FragmentChat_Client() {}
 
@@ -75,12 +79,15 @@ public class FragmentChat_Client extends Fragment {
         storage = FirebaseStorage.getInstance();
         parentFragmentManager = getParentFragmentManager();
 
-        // Get username of current user
-        username = "";
+        // Get username and account type of current user
+        pair = null;
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
-            username = data;
+            pair = data;
         });
+
+        username = pair.getFirst();
+        accountType = pair.getSecond();
 
         // Workaround to enable the visibility of the document
         Map<String, Object> temp = new HashMap<>();

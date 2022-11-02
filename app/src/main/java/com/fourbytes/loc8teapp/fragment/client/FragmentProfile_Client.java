@@ -3,7 +3,6 @@ package com.fourbytes.loc8teapp.fragment.client;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,27 +26,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
 import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +68,10 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
 
     private CardView cvReviews;
 
+    private Pair pair;
+
     private String username;
+    private String accountType;
 
     private SharedViewModel viewModel;
 
@@ -104,12 +99,15 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
         // Parent fragment manager
         parentFragmentManager = getParentFragmentManager();
 
-        // Get username of current user
-        username = "";
+        // Get username and account type of current user
+        pair = null;
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
-            username = data;
+            pair = data;
         });
+
+        username = pair.getFirst();
+        accountType = pair.getSecond();
 
         // Get full name of current user
         db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -251,5 +249,6 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {}
+    public void onNothingSelected(AdapterView<?> adapterView) {
+    }
 }

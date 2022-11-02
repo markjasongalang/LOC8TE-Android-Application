@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.NewListAdapter;
 import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListItems;
@@ -50,13 +52,18 @@ public class FragmentHome_ConnectedList extends Fragment {
 
     private FirebaseStorage storage;
 
+    private FragmentManager parentFragmentManager;
+
     private SharedViewModel viewModel;
 
     private List<ConnectedListItems> connectedList;
 
     private RecyclerView rvConnectedList;
 
+    private Pair pair;
+
     private String username;
+    private String accountType;
 
     private Map<String, Object> temp;
 
@@ -69,16 +76,20 @@ public class FragmentHome_ConnectedList extends Fragment {
         // Initialize values
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        parentFragmentManager = getParentFragmentManager();
 
         // Get views from layout
         rvConnectedList = view.findViewById(R.id.connected_recyclerview);
 
-        // Get username of current user
-        username = "";
+        // Get username and account type of current user
+        pair = null;
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
-            username = data;
+            pair = data;
         });
+
+        username = pair.getFirst();
+        accountType = pair.getSecond();
 
         return view;
     }
@@ -131,12 +142,13 @@ public class FragmentHome_ConnectedList extends Fragment {
                                                     Log.d("image_stats", "Image retrieved.");
                                                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                                     connectedList.add(new ConnectedListItems(
+                                                            documentSnapshot.getId(),
                                                             fullName,
                                                             specific_job,
                                                             field,
                                                             bmp
                                                     ));
-                                                    rvConnectedList.setAdapter(new ConnectedListAdapter(view.getContext(), connectedList));
+                                                    rvConnectedList.setAdapter(new ConnectedListAdapter(view.getContext(), connectedList, parentFragmentManager));
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override

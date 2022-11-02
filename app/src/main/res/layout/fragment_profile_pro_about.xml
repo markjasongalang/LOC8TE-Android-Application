@@ -3,7 +3,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_about"
+    android:id="@+id/layout_about_pro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fourthColor">
@@ -48,6 +48,7 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_edit_profile"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
                     android:layout_marginTop="160dp"
@@ -112,20 +113,31 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_professional_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/glacial_indifference"
-                android:text="Joshua Padilla"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="22sp" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_connect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/secondary_color_round_corners2"
+                android:fontFamily="@font/glacial_indifference"
+                android:text="connect"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -150,10 +162,10 @@
                 android:padding="20dp">
 
                 <TextView
+                    android:id="@+id/tv_specific_job"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/glacial_indifference"
-                    android:text="Android Chef"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp" />

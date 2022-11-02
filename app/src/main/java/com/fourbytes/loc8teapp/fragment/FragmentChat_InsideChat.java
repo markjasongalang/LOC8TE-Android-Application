@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems;
 import com.fourbytes.loc8teapp.R;
@@ -43,7 +44,10 @@ public class FragmentChat_InsideChat extends Fragment {
 
     private SharedViewModel viewModel;
 
+    private Pair pair;
+
     private String username;
+    private String accountType;
 
     public FragmentChat_InsideChat() {}
 
@@ -60,12 +64,15 @@ public class FragmentChat_InsideChat extends Fragment {
         parentFragmentManager = getParentFragmentManager();
         db = FirebaseFirestore.getInstance();
 
-        // Get username of current user
-        username = "";
+        // Get username and account type of current user
+        pair = null;
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
-            username = data;
+            pair = data;
         });
+
+        username = pair.getFirst();
+        accountType = pair.getSecond();
 
         parentFragmentManager.setFragmentResultListener("data_from_prev", this, new FragmentResultListener() {
             @Override
@@ -94,19 +101,19 @@ public class FragmentChat_InsideChat extends Fragment {
 
         insideChatItemsList.add(new InsideChatItems(
                 "Hello!",
-                R.drawable.icon_profile,
+                R.drawable.random2,
                 InsideChatItems.layout_right
         ));
 
         insideChatItemsList.add(new InsideChatItems(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-                R.drawable.icon_profile,
+                R.drawable.random2,
                 InsideChatItems.layout_right
         ));
 
         insideChatItemsList.add(new InsideChatItems(
                 "Thanks for contacting me!",
-                R.drawable.icon_profile,
+                R.drawable.random1,
                 InsideChatItems.layout_left
         ));
 

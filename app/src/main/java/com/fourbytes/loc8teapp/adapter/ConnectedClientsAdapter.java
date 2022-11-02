@@ -32,7 +32,7 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ClientViewHolder holder, int position) {
-        holder.ivClientImage.setImageResource(clientItems.get(position).getClientImage());
+        holder.ivClientImage.setImageBitmap(clientItems.get(position).getClientImage());
 
         String firstName = clientItems.get(position).getFirstName().toString();
         String middleName = clientItems.get(position).getMiddleName().toString();

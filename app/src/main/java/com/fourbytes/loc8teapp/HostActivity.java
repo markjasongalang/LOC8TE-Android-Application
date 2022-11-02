@@ -48,8 +48,9 @@ public class HostActivity extends AppCompatActivity {
         String accountType = getIntent().getStringExtra("accountType");
         String username = getIntent().getStringExtra("username");
 
+        // Pass username and account type to all fragments
         viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
-        viewModel.setData(username);
+        viewModel.setData(new Pair(username, accountType));
 
         // Separate the navigation (client or professional)
         if (accountType.equals("client")) {

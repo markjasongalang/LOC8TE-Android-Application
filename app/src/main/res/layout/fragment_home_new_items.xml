@@ -68,15 +68,6 @@
         android:layout_marginRight="15dp"
         android:background="@drawable/tertiary_color_round_button_profile" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/newlist_chat"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/newlist_occupation"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/newlist_profile"
-        android:background="@drawable/tertiary_color_round_button_chat" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"

@@ -142,6 +142,18 @@
                     android:textColor="@color/white"
                     android:textSize="22sp" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/secondary_color_round_corners2"
+                    android:fontFamily="@font/glacial_indifference"
+                    android:text="report"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -152,11 +164,11 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    android:visibility="invisible" />
+                    android:visibility="gone" />
             </LinearLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -179,7 +191,16 @@
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </LinearLayout>
-            </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_add_review"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/tertiary_color_add_review_round_corners"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_review_for_professional"
@@ -189,14 +210,5 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp" />
         </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_add_review"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/tertiary_color_add_review_round_corners"
-            android:textColor="@color/white"
-            app:layout_constraintLeft_toRightOf="@id/vg80"
-            app:layout_constraintTop_toBottomOf="@id/hg50" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
