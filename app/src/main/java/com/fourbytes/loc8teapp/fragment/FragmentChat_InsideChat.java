@@ -3,6 +3,7 @@ package com.fourbytes.loc8teapp.fragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,20 +13,33 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import java.sql.Timestamp;
 
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.adapter.InsideChatAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FragmentChat_InsideChat extends Fragment {
     private View view;
@@ -36,9 +50,10 @@ public class FragmentChat_InsideChat extends Fragment {
 
     private RecyclerView rvInsideChat;
 
-    private TextView tvProfessionalName;
+    private TextView tvChatName;
 
     private AppCompatButton btnBack;
+    private AppCompatButton btnSend;
 
     private List<InsideChatItems> insideChatItemsList;
 
@@ -49,7 +64,12 @@ public class FragmentChat_InsideChat extends Fragment {
     private String username;
     private String accountType;
 
-    public FragmentChat_InsideChat() {}
+    private String otherUsername;
+
+    private EditText edtChatMesage;
+
+    public FragmentChat_InsideChat() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +78,9 @@ public class FragmentChat_InsideChat extends Fragment {
         // Get views from layout
         rvInsideChat = view.findViewById(R.id.insidechat_recyclerview);
         btnBack = view.findViewById(R.id.btn_back);
-        tvProfessionalName = view.findViewById(R.id.tv_professional_name);
+        tvChatName = view.findViewById(R.id.tv_chat_name);
+        edtChatMesage = view.findViewById(R.id.edt_chat_message);
+        btnSend = view.findViewById(R.id.btn_send);
 
         // Initialize values
         parentFragmentManager = getParentFragmentManager();
@@ -74,11 +96,25 @@ public class FragmentChat_InsideChat extends Fragment {
         username = pair.getFirst();
         accountType = pair.getSecond();
 
-        parentFragmentManager.setFragmentResultListener("data_from_prev", this, new FragmentResultListener() {
+        parentFragmentManager.setFragmentResultListener("data_from_chat_adapter", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                String professionalUsername = result.getString("pro_username");
-                tvProfessionalName.setText(professionalUsername);
+                otherUsername = result.getString("chat_username");
+
+                if (accountType.equals("client")) {
+                    // For client
+                    db.collection("professionals").document(otherUsername).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                tvChatName.setText(task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"));
+                            }
+                        }
+                    });
+                } else {
+                    // For professional
+                }
+
             }
         });
 
@@ -89,6 +125,35 @@ public class FragmentChat_InsideChat extends Fragment {
             }
         });
 
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String chatMessage = edtChatMesage.getText().toString();
+                if (chatMessage.isEmpty()) {
+                    return;
+                }
+
+//                db.collection("professionals").addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                        for (QueryDocumentSnapshot documentSnapshot : value) {
+//                            // Place code to add in the List<> for Recyclerview
+//                            Log.d("sample_data", documentSnapshot.getData().toString());
+//                        }
+//                    }
+//                });
+
+                Timestamp ts = new Timestamp(System.currentTimeMillis());
+                Map<String, Object> temp = new HashMap<>();
+                temp.put("sender", username);
+                temp.put("message", chatMessage);
+                temp.put("timestamp", ts.toString());
+                db.collection("client_chats").document(username).collection("pro_list_chats")
+                        .document(otherUsername).collection("messages").add(temp);
+            }
+        });
+
         return view;
     }
 
@@ -96,27 +161,43 @@ public class FragmentChat_InsideChat extends Fragment {
     public void onStart() {
         super.onStart();
 
-        insideChatItemsList = new ArrayList<>();
+
+
         rvInsideChat.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        insideChatItemsList.add(new InsideChatItems(
-                "Hello!",
-                R.drawable.random2,
-                InsideChatItems.layout_right
-        ));
+        insideChatItemsList = new ArrayList<>();
 
-        insideChatItemsList.add(new InsideChatItems(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-                R.drawable.random2,
-                InsideChatItems.layout_right
-        ));
+        db.collection("client_chats").document(username).collection("pro_list_chats").document(otherUsername)
+                .collection("messages").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-        insideChatItemsList.add(new InsideChatItems(
-                "Thanks for contacting me!",
-                R.drawable.random1,
-                InsideChatItems.layout_left
-        ));
+                        insideChatItemsList = new ArrayList<>();
+                        for (QueryDocumentSnapshot documentSnapshot : value) {
+//                            insideChatItemsList.add()
+                        }
+                        rvInsideChat.setAdapter(new InsideChatAdapter(getContext(), insideChatItemsList));
 
-        rvInsideChat.setAdapter(new InsideChatAdapter(view.getContext(), insideChatItemsList));
+                    }
+                });
+
+//        insideChatItemsList.add(new InsideChatItems(
+//                "Hello!",
+//                R.drawable.random2,
+//                InsideChatItems.layout_right
+//        ));
+//
+//        insideChatItemsList.add(new InsideChatItems(
+//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+//                R.drawable.random2,
+//                InsideChatItems.layout_right
+//        ));
+//
+//        insideChatItemsList.add(new InsideChatItems(
+//                "Thanks for contacting me!",
+//                R.drawable.random1,
+//                InsideChatItems.layout_left
+//        ));
+
     }
 }

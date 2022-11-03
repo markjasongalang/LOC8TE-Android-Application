@@ -43,12 +43,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
         holder.chats_msgpreview.setText(chat_items.get(position).getChat_msgpreview());
         holder.chats_image.setImageBitmap(chat_items.get(position).getChat_image());
 
+        String username = chat_items.get(position).getChat_username();
+
         holder.chats_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle result = new Bundle();
-                result.putString("pro_username", holder.chats_name.getText().toString());
-                parentFragmentManager.setFragmentResult("data_from_prev", result);
+                result.putString("chat_username", username);
+                parentFragmentManager.setFragmentResult("data_from_chat_adapter", result);
                 parentFragmentManager.beginTransaction()
                         .replace(R.id.fragment, FragmentChat_InsideChat.class, null)
                         .setReorderingAllowed(true)

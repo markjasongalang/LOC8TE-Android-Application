@@ -110,9 +110,6 @@ public class FragmentHome_Professional extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
-
         setupViews();
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +180,7 @@ public class FragmentHome_Professional extends Fragment {
                 });
 
             }
-        }, 500);
+        }, 300);
     }
 
     private void setupViews() {

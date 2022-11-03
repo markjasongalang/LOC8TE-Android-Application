@@ -102,6 +102,7 @@ public class FragmentHome_ConnectedList extends Fragment {
 
         temp = new HashMap<>();
         temp.put("exists", true);
+        connectedList = new ArrayList<>();
         db.collection("client_homes")
                 .document(username)
                 .collection("pro_list")
@@ -121,6 +122,7 @@ public class FragmentHome_ConnectedList extends Fragment {
                             }
                         }
 
+                        connectedList = new ArrayList<>();
                         db.collection("professionals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {

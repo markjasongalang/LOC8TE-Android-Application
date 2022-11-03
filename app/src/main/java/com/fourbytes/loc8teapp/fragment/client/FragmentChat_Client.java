@@ -145,6 +145,7 @@ public class FragmentChat_Client extends Fragment {
                                                 Log.d("image_stats", "Image retrieved.");
                                                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                                 chatsItemsList.add(new ChatsItems(
+                                                        documentSnapshot.getId(),
                                                         task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"),
                                                         task.getResult().getData().get("specific_job") + " ",
                                                         task.getResult().getData().get("first_name").toString() + ": Hello",

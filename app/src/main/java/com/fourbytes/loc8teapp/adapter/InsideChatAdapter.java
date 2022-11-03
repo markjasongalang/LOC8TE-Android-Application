@@ -31,7 +31,7 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        switch(inside_chat_list.get(position).getViewType()){
+        switch (inside_chat_list.get(position).getViewType()) {
             case 1:
                 return layout_left;
             case 2:
@@ -44,12 +44,12 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType){
+        switch (viewType) {
             case layout_left:
-                View layoutLeft = LayoutInflater.from(inside_chat_context).inflate(R.layout.fragment_chat_inside_chat_items_left,parent,false);
+                View layoutLeft = LayoutInflater.from(inside_chat_context).inflate(R.layout.fragment_chat_inside_chat_items_left, parent, false);
                 return new LeftChatViewHolder(layoutLeft);
             case layout_right:
-                View layoutRight = LayoutInflater.from(inside_chat_context).inflate(R.layout.fragment_chat_inside_chat_items_right,parent,false);
+                View layoutRight = LayoutInflater.from(inside_chat_context).inflate(R.layout.fragment_chat_inside_chat_items_right, parent, false);
                 return new RightChatViewHolder(layoutRight);
             default:
                 return null;
@@ -58,7 +58,7 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        switch(inside_chat_list.get(position).getViewType()){
+        switch (inside_chat_list.get(position).getViewType()) {
             case layout_left:
                 String lmsg = inside_chat_list.get(position).getInside_chat_message();
                 ((LeftChatViewHolder) holder).setTextLeft(lmsg);
@@ -79,7 +79,7 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
         return inside_chat_list.size();
     }
 
-    class LeftChatViewHolder extends RecyclerView.ViewHolder{
+    class LeftChatViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView inchat_img_left;
         public TextView inchat_msg_left;
@@ -90,16 +90,16 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
             inchat_msg_left = itemView.findViewById(R.id.insidechat_msg_left);
         }
 
-        private void setTextLeft(String text){
+        private void setTextLeft(String text) {
             inchat_msg_left.setText(text);
         }
 
-        private void setImgLeft(int image){
+        private void setImgLeft(int image) {
             inchat_img_left.setImageResource(image);
         }
     }
 
-    class RightChatViewHolder extends RecyclerView.ViewHolder{
+    class RightChatViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView inchat_img_right;
         public TextView inchat_msg_right;
@@ -110,11 +110,11 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
             inchat_msg_right = itemView.findViewById(R.id.insidechat_msg_right);
         }
 
-        private void setTextRight(String text){
+        private void setTextRight(String text) {
             inchat_msg_right.setText(text);
         }
 
-        private void setImgRight(int image){
+        private void setImgRight(int image) {
             inchat_img_right.setImageResource(image);
         }
     }

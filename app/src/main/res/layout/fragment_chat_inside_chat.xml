@@ -16,36 +16,35 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cons" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/bottomrel"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
         <EditText
-            android:id="@+id/chat_message"
-            android:layout_width="330dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
+            android:id="@+id/edt_chat_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/white_round_corners_10"
             android:fontFamily="@font/open_sans_light_italic"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:padding="10dp"
             android:textColor="@color/fifthColor"
             android:textColorHint="@color/fifthColor"
             android:textSize="18sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/send_chat"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="13dp"
-            android:layout_toEndOf="@id/chat_message"
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/tertiary_color_round_button_send" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cons"
@@ -57,7 +56,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_professional_name"
+            android:id="@+id/tv_chat_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -89,6 +88,7 @@
             android:layout_height="30dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/tertiary_color_light_round_button_settings"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
