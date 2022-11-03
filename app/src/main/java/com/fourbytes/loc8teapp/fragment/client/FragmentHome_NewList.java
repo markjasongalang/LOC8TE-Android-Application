@@ -3,6 +3,7 @@ package com.fourbytes.loc8teapp.fragment.client;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,6 +136,7 @@ public class FragmentHome_NewList extends Fragment {
 
         rvNewList.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+        newList = new ArrayList<>();
         db.collection("client_homes")
                 .document(username)
                 .collection("pro_list")
@@ -150,11 +152,13 @@ public class FragmentHome_NewList extends Fragment {
                             }
                         }
 
+                        newList = new ArrayList<>();
                         db.collection("professionals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
 
+                                    // todo: FIX CLEARING OF LIST TO AVOID DUPLICATES
                                     newList = new ArrayList<>();
                                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                         if (!connected.contains(documentSnapshot.getId())) {
@@ -179,7 +183,7 @@ public class FragmentHome_NewList extends Fragment {
                                                             bmp
                                                     ));
                                                     Log.d("new_list_id", documentSnapshot.getId());
-                                                    rvNewList.setAdapter(new NewListAdapter(view.getContext(), newList, parentFragmentManager));
+                                                    rvNewList.setAdapter(new NewListAdapter(getContext(), newList, parentFragmentManager));
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override
@@ -190,7 +194,6 @@ public class FragmentHome_NewList extends Fragment {
 
                                         }
                                     }
-
 
                                 }
                             }

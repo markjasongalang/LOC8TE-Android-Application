@@ -3,16 +3,26 @@ package com.fourbytes.loc8teapp.chatsrecycler;
 import android.graphics.Bitmap;
 
 public class ChatsItems {
+    private String chat_username;
     private String chat_name;
     private String chat_occupation;
     private String chat_msgpreview;
     private Bitmap chat_image;
 
-    public ChatsItems(String chat_name, String chat_occupation, String chat_msgpreview, Bitmap chat_image) {
+    public ChatsItems(String chat_username, String chat_name, String chat_occupation, String chat_msgpreview, Bitmap chat_image) {
+        this.chat_username = chat_username;
         this.chat_name = chat_name;
         this.chat_occupation = chat_occupation;
         this.chat_msgpreview = chat_msgpreview;
         this.chat_image = chat_image;
+    }
+
+    public String getChat_username() {
+        return chat_username;
+    }
+
+    public void setChat_username(String chat_username) {
+        this.chat_username = chat_username;
     }
 
     public String getChat_name() {
