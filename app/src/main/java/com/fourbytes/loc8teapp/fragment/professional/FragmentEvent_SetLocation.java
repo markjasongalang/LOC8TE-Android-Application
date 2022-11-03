@@ -45,9 +45,13 @@ public class FragmentEvent_SetLocation extends Fragment implements OnMapReadyCal
     private MapView map_view;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
+
+    private AlertDialog.Builder NoMarkerdialogBuilder;
+    private AlertDialog NoMarkerdialog;
     private AppCompatButton btn_set_location;
     private AppCompatButton btn_back;
     private AppCompatButton btn_ok;
+    private AppCompatButton btn_marker_ok;
 
     private FragmentManager parentFragmentManager;
 
@@ -71,16 +75,19 @@ public class FragmentEvent_SetLocation extends Fragment implements OnMapReadyCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_set_location_professional, container, false);
+        view = inflater.inflate(R.layout.fragment_event_setlocation_professional, container, false);
         final View popup_view = getLayoutInflater().inflate(R.layout.no_gps_popup, null);
+        final View noMarker_view = getLayoutInflater().inflate(R.layout.no_marker_popup, null);
 
         dialogBuilder = new AlertDialog.Builder(view.getContext());
+        NoMarkerdialogBuilder = new AlertDialog.Builder(view.getContext());
         map_view = view.findViewById(R.id.map_view);
+
         btn_set_location = view.findViewById(R.id.btn_set_location);
         btn_back = view.findViewById(R.id.btn_back);
         btn_ok = popup_view.findViewById(R.id.btn_ok);
+        btn_marker_ok = noMarker_view.findViewById(R.id.btn_ok);
 
-        btn_set_location.setEnabled(false);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
 
         parentFragmentManager = getParentFragmentManager();
@@ -88,7 +95,9 @@ public class FragmentEvent_SetLocation extends Fragment implements OnMapReadyCal
         initGoogleMap(savedInstanceState);
 
         dialogBuilder.setView(popup_view);
+        NoMarkerdialogBuilder.setView(noMarker_view);
         dialog = dialogBuilder.create();
+        NoMarkerdialog = NoMarkerdialogBuilder.create();
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +110,30 @@ public class FragmentEvent_SetLocation extends Fragment implements OnMapReadyCal
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+            }
+        });
+
+        btn_marker_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NoMarkerdialog.dismiss();
+            }
+        });
+
+        btn_set_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isMarkerExist){
+                    Bundle result = new Bundle();
+                    result.putDouble("latitude", clickMarker.getPosition().latitude);
+                    result.putDouble("longitude", clickMarker.getPosition().longitude);
+
+                    parentFragmentManager.setFragmentResult("locationData", result);
+
+                    parentFragmentManager.popBackStack();
+                }else{
+                    NoMarkerdialog.show();
+                }
             }
         });
 
@@ -173,6 +206,7 @@ public class FragmentEvent_SetLocation extends Fragment implements OnMapReadyCal
                 (new LatLng(latitude, longitude), 18);
         map_instance.moveCamera(point);
     }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 

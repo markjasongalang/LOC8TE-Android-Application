@@ -72,7 +72,7 @@ public class FragmentEvent_CreatedEvents extends Fragment {
 
                 //TODO: function for Save changes
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentEvent_Edit.class, null)
+                        .replace(R.id.fragment, FragmentEvent_Create.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();

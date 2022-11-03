@@ -1439,6 +1439,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                         });
 
                 requestQueue.add(jsonObjectRequest);
+
                 user_name.setText(tag.getName());
                 user_specfific_job.setText(tag.getJob());
                 user_field.setText(tag.getField());
