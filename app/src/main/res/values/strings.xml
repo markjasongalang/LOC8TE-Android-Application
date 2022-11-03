@@ -12,6 +12,19 @@
         <item>Mark Jason</item>
         <item>Joshua Matthew</item>
     </string-array>
+    <string-array name="radius_array">
+        <item>All</item>
+        <item>1 km</item>
+        <item>2 km</item>
+        <item>3 km</item>
+        <item>4 km</item>
+        <item>5 km</item>
+        <item>6 km</item>
+        <item>7 km</item>
+        <item>8 km</item>
+        <item>9 km</item>
+        <item>10 km</item>
+    </string-array>
     <string-array name="fields_array">
         <item>medical and health</item>
         <item>technology</item>
