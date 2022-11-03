@@ -1,6 +1,14 @@
 package com.fourbytes.loc8teapp.fragment.client;
 
+import static com.fourbytes.loc8teapp.Constants.ARTS_FIELD;
+import static com.fourbytes.loc8teapp.Constants.BUSINESS_FIELD;
+import static com.fourbytes.loc8teapp.Constants.EDUCATION_FIELD;
+import static com.fourbytes.loc8teapp.Constants.FOOD_FIELD;
+import static com.fourbytes.loc8teapp.Constants.LAW_FIELD;
 import static com.fourbytes.loc8teapp.Constants.MAPVIEW_BUNDLE_KEY;
+import static com.fourbytes.loc8teapp.Constants.MEDICAL_FIELD;
+import static com.fourbytes.loc8teapp.Constants.SKILLED_TRADE_FIELD;
+import static com.fourbytes.loc8teapp.Constants.TECHNOLOGY_FIELD;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -25,6 +33,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -69,7 +78,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -80,7 +88,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
 import com.google.maps.android.PolyUtil;
 
 import org.json.JSONArray;
@@ -99,6 +106,16 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private CheckBox mapViewCheckBox;
     private CheckBox listViewCheckBox;
+    private CheckBox medicalCheckBox;
+    private CheckBox technologyCheckBox;
+    private CheckBox skilledCheckBox;
+    private CheckBox businessCheckBox;
+    private CheckBox educationCheckBox;
+    private CheckBox lawCheckBox;
+    private CheckBox foodCheckBox;
+    private CheckBox artsCheckBox;
+
+    private NumberPicker radiusNumberPicker;
 
     private ExtendedFloatingActionButton home_settings_FAB;
     private ExtendedFloatingActionButton location_settings_FAB;
@@ -151,6 +168,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private final int width = LinearLayout.LayoutParams.MATCH_PARENT;
     private final int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+    private ArrayList<String> professional_filters = new ArrayList<>();
+    private int radius_filter = 0;
     public FragmentHome_MapView(String path) {
         this.path = path;
     }
@@ -162,10 +182,22 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         // Get views from layout
         mapViewCheckBox = view.findViewById(R.id.map_view_checkbox);
         listViewCheckBox = view.findViewById(R.id.list_view_checkbox);
+        medicalCheckBox = view.findViewById(R.id.medical_checkbox);
+        technologyCheckBox = view.findViewById(R.id.technology_checkbox);
+        skilledCheckBox = view.findViewById(R.id.skilled_trade_checkbox);
+        businessCheckBox = view.findViewById(R.id.business_checkbox);
+        educationCheckBox = view.findViewById(R.id.education_checkbox);
+        lawCheckBox = view.findViewById(R.id.law_checkbox);
+        foodCheckBox = view.findViewById(R.id.food_checkbox);
+        artsCheckBox = view.findViewById(R.id.arts_checkbox);
+        radiusNumberPicker = view.findViewById(R.id.radius_numberpicker);
+
         home_settings_FAB = view.findViewById(R.id.home_settings);
         location_settings_FAB = view.findViewById(R.id.location_settings);
+
         l = view.findViewById(R.id.home_settings_toolbar);
         l2 = view.findViewById(R.id.location_settings_toolbar);
+
         logoutButton = view.findViewById(R.id.logout);
         btnFind = view.findViewById(R.id.btn_find);
         btn_refresh = view.findViewById(R.id.btn_refresh);
@@ -174,6 +206,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         // Get parent fragment manager (from host activity)
         parentFragmentManager = getParentFragmentManager();
 
+        radiusNumberPicker.setDisplayedValues(numberPickerValues());
+        radiusNumberPicker.setMaxValue(100);
         l.setVisibility(view.GONE);
         l2.setVisibility(view.GONE);
         home_settings_FAB.shrink();
@@ -221,6 +255,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             }
         });
 
+
         home_settings_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -260,9 +295,142 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             }
         });
 
+        medicalCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (medicalCheckBox.isChecked()){
+                    professional_filters.add(MEDICAL_FIELD);
+                }else{
+                    professional_filters.remove(MEDICAL_FIELD);
+                }
+
+                refreshMap();
+            }
+        });
+
+        technologyCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (technologyCheckBox.isChecked()){
+                    professional_filters.add(TECHNOLOGY_FIELD);
+                }else{
+                    professional_filters.remove(TECHNOLOGY_FIELD);
+                }
+
+                refreshMap();
+            }
+        });
+
+        skilledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (skilledCheckBox.isChecked()){
+                    professional_filters.add(SKILLED_TRADE_FIELD);
+                }else{
+                    professional_filters.remove(SKILLED_TRADE_FIELD);
+                }
+
+                refreshMap();
+            }
+        });
+
+        businessCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (businessCheckBox.isChecked()){
+                    professional_filters.add(BUSINESS_FIELD);
+                }else{
+                    professional_filters.remove(BUSINESS_FIELD);
+                }
+
+                refreshMap();
+            }
+        });
+
+        educationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (educationCheckBox.isChecked()){
+                    professional_filters.add(EDUCATION_FIELD);
+                }else{
+                    professional_filters.remove(EDUCATION_FIELD);
+                }
+
+                refreshMap();
+            }
+        });
+
+        lawCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (lawCheckBox.isChecked()){
+                    professional_filters.add(LAW_FIELD);
+                }else{
+                    professional_filters.remove(LAW_FIELD);
+                }
+
+                refreshMap();
+            }
+        });
+
+        foodCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (foodCheckBox.isChecked()){
+                    professional_filters.add(FOOD_FIELD);
+                }else{
+                    professional_filters.remove(FOOD_FIELD);
+                }
+
+                refreshMap();
+            }
+        });
+
+        artsCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (artsCheckBox.isChecked()){
+                    professional_filters.add(ARTS_FIELD);
+                }else{
+                    professional_filters.remove(ARTS_FIELD);
+                }
+
+                refreshMap();
+            }
+        });
+
+        radiusNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                radius_filter = radiusNumberPicker.getValue() * 10;
+                refreshMap();
+            }
+        });
+
         initGoogleMap(savedInstanceState);
         initVertices();
         return view;
+    }
+
+    public String[] numberPickerValues(){
+        String[] numberPickerArray = new String[101];
+        int count = 0;
+        for(int i = 0; i <= 100; i++){
+            numberPickerArray[i] = String.valueOf(count);
+            System.out.println(numberPickerArray[i]);
+            count+= 10;
+        }
+
+
+        return numberPickerArray;
     }
 
     public void initVertices(){
@@ -320,27 +488,33 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                         double nearest_distance;
                                         double latitude = document.getDouble("latitude");
                                         double longitude = document.getDouble("longitude");
-                                        String id = document.getId();
-                                        String fname = document.getString("first_name");
-                                        String lname = document.getString("last_name");
-                                        String name = fname + " " +lname;
 
-                                        if(vertex.getDistanceLatLong(latitude, longitude).get(0).getId() != null){
-                                            nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(0).getId();
-                                            nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(0).getDistance();
-                                        }else{
-                                            nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(1).getId();
-                                            nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(1).getDistance();
+                                        String field = document.getString("field");
+
+                                        if(professional_filters.size() == 0 || professional_filters.contains(field)){
+                                            String id = document.getId();
+                                            String fname = document.getString("first_name");
+                                            String lname = document.getString("last_name");
+                                            String name = fname + " " +lname;
+
+                                            if(vertex.getDistanceLatLong(latitude, longitude).get(0).getId() != null){
+                                                nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(0).getId();
+                                                nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(0).getDistance();
+                                            }else{
+                                                nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(1).getId();
+                                                nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(1).getDistance();
+                                            }
+
+                                            Users.add(new UserInfo(
+                                                    id,
+                                                    longitude,
+                                                    latitude,
+                                                    nearest_point,
+                                                    name,
+                                                    nearest_distance
+                                            ));
                                         }
 
-                                        Users.add(new UserInfo(
-                                                id,
-                                                longitude,
-                                                latitude,
-                                                nearest_point,
-                                                name,
-                                                nearest_distance
-                                        ));
                                     }
                                 }catch (Exception e){
                                     e.printStackTrace();
@@ -1046,18 +1220,24 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                             ArrayList<String> meet_point_list = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                String field = document.getString("field");
+                                double latitude = document.getDouble("latitude");
+                                double longitude = document.getDouble("longitude");
+                                double radius_distance = vertex.calculateDistance(currentUserLat, latitude, currentUserLong, longitude);
 
+                                System.out.println(radius_distance);
                                 try{
-                                    if(document.getString("meet_point") != null){
-                                        double latitude = document.getDouble("latitude");
-                                        double longitude = document.getDouble("longitude");
-                                        String id = document.getId();
-                                        String meet_point = document.getString("meet_point");
-                                        String fname = document.getString("first_name");
-                                        String lname = document.getString("last_name");
-                                        String name = fname + " " +lname;
+                                    if(professional_filters.size() == 0 || professional_filters.contains(field)){
 
-                                        setMarkers(latitude, longitude, 0, name, id);
+                                        if(radius_filter == 0 || radius_filter >= radius_distance){
+                                            String id = document.getId();
+                                            String meet_point = document.getString("meet_point");
+                                            String fname = document.getString("first_name");
+                                            String lname = document.getString("last_name");
+                                            String name = fname + " " +lname;
+
+                                            setMarkers(latitude, longitude, 0, name, id);
+                                        }
                                     }
                                 }catch (Exception e){
                                     e.printStackTrace();

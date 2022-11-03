@@ -314,6 +314,30 @@
                         android:text="arts, humanities, liberal arts"
                         android:textColor="@color/white"
                         android:textSize="17sp" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:buttonTint="@color/secondaryColor"
+                            android:fontFamily="@font/open_sans_light"
+                            android:minHeight="0dp"
+                            android:text="Area Radius Filter (m)"
+                            android:layout_gravity="center"/>
+                        <NumberPicker
+                            android:id="@+id/radius_numberpicker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:theme="@style/WhiteTextTheme"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
