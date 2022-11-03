@@ -159,6 +159,8 @@ public class FragmentHome_NewList extends Fragment {
                                 if (task.isSuccessful()) {
 
                                     // todo: FIX CLEARING OF LIST TO AVOID DUPLICATES
+                                    // todo: MAKE RETRIEVAL OF DATA POSSIBLE
+
                                     newList = new ArrayList<>();
                                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                         if (!connected.contains(documentSnapshot.getId())) {

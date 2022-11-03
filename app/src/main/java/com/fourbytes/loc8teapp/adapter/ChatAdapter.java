@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsViewHolder;
 import com.fourbytes.loc8teapp.R;
@@ -48,9 +49,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
         holder.chats_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle result = new Bundle();
-                result.putString("chat_username", username);
-                parentFragmentManager.setFragmentResult("data_from_chat_adapter", result);
+//                Bundle result = new Bundle();
+//                result.putString("chat_username", username);
+//                parentFragmentManager.setFragmentResult("data_from_chat_adapter", result);
+                DataPasser.setUsername(username);
                 parentFragmentManager.beginTransaction()
                         .replace(R.id.fragment, FragmentChat_InsideChat.class, null)
                         .setReorderingAllowed(true)

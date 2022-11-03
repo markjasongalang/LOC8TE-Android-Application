@@ -4,6 +4,7 @@ import static com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems.layout_left;
 import static com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems.layout_right;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,13 +63,13 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
             case layout_left:
                 String lmsg = inside_chat_list.get(position).getInside_chat_message();
                 ((LeftChatViewHolder) holder).setTextLeft(lmsg);
-                int limg = inside_chat_list.get(position).getInside_chat_image();
+                Bitmap limg = inside_chat_list.get(position).getInside_chat_image();
                 ((LeftChatViewHolder) holder).setImgLeft(limg);
                 break;
             case layout_right:
                 String rmsg = inside_chat_list.get(position).getInside_chat_message();
                 ((RightChatViewHolder) holder).setTextRight(rmsg);
-                int rimg = inside_chat_list.get(position).getInside_chat_image();
+                Bitmap rimg = inside_chat_list.get(position).getInside_chat_image();
                 ((RightChatViewHolder) holder).setImgRight(rimg);
                 break;
         }
@@ -94,8 +95,8 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
             inchat_msg_left.setText(text);
         }
 
-        private void setImgLeft(int image) {
-            inchat_img_left.setImageResource(image);
+        private void setImgLeft(Bitmap image) {
+            inchat_img_left.setImageBitmap(image);
         }
     }
 
@@ -114,8 +115,8 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
             inchat_msg_right.setText(text);
         }
 
-        private void setImgRight(int image) {
-            inchat_img_right.setImageResource(image);
+        private void setImgRight(Bitmap image) {
+            inchat_img_right.setImageBitmap(image);
         }
     }
 }
