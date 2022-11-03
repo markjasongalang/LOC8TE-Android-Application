@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.ExperienceAdapter;
@@ -59,7 +60,10 @@ public class Fragment_Reviews_About_Client extends Fragment {
 
     private SharedViewModel viewModel;
 
+    private Pair pair;
+
     private String username;
+    private String accountType;
 
     public Fragment_Reviews_About_Client() {}
 
@@ -80,12 +84,15 @@ public class Fragment_Reviews_About_Client extends Fragment {
         // Get fragment manager of parent fragment
         parentFragmentManager = getParentFragmentManager();
 
-        // Get username of current user
-        username = "";
+        // Get username and account type of current user
+        pair = null;
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
-            username = data;
+            pair = data;
         });
+
+        username = pair.getFirst();
+        accountType = pair.getSecond();
 
         // Get full name of current user
         db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -116,6 +123,20 @@ public class Fragment_Reviews_About_Client extends Fragment {
             }
         });
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parentFragmentManager.popBackStack();
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
         reviewAboutClientList = new ArrayList<>();
 
         reviewAboutClientList.add(new ReviewAboutClient(
@@ -140,14 +161,5 @@ public class Fragment_Reviews_About_Client extends Fragment {
 
         rvReviewsAboutClient.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rvReviewsAboutClient.setAdapter(new ReviewAboutClientAdapter(view.getContext(), reviewAboutClientList));
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                parentFragmentManager.popBackStack();
-            }
-        });
-
-        return view;
     }
 }

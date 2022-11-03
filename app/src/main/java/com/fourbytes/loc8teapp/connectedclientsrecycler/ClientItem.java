@@ -1,24 +1,26 @@
 package com.fourbytes.loc8teapp.connectedclientsrecycler;
 
+import android.graphics.Bitmap;
+
 public class ClientItem {
-    private int clientImage;
+    private Bitmap clientImage;
 
     private String firstName;
     private String middleName;
     private String lastName;
 
-    public ClientItem(int clientImage, String firstName, String middleName, String lastName) {
+    public ClientItem(Bitmap clientImage, String firstName, String middleName, String lastName) {
         this.clientImage = clientImage;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
     }
 
-    public int getClientImage() {
+    public Bitmap getClientImage() {
         return clientImage;
     }
 
-    public void setClientImage(int clientImage) {
+    public void setClientImage(Bitmap clientImage) {
         this.clientImage = clientImage;
     }
 

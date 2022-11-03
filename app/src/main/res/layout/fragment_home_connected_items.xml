@@ -77,15 +77,6 @@
         android:layout_marginRight="5dp"
         android:background="@drawable/tertiary_color_round_button_chat"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/connectedlist_rate"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/connectedlist_occupation"
-        android:layout_toLeftOf="@id/connectedlist_chat"
-        android:layout_marginRight="5dp"
-        android:background="@drawable/tertiary_color_round_button_rate"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"

@@ -21,6 +21,8 @@ import com.fourbytes.loc8teapp.fragment.professional.profiletabs.CultureFragment
 import com.fourbytes.loc8teapp.fragment.professional.profiletabs.ExperienceFragment;
 import com.fourbytes.loc8teapp.fragment.professional.profiletabs.RateFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class FragmentProfile_Professional extends Fragment {
     private View view;
@@ -40,6 +42,7 @@ public class FragmentProfile_Professional extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile_professional, container, false);
 
+        // Initialize values
         parentFragmentManager = getParentFragmentManager();
 
         // Get views from layout

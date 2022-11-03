@@ -14,7 +14,7 @@ public class NewListViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView new_list_img;
     public TextView new_list_name, new_list_occupation, new_list_field;
-    public AppCompatButton new_list_chat, new_list_profile;
+    public AppCompatButton new_list_profile;
 
     public NewListViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -24,7 +24,6 @@ public class NewListViewHolder extends RecyclerView.ViewHolder {
         new_list_occupation = itemView.findViewById(R.id.newlist_occupation);
         new_list_field = itemView.findViewById(R.id.tv_new_list_field);
 
-        new_list_chat = itemView.findViewById(R.id.newlist_chat);
         new_list_profile = itemView.findViewById(R.id.newlist_profile);
     }
 }

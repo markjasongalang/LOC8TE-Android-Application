@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.client.FragmentHome_NewList"
-    android:background="@color/primaryColor">
+    android:id="@+id/layout_new_list"
+    android:background="@color/primaryColor"
+    tools:context=".fragment.client.FragmentHome_NewList">
 
     <LinearLayout
         android:id="@+id/new_linear"
