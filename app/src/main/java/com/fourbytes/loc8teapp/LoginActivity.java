@@ -45,9 +45,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.util.EnumSet;
-
-import io.radar.sdk.Radar;
-import io.radar.sdk.model.RadarRoutes;
+//
+//import io.radar.sdk.Radar;
+//import io.radar.sdk.model.RadarRoutes;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         tvDontHaveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, AdminActivity2.class);
+                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                 startActivity(intent);
             }
         });

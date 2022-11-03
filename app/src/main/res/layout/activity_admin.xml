@@ -81,7 +81,6 @@
             android:background="@color/tertiaryColor"
             android:fontFamily="@font/open_sans_bold"
             android:paddingLeft="25dp"
-            android:text="50"
             android:textColor="@color/secondaryColor"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -112,7 +111,7 @@
             android:background="@color/tertiaryColor"
             android:fontFamily="@font/open_sans_bold"
             android:paddingLeft="25dp"
-            android:text="21"
+
             android:textColor="@color/secondaryColor"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -147,7 +146,6 @@
                 android:background="@color/tertiaryColor"
                 android:fontFamily="@font/open_sans_bold"
                 android:paddingLeft="25dp"
-                android:text="12"
                 android:textColor="@color/secondaryColor"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -184,7 +182,7 @@
             />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+            android:id="@+id/admin_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"

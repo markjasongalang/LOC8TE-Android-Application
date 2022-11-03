@@ -4,28 +4,17 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageview"
+        android:id="@+id/prof_imageview"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp" />
 
-    <Button
-        android:id="@+id/check_prof"
-        android:layout_width="65dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="280dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/tertiary_color_round_corners_button"
-        android:fontFamily="@font/glacial_indifference"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
-
     <TextView
         android:id="@+id/prof1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/imageview"
+        android:layout_toEndOf="@id/prof_imageview"
         android:fontFamily="@font/open_sans_bold"
         android:text="Rylie N. Paloma"
         android:textColor="@color/secondaryColor"
@@ -39,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/fifthColor"
-        android:layout_below="@id/imageview"
+        android:layout_below="@id/prof_imageview"
         android:layout_marginTop="10dp"
         />
 
