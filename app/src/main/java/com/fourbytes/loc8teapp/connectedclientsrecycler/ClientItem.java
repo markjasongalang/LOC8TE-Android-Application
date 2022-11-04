@@ -2,26 +2,38 @@ package com.fourbytes.loc8teapp.connectedclientsrecycler;
 
 import android.graphics.Bitmap;
 
-public class ClientItem {
-    private Bitmap clientImage;
+import com.google.firebase.storage.StorageReference;
 
+public class ClientItem {
+    private StorageReference pathReference;
+
+    private String username;
     private String firstName;
     private String middleName;
     private String lastName;
 
-    public ClientItem(Bitmap clientImage, String firstName, String middleName, String lastName) {
-        this.clientImage = clientImage;
+    public ClientItem(StorageReference pathReference, String username, String firstName, String middleName, String lastName) {
+        this.pathReference = pathReference;
+        this.username = username;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
     }
 
-    public Bitmap getClientImage() {
-        return clientImage;
+    public StorageReference getPathReference() {
+        return pathReference;
     }
 
-    public void setClientImage(Bitmap clientImage) {
-        this.clientImage = clientImage;
+    public void setPathReference(StorageReference pathReference) {
+        this.pathReference = pathReference;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {

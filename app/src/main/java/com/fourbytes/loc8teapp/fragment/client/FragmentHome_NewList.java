@@ -83,8 +83,8 @@ public class FragmentHome_NewList extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        username = pair.getUsername();
+        accountType = pair.getAccountType();
 
         // Workaround to enable the visibility of the document
         temp = new HashMap<>();
@@ -135,6 +135,7 @@ public class FragmentHome_NewList extends Fragment {
 
         rvNewList.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+        newList = new ArrayList<>();
         db.collection("client_homes")
                 .document(username)
                 .collection("pro_list")
@@ -150,6 +151,7 @@ public class FragmentHome_NewList extends Fragment {
                             }
                         }
 
+                        newList = new ArrayList<>();
                         db.collection("professionals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -165,32 +167,17 @@ public class FragmentHome_NewList extends Fragment {
                                             // Get profile picture of current user
                                             StorageReference storageRef = storage.getReference();
                                             StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
-                                            final long ONE_MEGABYTE = 1024 * 1024;
-                                            pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                                @Override
-                                                public void onSuccess(byte[] bytes) {
-                                                    Log.d("image_stats", "Image retrieved.");
-                                                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                    newList.add(new NewListItems(
-                                                            documentSnapshot.getId(),
-                                                            fullName,
-                                                            specific_job,
-                                                            field,
-                                                            bmp
-                                                    ));
-                                                    Log.d("new_list_id", documentSnapshot.getId());
-                                                    rvNewList.setAdapter(new NewListAdapter(view.getContext(), newList, parentFragmentManager));
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception exception) {
-                                                    Log.d("image_stats", "Image not retrieved.");
-                                                }
-                                            });
+                                            newList.add(new NewListItems(
+                                                    documentSnapshot.getId(),
+                                                    fullName,
+                                                    specific_job,
+                                                    field,
+                                                    pathReference
+                                            ));
 
                                         }
                                     }
-
+                                    rvNewList.setAdapter(new NewListAdapter(getContext(), newList, parentFragmentManager));
 
                                 }
                             }

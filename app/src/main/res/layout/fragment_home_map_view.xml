@@ -69,68 +69,68 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.3" />
 
-    <!-- location FAB -->
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/mid3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/mid"
-        app:layout_constraintTop_toBottomOf="@id/mid4">
+<!--    &lt;!&ndash; location FAB &ndash;&gt;-->
+<!--    <FrameLayout-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/mid3"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toLeftOf="@id/mid"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/mid4">-->
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/location_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/open_sans_light_italic"
-            android:gravity="end"
-            android:outlineProvider="none"
-            android:text="update my location"
-            android:textAllCaps="false"
-            android:textColor="@color/secondaryColorLight"
-            app:icon="@drawable/icon_location"
-            app:iconTint="@color/secondaryColorLight" />
+<!--        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+<!--            android:id="@+id/location_settings"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:fontFamily="@font/open_sans_light_italic"-->
+<!--            android:gravity="end"-->
+<!--            android:outlineProvider="none"-->
+<!--            android:text="update my location"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="@color/secondaryColorLight"-->
+<!--            app:icon="@drawable/icon_location"-->
+<!--            app:iconTint="@color/secondaryColorLight" />-->
 
-        <LinearLayout
-            android:id="@+id/location_settings_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/white_round_corners_10"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/location_settings_toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:background="@drawable/white_round_corners_10"-->
+<!--            android:orientation="vertical">-->
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="50dp">
+<!--            <ScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginBottom="50dp">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical">-->
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/tertiary_color_round_corners"
-                        android:fontFamily="@font/glacial_indifference"
-                        android:text="turn on GPS"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-                </LinearLayout>
-            </ScrollView>
-        </LinearLayout>
-    </FrameLayout>
+<!--                    <androidx.appcompat.widget.AppCompatButton-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginLeft="40dp"-->
+<!--                        android:layout_marginRight="40dp"-->
+<!--                        android:layout_marginTop="15dp"-->
+<!--                        android:background="@drawable/tertiary_color_round_corners"-->
+<!--                        android:fontFamily="@font/glacial_indifference"-->
+<!--                        android:text="turn on GPS"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="18sp" />-->
+<!--                </LinearLayout>-->
+<!--            </ScrollView>-->
+<!--        </LinearLayout>-->
+<!--    </FrameLayout>-->
 
     <!-- home settings FAB -->
     <FrameLayout

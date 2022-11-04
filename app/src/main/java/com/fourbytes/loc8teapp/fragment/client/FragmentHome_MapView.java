@@ -35,6 +35,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.DistanceMatrix;
 import com.fourbytes.loc8teapp.Edge;
 import com.fourbytes.loc8teapp.LoginActivity;
@@ -102,7 +104,7 @@ import java.util.List;
 public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
     private View view;
     private View l;
-    private View l2;
+    //private View l2;
 
     private CheckBox mapViewCheckBox;
     private CheckBox listViewCheckBox;
@@ -118,7 +120,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private NumberPicker radiusNumberPicker;
 
     private ExtendedFloatingActionButton home_settings_FAB;
-    private ExtendedFloatingActionButton location_settings_FAB;
+    //private ExtendedFloatingActionButton location_settings_FAB;
 
     private Button logoutButton;
     private AppCompatButton btnFind;
@@ -193,10 +195,10 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         radiusNumberPicker = view.findViewById(R.id.radius_numberpicker);
 
         home_settings_FAB = view.findViewById(R.id.home_settings);
-        location_settings_FAB = view.findViewById(R.id.location_settings);
+//        location_settings_FAB = view.findViewById(R.id.location_settings);
 
         l = view.findViewById(R.id.home_settings_toolbar);
-        l2 = view.findViewById(R.id.location_settings_toolbar);
+        //l2 = view.findViewById(R.id.location_settings_toolbar);
 
         logoutButton = view.findViewById(R.id.logout);
         btnFind = view.findViewById(R.id.btn_find);
@@ -209,9 +211,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         radiusNumberPicker.setDisplayedValues(numberPickerValues());
         radiusNumberPicker.setMaxValue(100);
         l.setVisibility(view.GONE);
-        l2.setVisibility(view.GONE);
+        //l2.setVisibility(view.GONE);
         home_settings_FAB.shrink();
-        location_settings_FAB.shrink();
+        //location_settings_FAB.shrink();
 
         isAllFABVisible = false;
         isAllFABVisible2 = false;
@@ -271,24 +273,25 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             }
         });
 
-        location_settings_FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isAllFABVisible2) {
-                    location_settings_FAB.extend();
-                    l2.setVisibility(view.VISIBLE);
-                    isAllFABVisible2 = true;
-                } else {
-                    location_settings_FAB.shrink();
-                    l2.setVisibility(view.GONE);
-                    isAllFABVisible2 = false;
-                }
-            }
-        });
+//        location_settings_FAB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!isAllFABVisible2) {
+//                    location_settings_FAB.extend();
+//                    //l2.setVisibility(view.VISIBLE);
+//                    isAllFABVisible2 = true;
+//                } else {
+//                    location_settings_FAB.shrink();
+//                    //l2.setVisibility(view.GONE);
+//                    isAllFABVisible2 = false;
+//                }
+//            }
+//        });
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DataPasser.setUsername1(null);
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();
@@ -324,6 +327,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         });
 
         skilledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
@@ -425,10 +429,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         int count = 0;
         for(int i = 0; i <= 100; i++){
             numberPickerArray[i] = String.valueOf(count);
-            System.out.println(numberPickerArray[i]);
             count+= 10;
         }
-
 
         return numberPickerArray;
     }
@@ -1234,9 +1236,11 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                             String meet_point = document.getString("meet_point");
                                             String fname = document.getString("first_name");
                                             String lname = document.getString("last_name");
+                                            String specific_job = document.getString("specific_job");
                                             String name = fname + " " +lname;
 
-                                            setMarkers(latitude, longitude, 0, name, id);
+
+                                            setMarkers(latitude, longitude, name, id, specific_job, field);
                                         }
                                     }
                                 }catch (Exception e){
@@ -1366,6 +1370,15 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     }
 
+    public void setMarkers(double latitude, double longitude, String name, String id, String job, String field) {
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.icon_pro_marker);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 50, 50, false);
+        map_instance.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title(name).icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap))).setTag(new MarkerTag(id, "users", name, job, field, new LatLng(latitude, longitude)));
+
+    }
+
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
         MarkerTag tag = (MarkerTag) marker.getTag(); //Gets the object to retrieve id/infos
@@ -1375,28 +1388,74 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             String name = marker.getTitle();
             String id = tag.getId();
 
-            Toast.makeText(view.getContext(), name + "is clicked", Toast.LENGTH_SHORT).show();
             if(type.equals("users")){
-                // Open Profile Fragment here
-                parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentProfile_Professional.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
-            }else{
-                LatLng marker_pos = marker.getPosition();
-                getDirections(String.valueOf(marker_pos.latitude), String.valueOf(marker_pos.longitude));
 
-                View node_onclick_view = getLayoutInflater().inflate(R.layout.node_onclick_popup, null);
-                AppCompatButton btn_search = node_onclick_view.findViewById(R.id.btn_search);
+                View node_onclick_view = getLayoutInflater().inflate(R.layout.user_onclick_popup, null);
+                AppCompatButton btn_view = node_onclick_view.findViewById(R.id.btn_view);
+                RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+
+                TextView user_name = node_onclick_view.findViewById(R.id.user_name);
+                TextView user_location = node_onclick_view.findViewById(R.id.user_location);
+                TextView user_specfific_job = node_onclick_view.findViewById(R.id.user_specific_job);
+                TextView user_field = node_onclick_view.findViewById(R.id.user_field);
+
+
+                final String API_KEY = getString(R.string.google_maps_api_key);
+
+                String location_string = tag.getLocation().latitude + ", " + tag.getLocation().longitude;
+
+                System.out.println(location_string);
+                String url = Uri.parse("https://maps.googleapis.com/maps/api/geocode/json")
+                        .buildUpon()
+                        .appendQueryParameter("latlng", location_string)
+                        .appendQueryParameter("key", API_KEY)
+                        .toString();
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try{
+                                    String status = response.getString("status");
+                                    System.out.println(status);
+                                    System.out.println(response);
+
+                                    if(status.equals("OK")){
+                                        JSONArray results = response.getJSONArray("results");
+                                        String formatted_address = results.getJSONObject(0).getString("formatted_address");
+                                        user_location.setText(formatted_address);
+                                    }
+
+                                }catch (JSONException e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // TODO: Handle error
+
+                            }
+                        });
+
+                requestQueue.add(jsonObjectRequest);
+
+                user_name.setText(tag.getName());
+                user_specfific_job.setText(tag.getJob());
+                user_field.setText(tag.getField());
                 final PopupWindow popupWindow = new PopupWindow(node_onclick_view, width, height, true);
                 popupWindow.showAtLocation(view, Gravity.TOP, 0, 0);
 
-                btn_search.setOnClickListener(new View.OnClickListener() {
+                btn_view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        retrieveProfessionals(id);
-                        popupWindow.dismiss();
+                        parentFragmentManager.beginTransaction()
+                                .replace(R.id.fragment, FragmentProfile_Professional.class, null)
+                                .setReorderingAllowed(true)
+                                .addToBackStack(null)
+                                .commit();
                     }
                 });
             }

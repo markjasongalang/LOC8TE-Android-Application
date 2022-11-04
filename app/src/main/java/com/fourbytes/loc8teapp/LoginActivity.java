@@ -155,9 +155,12 @@ public class LoginActivity extends AppCompatActivity {
                                 String dbPassword = document.getData().get("password").toString();
 
                                 if (dbUsername.equals(username) && dbPassword.equals(password)) {
+                                    String fname = document.getData().get("first_name").toString();
+                                    String lname = document.getData().get("last_name").toString();
                                     Intent intent = new Intent(LoginActivity.this, HostActivity.class);
                                     intent.putExtra("accountType", "client");
                                     intent.putExtra("username", username);
+                                    intent.putExtra("name", fname + " " + lname);
 
                                     mAuth.signInWithEmailAndPassword(document.getData().get("email").toString(), password)
                                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -189,9 +192,14 @@ public class LoginActivity extends AppCompatActivity {
                                             String dbPassword = documentSnapshot.getData().get("password").toString();
 
                                             if (dbUsername.equals(username) && dbPassword.equals(password)) {
+                                                String fname = documentSnapshot.getData().get("first_name").toString();
+                                                String lname = documentSnapshot.getData().get("last_name").toString();
                                                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
                                                 intent.putExtra("accountType", "professional");
                                                 intent.putExtra("username", username);
+                                                intent.putExtra("name", fname + " " + lname);
+                                                intent.putExtra("field", documentSnapshot.getData().get("field").toString());
+                                                intent.putExtra("specific_job", documentSnapshot.getData().get("specific_job").toString());
 
                                                 mAuth.signInWithEmailAndPassword(documentSnapshot.getData().get("email").toString(), password)
                                                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -362,7 +370,10 @@ public class LoginActivity extends AppCompatActivity {
                 public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                     for (QueryDocumentSnapshot document : value) {
                         if (document.getData().get("email").toString().equals(email)) {
+                            String fname = document.getData().get("first_name").toString();
+                            String lname = document.getData().get("last_name").toString();
                             intent.putExtra("accountType", document.getData().get("account_type").toString());
+                            intent.putExtra("name", fname + " " + lname);
                             intent.putExtra("username", document.getId());
                             startActivity(intent);
                             finish();
@@ -374,8 +385,13 @@ public class LoginActivity extends AppCompatActivity {
                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                             for (QueryDocumentSnapshot document : value) {
                                 if (document.getData().get("email").toString().equals(email)) {
+                                    String fname = document.getData().get("first_name").toString();
+                                    String lname = document.getData().get("last_name").toString();
                                     intent.putExtra("accountType", document.getData().get("account_type").toString());
                                     intent.putExtra("username", document.getId());
+                                    intent.putExtra("name", fname + " " + lname);
+                                    intent.putExtra("field", document.getData().get("field").toString());
+                                    intent.putExtra("specific_job", document.getData().get("specific_job").toString());
                                     startActivity(intent);
                                     finish();
                                 }

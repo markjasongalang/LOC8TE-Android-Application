@@ -20,16 +20,13 @@ import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.adapter.ConnectedListAdapter;
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.adapter.ChatAdapter;
-import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListItems;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,7 +38,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -86,8 +82,8 @@ public class FragmentChat_Client extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        username = pair.getUsername();
+        accountType = pair.getAccountType();
 
         // Workaround to enable the visibility of the document
         Map<String, Object> temp = new HashMap<>();
@@ -129,7 +125,6 @@ public class FragmentChat_Client extends Fragment {
 
                         chatsItemsList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
-                            Log.d("aww_chat", documentSnapshot.getId());
                             db.collection("professionals").document(documentSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -138,27 +133,14 @@ public class FragmentChat_Client extends Fragment {
                                         // Get profile picture of current user
                                         StorageReference storageRef = storage.getReference();
                                         StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
-                                        final long ONE_MEGABYTE = 1024 * 1024;
-                                        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                            @Override
-                                            public void onSuccess(byte[] bytes) {
-                                                Log.d("image_stats", "Image retrieved.");
-                                                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                chatsItemsList.add(new ChatsItems(
-                                                        task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"),
-                                                        task.getResult().getData().get("specific_job") + " ",
-                                                        task.getResult().getData().get("first_name").toString() + ": Hello",
-                                                        bmp
-                                                ));
-                                                rvChats.setAdapter(new ChatAdapter(view.getContext(), chatsItemsList, parentFragmentManager));
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception exception) {
-                                                Log.d("image_stats", "Image not retrieved.");
-                                            }
-                                        });
-
+                                        chatsItemsList.add(new ChatsItems(
+                                                documentSnapshot.getId(),
+                                                task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"),
+                                                task.getResult().getData().get("specific_job") + " ",
+                                                task.getResult().getData().get("first_name").toString() + ": Hello",
+                                                pathReference
+                                        ));
+                                        rvChats.setAdapter(new ChatAdapter(getContext(), chatsItemsList, parentFragmentManager, db, username, accountType));
                                     }
                                 }
                             });

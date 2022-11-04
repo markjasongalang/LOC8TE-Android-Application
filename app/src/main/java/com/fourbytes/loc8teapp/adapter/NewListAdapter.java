@@ -3,6 +3,8 @@ package com.fourbytes.loc8teapp.adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,8 @@ import com.fourbytes.loc8teapp.fragment.professional.FragmentProfile_Professiona
 import com.fourbytes.loc8teapp.newlistrecycler.NewListItems;
 import com.fourbytes.loc8teapp.newlistrecycler.NewListViewHolder;
 import com.fourbytes.loc8teapp.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -46,7 +50,16 @@ public class NewListAdapter extends RecyclerView.Adapter<NewListViewHolder> {
         holder.new_list_name.setText(newlist_items.get(position).getNewlist_name());
         holder.new_list_occupation.setText(newlist_items.get(position).getNewlist_occupation());
         holder.new_list_field.setText(newlist_items.get(position).getNewlist_field());
-        holder.new_list_img.setImageBitmap(newlist_items.get(position).getNewlist_image());
+
+        StorageReference pathReference = newlist_items.get(position).getPathReference();
+        final long ONE_MEGABYTE = 1024 * 1024;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                holder.new_list_img.setImageBitmap(bmp);
+            }
+        });
 
         // Get username of chosen professional
         String proUsername = newlist_items.get(position).getUsername();
@@ -54,12 +67,15 @@ public class NewListAdapter extends RecyclerView.Adapter<NewListViewHolder> {
         holder.new_list_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataPasser.setUsername(proUsername);
+
+                DataPasser.setUsername1(proUsername);
+
                 parentFragmentManager.beginTransaction()
                         .replace(R.id.layout_client_home, FragmentProfile_Professional.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
+
             }
         });
 

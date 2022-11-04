@@ -10,20 +10,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentResultListener;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 
 import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.LoginActivity;
@@ -31,19 +28,12 @@ import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.ConnectedClientsAdapter;
-import com.fourbytes.loc8teapp.adapter.ConnectedListAdapter;
-import com.fourbytes.loc8teapp.adapter.NewListAdapter;
 import com.fourbytes.loc8teapp.connectedclientsrecycler.ClientItem;
-import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListItems;
-import com.fourbytes.loc8teapp.fragment.client.FragmentHome_ConnectedList;
-import com.fourbytes.loc8teapp.newlistrecycler.NewListItems;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.api.LogDescriptor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -65,6 +55,8 @@ public class FragmentHome_Professional extends Fragment {
     private FirebaseFirestore db;
 
     private FirebaseStorage storage;
+
+    private FragmentManager parentFragmentManager;
 
     private ExtendedFloatingActionButton home_settings_FAB;
     private ExtendedFloatingActionButton location_settings_FAB;
@@ -102,6 +94,7 @@ public class FragmentHome_Professional extends Fragment {
         // Initialize values
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        parentFragmentManager = getParentFragmentManager();
 
         // Get username and account type of current user
         pair = null;
@@ -110,14 +103,12 @@ public class FragmentHome_Professional extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
-
         setupViews();
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DataPasser.setUsername2(null);
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();
@@ -137,8 +128,8 @@ public class FragmentHome_Professional extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                username = pair.getFirst();
-                accountType = pair.getSecond();
+                username = pair.getUsername();
+                accountType = pair.getAccountType();
                 Log.d("hello", username);
 
                 db.collection("pro_homes").document(username).collection("client_list").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -154,27 +145,14 @@ public class FragmentHome_Professional extends Fragment {
                                     // Get profile picture of current user
                                     StorageReference storageRef = storage.getReference();
                                     StorageReference pathReference = storageRef.child("profilePics/" + task.getResult().getId().toString() + "_profile.jpg");
-                                    final long ONE_MEGABYTE = 1024 * 1024;
-                                    pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                        @Override
-                                        public void onSuccess(byte[] bytes) {
-                                            Log.d("image_stats", "Image retrieved.");
-                                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                            connectedClientList.add(new ClientItem(
-                                                    bmp,
-                                                    task.getResult().getData().get("first_name").toString(),
-                                                    "",
-                                                    task.getResult().get("last_name").toString()
-                                            ));
-                                            rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList));
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception exception) {
-                                            Log.d("image_stats", "Image not retrieved.");
-                                        }
-                                    });
-
+                                    connectedClientList.add(new ClientItem(
+                                            pathReference,
+                                            task.getResult().getData().get("username").toString(),
+                                            task.getResult().getData().get("first_name").toString(),
+                                            "",
+                                            task.getResult().get("last_name").toString()
+                                    ));
+                                    rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList, parentFragmentManager));
                                 }
                             });
                         }
@@ -183,7 +161,7 @@ public class FragmentHome_Professional extends Fragment {
                 });
 
             }
-        }, 500);
+        }, 300);
     }
 
     private void setupViews() {

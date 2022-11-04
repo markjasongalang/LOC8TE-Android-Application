@@ -80,7 +80,7 @@ public class ExperienceFragment extends Fragment {
         // Initialize values
         db = FirebaseFirestore.getInstance();
 
-        viewedUsername = DataPasser.getUsername();
+        viewedUsername = DataPasser.getUsername1();
 
         // Get username and account type of current user
         if (viewedUsername == null) {
@@ -90,8 +90,8 @@ public class ExperienceFragment extends Fragment {
                 pair = data;
             });
 
-            username = pair.getFirst();
-            accountType = pair.getSecond();
+            username = pair.getUsername();
+            accountType = pair.getAccountType();
         } else {
             username = viewedUsername;
             accountType = "client";

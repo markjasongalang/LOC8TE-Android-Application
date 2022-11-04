@@ -23,7 +23,6 @@ import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.ServiceAdapter;
-import com.fourbytes.loc8teapp.fragment.client.FragmentProfile_Client;
 import com.fourbytes.loc8teapp.ratesprorecycler.ServiceItem;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -82,7 +81,7 @@ public class RateFragment extends Fragment {
         // Initialize values
         db = FirebaseFirestore.getInstance();
 
-        viewedUsername = DataPasser.getUsername();
+        viewedUsername = DataPasser.getUsername1();
 
         // Get username and account type of current user
         if (viewedUsername == null) {
@@ -92,8 +91,8 @@ public class RateFragment extends Fragment {
                 pair = data;
             });
 
-            username = pair.getFirst();
-            accountType = pair.getSecond();
+            username = pair.getUsername();
+            accountType = pair.getAccountType();
         } else {
             username = viewedUsername;
             accountType = "client";

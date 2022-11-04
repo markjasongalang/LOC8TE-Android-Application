@@ -20,17 +20,13 @@ import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.adapter.NewListAdapter;
 import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListItems;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.adapter.ConnectedListAdapter;
-import com.fourbytes.loc8teapp.newlistrecycler.NewListItems;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -88,8 +84,8 @@ public class FragmentHome_ConnectedList extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        username = pair.getUsername();
+        accountType = pair.getAccountType();
 
         return view;
     }
@@ -102,6 +98,7 @@ public class FragmentHome_ConnectedList extends Fragment {
 
         temp = new HashMap<>();
         temp.put("exists", true);
+        connectedList = new ArrayList<>();
         db.collection("client_homes")
                 .document(username)
                 .collection("pro_list")
@@ -110,17 +107,20 @@ public class FragmentHome_ConnectedList extends Fragment {
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
                         HashSet<String> connected = new HashSet<>();
-                        for (QueryDocumentSnapshot document : value) {
-                            Log.d("try_lang", document.getId() + " " + document.getData());
-                            if ((boolean) document.getData().get("is_connected")) {
-                                connected.add(document.getId());
-                                db.collection("pro_homes").document(document.getId()).set(temp);
-                                db.collection("pro_homes").document(document.getId()).collection("client_list").document(username).set(temp);
+                        for (QueryDocumentSnapshot documentSnapshot : value) {
+                            Log.d("try_lang", documentSnapshot.getId() + " " + documentSnapshot.getData());
+                            if ((boolean) documentSnapshot.getData().get("is_connected")) {
+                                connected.add(documentSnapshot.getId());
+
+                                db.collection("pro_homes").document(documentSnapshot.getId()).set(temp);
+                                db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).set(temp);
+
                             } else {
-                                db.collection("pro_homes").document(document.getId()).collection("client_list").document(username).delete();
+                                db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).delete();
                             }
                         }
 
+                        connectedList = new ArrayList<>();
                         db.collection("professionals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -135,30 +135,18 @@ public class FragmentHome_ConnectedList extends Fragment {
                                             // Get profile picture of current user
                                             StorageReference storageRef = storage.getReference();
                                             StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
-                                            final long ONE_MEGABYTE = 1024 * 1024;
-                                            pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                                @Override
-                                                public void onSuccess(byte[] bytes) {
-                                                    Log.d("image_stats", "Image retrieved.");
-                                                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                    connectedList.add(new ConnectedListItems(
-                                                            documentSnapshot.getId(),
-                                                            fullName,
-                                                            specific_job,
-                                                            field,
-                                                            bmp
-                                                    ));
-                                                    rvConnectedList.setAdapter(new ConnectedListAdapter(view.getContext(), connectedList, parentFragmentManager));
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception exception) {
-                                                    Log.d("image_stats", "Image not retrieved.");
-                                                }
-                                            });
+                                            connectedList.add(new ConnectedListItems(
+                                                    documentSnapshot.getId(),
+                                                    fullName,
+                                                    specific_job,
+                                                    field,
+                                                    pathReference
+                                            ));
 
                                         }
                                     }
+                                    rvConnectedList.setAdapter(new ConnectedListAdapter(view.getContext(), connectedList, parentFragmentManager));
+
                                 }
                             }
                         });

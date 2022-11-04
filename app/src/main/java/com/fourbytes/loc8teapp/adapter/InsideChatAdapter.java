@@ -4,6 +4,8 @@ import static com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems.layout_left;
 import static com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems.layout_right;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fourbytes.loc8teapp.chatsrecycler.InsideChatItems;
 import com.fourbytes.loc8teapp.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
 
 
 import java.util.List;
@@ -31,7 +35,7 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        switch(inside_chat_list.get(position).getViewType()){
+        switch (inside_chat_list.get(position).getViewType()) {
             case 1:
                 return layout_left;
             case 2:
@@ -44,12 +48,12 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType){
+        switch (viewType) {
             case layout_left:
-                View layoutLeft = LayoutInflater.from(inside_chat_context).inflate(R.layout.fragment_chat_inside_chat_items_left,parent,false);
+                View layoutLeft = LayoutInflater.from(inside_chat_context).inflate(R.layout.fragment_chat_inside_chat_items_left, parent, false);
                 return new LeftChatViewHolder(layoutLeft);
             case layout_right:
-                View layoutRight = LayoutInflater.from(inside_chat_context).inflate(R.layout.fragment_chat_inside_chat_items_right,parent,false);
+                View layoutRight = LayoutInflater.from(inside_chat_context).inflate(R.layout.fragment_chat_inside_chat_items_right, parent, false);
                 return new RightChatViewHolder(layoutRight);
             default:
                 return null;
@@ -58,20 +62,29 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        switch(inside_chat_list.get(position).getViewType()){
-            case layout_left:
-                String lmsg = inside_chat_list.get(position).getInside_chat_message();
-                ((LeftChatViewHolder) holder).setTextLeft(lmsg);
-                int limg = inside_chat_list.get(position).getInside_chat_image();
-                ((LeftChatViewHolder) holder).setImgLeft(limg);
-                break;
-            case layout_right:
-                String rmsg = inside_chat_list.get(position).getInside_chat_message();
-                ((RightChatViewHolder) holder).setTextRight(rmsg);
-                int rimg = inside_chat_list.get(position).getInside_chat_image();
-                ((RightChatViewHolder) holder).setImgRight(rimg);
-                break;
-        }
+
+        int pos = position;
+        StorageReference pathReference = inside_chat_list.get(pos).getPathReference();
+        final long ONE_MEGABYTE = 1024 * 1024;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                switch (inside_chat_list.get(pos).getViewType()) {
+                    case layout_left:
+                        String lmsg = inside_chat_list.get(pos).getInside_chat_message();
+                        ((LeftChatViewHolder) holder).setTextLeft(lmsg);
+                        ((LeftChatViewHolder) holder).setImgLeft(bmp);
+                        break;
+                    case layout_right:
+                        String rmsg = inside_chat_list.get(pos).getInside_chat_message();
+                        ((RightChatViewHolder) holder).setTextRight(rmsg);
+                        ((RightChatViewHolder) holder).setImgRight(bmp);
+                        break;
+                }
+            }
+        });
+
     }
 
     @Override
@@ -79,7 +92,7 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
         return inside_chat_list.size();
     }
 
-    class LeftChatViewHolder extends RecyclerView.ViewHolder{
+    class LeftChatViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView inchat_img_left;
         public TextView inchat_msg_left;
@@ -90,16 +103,16 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
             inchat_msg_left = itemView.findViewById(R.id.insidechat_msg_left);
         }
 
-        private void setTextLeft(String text){
+        private void setTextLeft(String text) {
             inchat_msg_left.setText(text);
         }
 
-        private void setImgLeft(int image){
-            inchat_img_left.setImageResource(image);
+        private void setImgLeft(Bitmap image) {
+            inchat_img_left.setImageBitmap(image);
         }
     }
 
-    class RightChatViewHolder extends RecyclerView.ViewHolder{
+    class RightChatViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView inchat_img_right;
         public TextView inchat_msg_right;
@@ -110,12 +123,12 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
             inchat_msg_right = itemView.findViewById(R.id.insidechat_msg_right);
         }
 
-        private void setTextRight(String text){
+        private void setTextRight(String text) {
             inchat_msg_right.setText(text);
         }
 
-        private void setImgRight(int image){
-            inchat_img_right.setImageResource(image);
+        private void setImgRight(Bitmap image) {
+            inchat_img_right.setImageBitmap(image);
         }
     }
 }

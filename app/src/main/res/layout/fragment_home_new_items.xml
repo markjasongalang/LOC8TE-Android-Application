@@ -12,7 +12,7 @@
         android:layout_height="80dp"
         android:padding="10dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/anya"
+        android:src="@drawable/icon_profile"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder" />
 
     <TextView

@@ -2,20 +2,22 @@ package com.fourbytes.loc8teapp.connectedlistrecycler;
 
 import android.graphics.Bitmap;
 
+import com.google.firebase.storage.StorageReference;
+
 public class ConnectedListItems {
     private String connectedlist_username;
     private String connectedlist_name;
     private String connectedlist_occupation;
     private String connectedlist_field;
 
-    private Bitmap connectedlist_image;
+    private StorageReference pathReference;
 
-    public ConnectedListItems(String connectedlist_username, String connectedlist_name, String connectedlist_occupation, String connectedlist_field, Bitmap connectedlist_image) {
+    public ConnectedListItems(String connectedlist_username, String connectedlist_name, String connectedlist_occupation, String connectedlist_field, StorageReference pathReference) {
         this.connectedlist_username = connectedlist_username;
         this.connectedlist_name = connectedlist_name;
         this.connectedlist_occupation = connectedlist_occupation;
         this.connectedlist_field = connectedlist_field;
-        this.connectedlist_image = connectedlist_image;
+        this.pathReference = pathReference;
     }
 
     public String getConnectedlist_username() {
@@ -50,11 +52,11 @@ public class ConnectedListItems {
         this.connectedlist_field = connectedlist_field;
     }
 
-    public Bitmap getConnectedlist_image() {
-        return connectedlist_image;
+    public StorageReference getPathReference() {
+        return pathReference;
     }
 
-    public void setConnectedlist_image(Bitmap connectedlist_image) {
-        this.connectedlist_image = connectedlist_image;
+    public void setPathReference(StorageReference pathReference) {
+        this.pathReference = pathReference;
     }
 }

@@ -26,7 +26,6 @@ import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.fragment.professional.Fragment_Reviews_About_Pro;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -98,7 +97,7 @@ public class AboutFragment extends Fragment {
         storage = FirebaseStorage.getInstance();
         parentFragmentManager = getParentFragmentManager();
 
-        viewedUsername = DataPasser.getUsername();
+        viewedUsername = DataPasser.getUsername1();
 
         // Determine the current user
         pair = null;
@@ -108,10 +107,10 @@ public class AboutFragment extends Fragment {
         });
 
         if (viewedUsername == null) {
-            username = pair.getFirst();
-            accountType = pair.getSecond();
+            username = pair.getUsername();
+            accountType = pair.getAccountType();
         } else {
-            current = pair.getFirst();
+            current = pair.getUsername();
             username = viewedUsername;
             accountType = "client";
         }
