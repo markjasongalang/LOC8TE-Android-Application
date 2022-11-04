@@ -52,6 +52,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.DistanceMatrix;
 import com.fourbytes.loc8teapp.Edge;
 import com.fourbytes.loc8teapp.LoginActivity;
@@ -290,6 +291,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DataPasser.setUsername1(null);
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();
