@@ -1,6 +1,8 @@
 package com.fourbytes.loc8teapp.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListItems;
 import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListViewHolder;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentProfile_Professional;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -40,7 +44,16 @@ public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListView
         holder.connected_list_name.setText(connectedlist_items.get(position).getConnectedlist_name());
         holder.connected_list_occupation.setText(connectedlist_items.get(position).getConnectedlist_occupation());
         holder.connected_list_field.setText(connectedlist_items.get(position).getConnectedlist_field());
-        holder.connected_list_img.setImageBitmap(connectedlist_items.get(position).getConnectedlist_image());
+
+        StorageReference pathReference = connectedlist_items.get(position).getPathReference();
+        final long ONE_MEGABYTE = 1024 * 1024;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                holder.connected_list_img.setImageBitmap(bmp);
+            }
+        });
 
         holder.connected_list_chat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,12 +68,15 @@ public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListView
         holder.connected_list_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataPasser.setUsername(proUsername);
+
+                DataPasser.setUsername1(proUsername);
+
                 parentFragmentManager.beginTransaction()
                         .replace(R.id.layout_client_home, FragmentProfile_Professional.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
+
             }
         });
     }

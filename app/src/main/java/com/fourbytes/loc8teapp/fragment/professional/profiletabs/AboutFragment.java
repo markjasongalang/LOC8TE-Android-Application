@@ -98,7 +98,7 @@ public class AboutFragment extends Fragment {
         storage = FirebaseStorage.getInstance();
         parentFragmentManager = getParentFragmentManager();
 
-        viewedUsername = DataPasser.getUsername();
+        viewedUsername = DataPasser.getUsername1();
 
         // Determine the current user
         pair = null;

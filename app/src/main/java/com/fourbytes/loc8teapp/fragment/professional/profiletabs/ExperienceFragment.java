@@ -80,7 +80,7 @@ public class ExperienceFragment extends Fragment {
         // Initialize values
         db = FirebaseFirestore.getInstance();
 
-        viewedUsername = DataPasser.getUsername();
+        viewedUsername = DataPasser.getUsername1();
 
         // Get username and account type of current user
         if (viewedUsername == null) {

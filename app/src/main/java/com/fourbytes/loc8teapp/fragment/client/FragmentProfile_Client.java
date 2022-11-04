@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
@@ -58,6 +59,7 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
     private AppCompatButton btnAddReview;
     private AppCompatButton btnRate;
     private AppCompatButton btnCancel;
+    private AppCompatButton btnReport;
 
     private EditText edtReview;
 
@@ -72,6 +74,8 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
 
     private String username;
     private String accountType;
+    private String viewedUsername;
+    private String current;
 
     private SharedViewModel viewModel;
 
@@ -91,6 +95,7 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
         cvReviews = view.findViewById(R.id.cv_reviews);
         tvClientName = view.findViewById(R.id.tv_client_name);
         ivProfilePicture = view.findViewById(R.id.iv_profile_picture);
+        btnReport = view.findViewById(R.id.btn_report);
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
@@ -99,6 +104,8 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
         // Parent fragment manager
         parentFragmentManager = getParentFragmentManager();
 
+        viewedUsername = DataPasser.getUsername2();
+
         // Get username and account type of current user
         pair = null;
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
@@ -106,8 +113,23 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        if (viewedUsername == null) {
+            username = pair.getFirst();
+            accountType = pair.getSecond();
+        } else {
+            current = pair.getFirst();
+            username = viewedUsername;
+            accountType = "professional";
+        }
+        
+        btnReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "TRYING", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Log.d("user_hello", username);
 
         // Get full name of current user
         db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -230,6 +252,16 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (accountType.equals("professional")) {
+            btnReport.setVisibility(View.VISIBLE);
+            btnAddReview.setVisibility(View.GONE);
+        }
+    }
+
     private void initSpinnerProfessional() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 view.getContext(),
@@ -245,10 +277,8 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
         edtReview.setText("");
-
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-    }
+    public void onNothingSelected(AdapterView<?> adapterView) {}
 }

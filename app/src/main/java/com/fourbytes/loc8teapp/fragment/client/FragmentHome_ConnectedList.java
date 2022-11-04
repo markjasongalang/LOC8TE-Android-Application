@@ -111,14 +111,16 @@ public class FragmentHome_ConnectedList extends Fragment {
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
                         HashSet<String> connected = new HashSet<>();
-                        for (QueryDocumentSnapshot document : value) {
-                            Log.d("try_lang", document.getId() + " " + document.getData());
-                            if ((boolean) document.getData().get("is_connected")) {
-                                connected.add(document.getId());
-                                db.collection("pro_homes").document(document.getId()).set(temp);
-                                db.collection("pro_homes").document(document.getId()).collection("client_list").document(username).set(temp);
+                        for (QueryDocumentSnapshot documentSnapshot : value) {
+                            Log.d("try_lang", documentSnapshot.getId() + " " + documentSnapshot.getData());
+                            if ((boolean) documentSnapshot.getData().get("is_connected")) {
+                                connected.add(documentSnapshot.getId());
+
+                                db.collection("pro_homes").document(documentSnapshot.getId()).set(temp);
+                                db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).set(temp);
+
                             } else {
-                                db.collection("pro_homes").document(document.getId()).collection("client_list").document(username).delete();
+                                db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).delete();
                             }
                         }
 
@@ -137,30 +139,18 @@ public class FragmentHome_ConnectedList extends Fragment {
                                             // Get profile picture of current user
                                             StorageReference storageRef = storage.getReference();
                                             StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
-                                            final long ONE_MEGABYTE = 1024 * 1024;
-                                            pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                                @Override
-                                                public void onSuccess(byte[] bytes) {
-                                                    Log.d("image_stats", "Image retrieved.");
-                                                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                    connectedList.add(new ConnectedListItems(
-                                                            documentSnapshot.getId(),
-                                                            fullName,
-                                                            specific_job,
-                                                            field,
-                                                            bmp
-                                                    ));
-                                                    rvConnectedList.setAdapter(new ConnectedListAdapter(view.getContext(), connectedList, parentFragmentManager));
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception exception) {
-                                                    Log.d("image_stats", "Image not retrieved.");
-                                                }
-                                            });
+                                            connectedList.add(new ConnectedListItems(
+                                                    documentSnapshot.getId(),
+                                                    fullName,
+                                                    specific_job,
+                                                    field,
+                                                    pathReference
+                                            ));
 
                                         }
                                     }
+                                    rvConnectedList.setAdapter(new ConnectedListAdapter(view.getContext(), connectedList, parentFragmentManager));
+
                                 }
                             }
                         });

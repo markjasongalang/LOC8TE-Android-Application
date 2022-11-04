@@ -143,6 +143,7 @@
                     android:textSize="22sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_report"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -150,6 +151,7 @@
                     android:background="@drawable/secondary_color_round_corners2"
                     android:fontFamily="@font/glacial_indifference"
                     android:text="report"
+                    android:visibility="gone"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp" />

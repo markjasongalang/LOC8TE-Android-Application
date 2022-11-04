@@ -72,8 +72,9 @@ public class FragmentChat_InsideChat extends Fragment {
 
     private String username;
     private String accountType;
-
     private String otherUsername;
+    private String sender;
+    private String receiver;
 
     private EditText edtChatMesage;
 
@@ -95,6 +96,8 @@ public class FragmentChat_InsideChat extends Fragment {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         insideChatItemsList = new ArrayList<>();
+        sender = "";
+        receiver = "";
 
         // Get username and account type of current user
         pair = null;
@@ -106,28 +109,24 @@ public class FragmentChat_InsideChat extends Fragment {
         username = pair.getFirst();
         accountType = pair.getSecond();
 
-//        parentFragmentManager.setFragmentResultListener("data_from_chat_adapter", this, new FragmentResultListener() {
-//            @Override
-//            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-//                otherUsername = result.getString("chat_username");
-//            }
-//        });
-
-        otherUsername = DataPasser.getUsername();
+        otherUsername = DataPasser.getChatUsername();
 
         if (accountType.equals("client")) {
-            // For client
-            db.collection("professionals").document(otherUsername).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        tvChatName.setText(task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"));
-                    }
-                }
-            });
+            sender = username;
+            receiver = otherUsername;
         } else {
-            // For professional
+            sender = otherUsername;
+            receiver = username;
         }
+
+        db.collection((accountType.equals("client") ? "professionals" : "clients")).document(otherUsername).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    tvChatName.setText(task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"));
+                }
+            }
+        });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,8 +151,8 @@ public class FragmentChat_InsideChat extends Fragment {
                 temp.put("message", chatMessage);
                 temp.put("timestamp", ts.toString());
 
-                db.collection("client_chats").document(username).collection("pro_list_chats")
-                        .document(otherUsername).collection("messages").add(temp);
+                db.collection("client_chats").document(sender).collection("pro_list_chats")
+                        .document(receiver).collection("messages").add(temp);
 
                 edtChatMesage.setText("");
 
@@ -169,78 +168,38 @@ public class FragmentChat_InsideChat extends Fragment {
 
         rvInsideChat.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        db.collection("client_chats").document(username).collection("pro_list_chats").document(otherUsername)
+        insideChatItemsList = new ArrayList<>();
+        db.collection("client_chats").document(sender).collection("pro_list_chats").document(receiver)
                 .collection("messages").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                        insideChatItemsList.clear();
+                        insideChatItemsList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
 
                             // Get profile picture of current user
                             StorageReference storageRef = storage.getReference();
                             StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getData().get("sender").toString() + "_profile.jpg");
-                            final long ONE_MEGABYTE = 1024 * 1024;
-                            pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
-                                    Log.d("image_stats", "Image retrieved.");
-                                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                    insideChatItemsList.add(new InsideChatItems(
-                                            documentSnapshot.getData().get("message").toString(),
-                                            documentSnapshot.getData().get("timestamp").toString(),
-                                            bmp,
-                                            (documentSnapshot.getData().get("sender").equals(username) ? InsideChatItems.layout_right : InsideChatItems.layout_left)
-                                    ));
-//                                    rvNewList.setAdapter(new NewListAdapter(getContext(), newList, parentFragmentManager));
-
-                                    Collections.sort(insideChatItemsList, new Comparator<InsideChatItems>() {
-                                        @Override
-                                        public int compare(InsideChatItems message, InsideChatItems other) {
-                                            Timestamp ts1 = Timestamp.valueOf(message.getInside_chat_timestamp());
-                                            Timestamp ts2 = Timestamp.valueOf(other.getInside_chat_timestamp());
-                                            return ts1.compareTo(ts2);
-                                        }
-                                    });
-                                    rvInsideChat.setAdapter(new InsideChatAdapter(getContext(), insideChatItemsList));
-
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    Log.d("image_stats", "Image not retrieved.");
-                                }
-                            });
-
-//                            insideChatItemsList.add(new InsideChatItems(
-//                                    documentSnapshot.getData().get("message").toString(),
-//                                    documentSnapshot.getData().get("timestamp").toString(),
-//                                    R.drawable.icon_profile,
-//                                    (documentSnapshot.getData().get("sender").equals(username) ? InsideChatItems.layout_right : InsideChatItems.layout_left)
-//                            ));
+                            insideChatItemsList.add(new InsideChatItems(
+                                    documentSnapshot.getData().get("message").toString(),
+                                    documentSnapshot.getData().get("timestamp").toString(),
+                                    pathReference,
+                                    (documentSnapshot.getData().get("sender").equals(username) ? InsideChatItems.layout_right : InsideChatItems.layout_left)
+                            ));
 
                         }
+                        Collections.sort(insideChatItemsList, new Comparator<InsideChatItems>() {
+                            @Override
+                            public int compare(InsideChatItems message, InsideChatItems other) {
+                                Timestamp ts1 = Timestamp.valueOf(message.getInside_chat_timestamp());
+                                Timestamp ts2 = Timestamp.valueOf(other.getInside_chat_timestamp());
+                                return ts1.compareTo(ts2);
+                            }
+                        });
+                        rvInsideChat.setAdapter(new InsideChatAdapter(getContext(), insideChatItemsList));
 
                     }
                 });
-
-//        insideChatItemsList.add(new InsideChatItems(
-//                "Hello!",
-//                R.drawable.random2,
-//                InsideChatItems.layout_right
-//        ));
-//
-//        insideChatItemsList.add(new InsideChatItems(
-//                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-//                R.drawable.random2,
-//                InsideChatItems.layout_right
-//        ));
-//
-//        insideChatItemsList.add(new InsideChatItems(
-//                "Thanks for contacting me!",
-//                R.drawable.random1,
-//                InsideChatItems.layout_left
-//        ));
 
     }
 }

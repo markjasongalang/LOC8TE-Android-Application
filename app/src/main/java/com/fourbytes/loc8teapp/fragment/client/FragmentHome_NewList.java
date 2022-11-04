@@ -158,9 +158,6 @@ public class FragmentHome_NewList extends Fragment {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
 
-                                    // todo: FIX CLEARING OF LIST TO AVOID DUPLICATES
-                                    // todo: MAKE RETRIEVAL OF DATA POSSIBLE
-
                                     newList = new ArrayList<>();
                                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                         if (!connected.contains(documentSnapshot.getId())) {
@@ -171,31 +168,17 @@ public class FragmentHome_NewList extends Fragment {
                                             // Get profile picture of current user
                                             StorageReference storageRef = storage.getReference();
                                             StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
-                                            final long ONE_MEGABYTE = 1024 * 1024;
-                                            pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                                @Override
-                                                public void onSuccess(byte[] bytes) {
-                                                    Log.d("image_stats", "Image retrieved.");
-                                                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                    newList.add(new NewListItems(
-                                                            documentSnapshot.getId(),
-                                                            fullName,
-                                                            specific_job,
-                                                            field,
-                                                            bmp
-                                                    ));
-                                                    Log.d("new_list_id", documentSnapshot.getId());
-                                                    rvNewList.setAdapter(new NewListAdapter(getContext(), newList, parentFragmentManager));
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception exception) {
-                                                    Log.d("image_stats", "Image not retrieved.");
-                                                }
-                                            });
+                                            newList.add(new NewListItems(
+                                                    documentSnapshot.getId(),
+                                                    fullName,
+                                                    specific_job,
+                                                    field,
+                                                    pathReference
+                                            ));
 
                                         }
                                     }
+                                    rvNewList.setAdapter(new NewListAdapter(getContext(), newList, parentFragmentManager));
 
                                 }
                             }

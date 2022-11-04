@@ -66,6 +66,8 @@ public class FragmentHome_Professional extends Fragment {
 
     private FirebaseStorage storage;
 
+    private FragmentManager parentFragmentManager;
+
     private ExtendedFloatingActionButton home_settings_FAB;
     private ExtendedFloatingActionButton location_settings_FAB;
 
@@ -102,6 +104,7 @@ public class FragmentHome_Professional extends Fragment {
         // Initialize values
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        parentFragmentManager = getParentFragmentManager();
 
         // Get username and account type of current user
         pair = null;
@@ -151,27 +154,14 @@ public class FragmentHome_Professional extends Fragment {
                                     // Get profile picture of current user
                                     StorageReference storageRef = storage.getReference();
                                     StorageReference pathReference = storageRef.child("profilePics/" + task.getResult().getId().toString() + "_profile.jpg");
-                                    final long ONE_MEGABYTE = 1024 * 1024;
-                                    pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                        @Override
-                                        public void onSuccess(byte[] bytes) {
-                                            Log.d("image_stats", "Image retrieved.");
-                                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                            connectedClientList.add(new ClientItem(
-                                                    bmp,
-                                                    task.getResult().getData().get("first_name").toString(),
-                                                    "",
-                                                    task.getResult().get("last_name").toString()
-                                            ));
-                                            rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList));
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception exception) {
-                                            Log.d("image_stats", "Image not retrieved.");
-                                        }
-                                    });
-
+                                    connectedClientList.add(new ClientItem(
+                                            pathReference,
+                                            task.getResult().getData().get("username").toString(),
+                                            task.getResult().getData().get("first_name").toString(),
+                                            "",
+                                            task.getResult().get("last_name").toString()
+                                    ));
+                                    rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList, parentFragmentManager));
                                 }
                             });
                         }

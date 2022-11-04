@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
@@ -68,6 +69,8 @@ public class Fragment_Reviews_About_Pro extends Fragment {
 
     private String username;
     private String accountType;
+    private String viewedUsername;
+    private String current;
 
     public Fragment_Reviews_About_Pro() {}
 
@@ -87,6 +90,8 @@ public class Fragment_Reviews_About_Pro extends Fragment {
         storage = FirebaseStorage.getInstance();
         parentFragmentManager = getParentFragmentManager();
 
+        viewedUsername = DataPasser.getUsername1();
+
         // Get username and account type of current user
         pair = null;
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
@@ -94,8 +99,14 @@ public class Fragment_Reviews_About_Pro extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        if (viewedUsername == null) {
+            username = pair.getFirst();
+            accountType = pair.getSecond();
+        } else {
+            current = pair.getFirst();
+            username = viewedUsername;
+            accountType = "professional";
+        }
 
         // Get profile picture of current user
         StorageReference storageRef = storage.getReference();
