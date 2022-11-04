@@ -2,6 +2,7 @@ package com.fourbytes.loc8teapp.fragment.client;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +10,24 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.fourbytes.loc8teapp.LoginActivity;
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.SectionPagerAdapter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import javax.annotation.Nullable;
 
@@ -29,7 +35,6 @@ public class FragmentHome_ListView extends Fragment {
     private View view;
     private View l;
     private View l2;
-    private View l3;
 
     private ViewPager viewPager;
 
@@ -43,8 +48,6 @@ public class FragmentHome_ListView extends Fragment {
     private ExtendedFloatingActionButton home_settings_FAB;
     private ExtendedFloatingActionButton location_settings_FAB;
 
-    private FloatingActionButton search_prof_FAB;
-
     private Button logoutButton;
 
     private Boolean isAllFABVisible;
@@ -53,9 +56,7 @@ public class FragmentHome_ListView extends Fragment {
 
     private FragmentManager parentFragmentManager;
 
-    public FragmentHome_ListView() {
-        // Required empty public constructor
-    }
+    public FragmentHome_ListView() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,10 +70,8 @@ public class FragmentHome_ListView extends Fragment {
         listViewCheckBox = view.findViewById(R.id.list_view_checkbox);
         home_settings_FAB = view.findViewById(R.id.home_settings);
         location_settings_FAB = view.findViewById(R.id.location_settings);
-//        search_prof_FAB = view.findViewById(R.id.search_prof_button);
         l = view.findViewById(R.id.home_settings_toolbar);
         l2 = view.findViewById(R.id.location_settings_toolbar);
-//        l3 = view.findViewById(R.id.search_prof_field);
         logoutButton = view.findViewById(R.id.logout);
 
         // Get parent fragment manager (from host activity)
@@ -80,7 +79,7 @@ public class FragmentHome_ListView extends Fragment {
 
         l.setVisibility(view.GONE);
         l2.setVisibility(view.GONE);
-//        l3.setVisibility(view.GONE);
+
         home_settings_FAB.shrink();
         location_settings_FAB.shrink();
 
@@ -97,7 +96,7 @@ public class FragmentHome_ListView extends Fragment {
                 if (buttonView.isChecked()) {
                     listViewCheckBox.setChecked(false);
                     parentFragmentManager.beginTransaction()
-                            .replace(R.id.fragment, FragmentHome_MapView.class, null)
+                            .replace(R.id.fragment, new FragmentHome_MapView(null), null)
                             .setReorderingAllowed(true)
                             .addToBackStack(null)
                             .commit();
@@ -135,23 +134,12 @@ public class FragmentHome_ListView extends Fragment {
             }
         });
 
-//        search_prof_FAB.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!isAllFABVisible3) {
-//                    l3.setVisibility(view.VISIBLE);
-//                    isAllFABVisible3 = true;
-//                } else {
-//                    l3.setVisibility(view.GONE);
-//                    isAllFABVisible3 = false;
-//                }
-//            }
-//        });
-
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
             }
         });
 

@@ -2,6 +2,9 @@ package com.fourbytes.loc8teapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +37,8 @@ public class AdminActivity2 extends AppCompatActivity {
 
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     private FirebaseFirestore db;
+    private View view;
+    private FirebaseStorage storage;
     public Spinner sp_id_type;
     public ImageView image_ids;
 
@@ -65,6 +71,7 @@ public class AdminActivity2 extends AppCompatActivity {
 
         DatabaseReference getImage = databaseReference.child("profilePics");
 
+        storage = FirebaseStorage.getInstance();
 
         Professional_name =  findViewById(R.id.prof_name2);
         Professional_work =  findViewById(R.id.prof_work2);
@@ -128,6 +135,39 @@ public class AdminActivity2 extends AppCompatActivity {
                                Professional_last_name.setText(document.getString("last_name"));
                                Professional_bday.setText(document.getString("birthdate"));
 
+                                StorageReference storageRef = storage.getReference();
+                                StorageReference pathReference = storageRef.child("profilePics/" + document.getString("username") + "_profile.jpg");
+                                StorageReference pathReference2 = storageRef.child("idPics/" + document.getString("username") + "_id.jpg");
+                                final long ONE_MEGABYTE = 1024 * 1024;
+                                pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
+                                        Professional_profile_pic.setImageBitmap(bmp);
+                                        Log.d("image_stats", "Image retrieved.");
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("image_stats","image not retrieved.");
+                                    }
+                                });
+
+                                pathReference2.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        Bitmap bmp2 = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
+                                        Professional_id_pic.setImageBitmap(bmp2);
+                                        Log.d("image_stats", "Image retrieved.");
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("image_stats","image not retrieved.");
+                                    }
+                                });
                             }
                         }
                     }
@@ -138,6 +178,16 @@ public class AdminActivity2 extends AppCompatActivity {
                         Log.d("this",e.getMessage());
                     }
                 });
+
+
+
+
+
+
+
+
+
+
 
 
 

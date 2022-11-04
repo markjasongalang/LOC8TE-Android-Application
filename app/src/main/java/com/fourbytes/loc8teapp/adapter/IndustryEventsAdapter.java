@@ -26,11 +26,11 @@ public class IndustryEventsAdapter extends RecyclerView.Adapter<IndustryEventsVi
     Context context;
     private List<IndustryEventsItems> industry_items;
     private FragmentManager fragmentManager;
-
     public IndustryEventsAdapter(Context context, List<IndustryEventsItems> industry_items, FragmentManager fragmentManager){
         this.context = context;
         this.industry_items = industry_items;
         this.fragmentManager = fragmentManager;
+
     }
     @NonNull
     @Override

@@ -14,6 +14,13 @@ public class VertexInfo {
         this.distance = 0;
     }
 
+    public VertexInfo(String id, double longitude, double latitude, double distance){
+        this.id = id;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.distance = distance;
+    }
+
     public String getId() {
         return id;
     }

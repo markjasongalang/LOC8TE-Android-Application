@@ -24,6 +24,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_professional_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -34,6 +35,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_specific_job"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/glacial_indifference"
@@ -71,7 +73,7 @@
             android:textSize="23sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_add_culture"
+            android:id="@+id/btn_edit_culture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -89,7 +91,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/glacial_indifference"
             android:text="Religion"
             android:textColor="@color/secondaryColor"
@@ -97,8 +99,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans"
             android:text="Catholic"
             android:textColor="@color/fifthColor"
@@ -115,8 +117,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans"
             android:text="Time is of the essence."
             android:textColor="@color/fifthColor"
@@ -133,8 +135,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans"
             android:text="- English \n- Filipino"
             android:textColor="@color/fifthColor"
@@ -151,8 +153,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans"
             android:text="I usually spend my weekends saving people."
             android:textColor="@color/fifthColor"

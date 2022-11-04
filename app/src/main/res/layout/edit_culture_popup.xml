@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_medium"
+            android:text="Religion"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_religion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/white_round_corners_10"
+            android:fontFamily="@font/open_sans_light"
+            android:inputType="textCapWords"
+            android:padding="10dp"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/open_sans_medium"
+            android:text="Life Motto"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_life_motto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/white_round_corners_10"
+            android:fontFamily="@font/open_sans_light"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:minHeight="70dp"
+            android:padding="10dp"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/open_sans_medium"
+            android:text="Languages"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_languages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/white_round_corners_10"
+            android:fontFamily="@font/open_sans_light"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:minHeight="70dp"
+            android:padding="10dp"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/open_sans_medium"
+            android:text="Personal Note From You"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_personal_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/white_round_corners_10"
+            android:fontFamily="@font/open_sans_light"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:minHeight="100dp"
+            android:padding="10dp"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/secondary_color_round_corners_20"
+                android:fontFamily="@font/glacial_indifference"
+                android:text="save"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="19sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/white_round_corners_20"
+                android:fontFamily="@font/glacial_indifference"
+                android:text="cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/secondaryColor"
+                android:textSize="19sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

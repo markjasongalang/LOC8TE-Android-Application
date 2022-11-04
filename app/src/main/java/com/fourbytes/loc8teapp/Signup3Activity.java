@@ -23,11 +23,14 @@ public class Signup3Activity extends AppCompatActivity {
     private TextView tvAccountType;
     private TextView tvAttachReminder;
     private TextView tvImageStatus;
+    private TextView tvImageAlert;
 
     private AppCompatButton btnAttach;
     private AppCompatButton btnNext;
 
     private byte[] curByteArray;
+
+    private Uri profilePicUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class Signup3Activity extends AppCompatActivity {
         tvImageStatus = findViewById(R.id.tv_image_status);
         btnAttach = findViewById(R.id.btn_attach);
         btnNext = findViewById(R.id.btn_next);
+        tvImageAlert = findViewById(R.id.tv_image_alert);
 
         btnAttach.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,8 +58,11 @@ public class Signup3Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Signup4Activity.class);
 
+                // todo: FIX PROBLEM ON DIFFERENT IMAGE FILE TYPES/FORMAT
+
                 if (curByteArray == null) {
-                    Toast.makeText(Signup3Activity.this, "Please select an image first.", Toast.LENGTH_SHORT).show();
+                    tvImageAlert.setText("Please attach an image.");
+                    tvImageAlert.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -79,12 +86,16 @@ public class Signup3Activity extends AppCompatActivity {
                     Bundle extras = getIntent().getExtras();
                     byte[] prevByteArray = extras.getByteArray("idPicture");
                     intent.putExtra("idPicture", prevByteArray);
+
+                    intent.putExtra("idPicUri", getIntent().getStringExtra("idPicUri"));
                 }
 
                 // New data to be passed
                 intent.putExtra("profilePicture", curByteArray);
+                intent.putExtra("profilePicUri", profilePicUri.toString());
 
-                // Problem: Not proceeding to SignUpActivity4 :(
+                tvImageAlert.setVisibility(View.GONE);
+
                 startActivity(intent);
             }
         });
@@ -97,11 +108,11 @@ public class Signup3Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
+            profilePicUri = data.getData();
 
             Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), profilePicUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }

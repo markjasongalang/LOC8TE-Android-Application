@@ -256,6 +256,7 @@
                     android:layout_gravity="center"/>
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_set_location"
                     android:layout_width="100dp"
                     android:layout_height="40dp"
                     android:background="@drawable/fifth_color_round_corners"

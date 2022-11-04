@@ -4,13 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fourthColor"
+    android:background="@color/primaryColor"
     tools:context=".fragment.professional.FragmentHome_Professional">
-
-    <FrameLayout
-        android:id="@+id/connected_list_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid3"
@@ -24,14 +19,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.65" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.74"/>
+        app:layout_constraintGuide_percent="0.74" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid"
@@ -47,47 +42,37 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.8" />
 
-    <!-- search client FAB -->
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/mid5"
+    <!-- Task Bar -->
+    <LinearLayout
+        android:id="@+id/ll_taskbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primaryColor"
+        android:elevation="8dp"
+        android:padding="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/search_cli_button"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:outlineProvider="none"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/icon_search_person"
-            app:borderWidth="0dp"
-            app:tint="@color/secondaryColorLight"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="center"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="connected clients"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
-        <EditText
-            android:id="@+id/search_cli_field"
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/white_round_corners_10"
-            android:fontFamily="@font/open_sans_light_italic"
-            android:hint="search client by name"
-            android:inputType="text"
-            android:paddingTop="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp"
-            android:paddingLeft="40dp"
-            android:textColor="@color/fifthColor"
-            android:textColorHint="@color/fifthColor"
-            android:textSize="18sp"
-            android:layout_marginStart="35dp"
-            android:layout_marginRight="20dp"
-            android:layout_gravity="bottom|left" />
-
-    </FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_connected_clients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_taskbar" />
 
     <!-- location FAB -->
     <FrameLayout
@@ -135,34 +120,11 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/fourth_color_round_corners_40_2"
-                        android:fontFamily="@font/open_sans_light_italic"
-                        android:hint="search for address"
-                        android:inputType="text"
-                        android:textColor="@color/primaryColor"
-                        android:textColorHint="@color/primaryColor"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:fontFamily="@font/open_sans_light_italic"
-                        android:text="or"
-                        android:textAlignment="center"
-                        android:textColor="@color/primaryColor"
-                        android:textSize="20sp" />
-
                     <androidx.appcompat.widget.AppCompatButton
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="40dp"
                         android:background="@drawable/tertiary_color_round_corners"
                         android:fontFamily="@font/glacial_indifference"
@@ -173,7 +135,6 @@
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
-
     </FrameLayout>
 
     <!-- home settings FAB -->
@@ -226,31 +187,7 @@
                 android:text="logout"
                 android:textAllCaps="false"
                 android:textColor="@color/primaryColor" />
-
         </LinearLayout>
-
     </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/primaryColor"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:elevation="8dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="connected clients"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:fontFamily="@font/open_sans_bold"/>
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ public class FragmentEvent_Registered extends Fragment {
 
     private AppCompatButton btnBack;
     private AppCompatButton btnUnregister;
+    private AppCompatButton btnFindLocation;
 
     private FirebaseFirestore db;
     private FragmentManager fragmentManager;
@@ -50,6 +52,7 @@ public class FragmentEvent_Registered extends Fragment {
 
         btnBack = view.findViewById(R.id.btn_back);
         btnUnregister = view.findViewById(R.id.btn_unregister);
+        btnFindLocation = view.findViewById(R.id.btn_find);
 
         db = FirebaseFirestore.getInstance();
         fragmentManager = getParentFragmentManager();
@@ -65,6 +68,21 @@ public class FragmentEvent_Registered extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        btnFindLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle result = new Bundle();
+                result.putDouble("originLatitude", 0.0);
+                result.putDouble("originLongitude", 0.0);
+                result.putDouble("destinationLatitude", 0.0);
+                result.putDouble("destinationLongitude", 0.0);
+
+                fragmentManager.setFragmentResult("findLocationData", result);
+
 
             }
         });

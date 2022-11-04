@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.client.FragmentChat_InsideChat"
-    android:background="@color/fourthColor">
+    android:background="@color/fourthColor"
+    tools:context=".fragment.FragmentChat_InsideChat">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/insidechat_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomrel"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomrel"
-        app:layout_constraintTop_toBottomOf="@id/cons"/>
+        app:layout_constraintTop_toBottomOf="@id/cons" />
 
     <RelativeLayout
         android:id="@+id/bottomrel"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:padding="10dp">
+        app:layout_constraintRight_toRightOf="parent">
 
         <EditText
             android:id="@+id/chat_message"
             android:layout_width="330dp"
             android:layout_height="match_parent"
+            android:layout_gravity="left"
             android:background="@drawable/white_round_corners_10"
             android:fontFamily="@font/open_sans_light_italic"
             android:inputType="text"
             android:padding="10dp"
             android:textColor="@color/fifthColor"
             android:textColorHint="@color/fifthColor"
-            android:textSize="18sp"
-            android:layout_gravity="left" />
+            android:textSize="18sp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/send_chat"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@drawable/tertiary_color_round_button_send"
+            android:layout_marginStart="13dp"
             android:layout_toEndOf="@id/chat_message"
-            android:layout_marginStart="13dp"/>
+            android:background="@drawable/tertiary_color_round_button_send" />
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,45 +52,46 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/tertiaryColor"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/tv_professional_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans_bold"
+            android:maxLines="1"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Anya F."
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:fontFamily="@font/open_sans_bold"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="Anya F."
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:textColor="@color/white"
-            android:maxLines="1"
-            android:ellipsize="end"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_back"
             android:layout_width="35dp"
             android:layout_height="30dp"
             android:background="@drawable/icon_arrow_back"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/chat_settings"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginRight="5dp"
             android:background="@drawable/tertiary_color_light_round_button_settings"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginRight="5dp"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

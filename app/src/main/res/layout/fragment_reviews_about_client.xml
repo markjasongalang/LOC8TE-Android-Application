@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/blue_green_diagonal_background"
     android:orientation="vertical"
-    tools:context=".fragment.professional.profiletabs.RateFragment">
+    tools:context=".fragment.client.Fragment_Reviews_About_Client">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,11 +22,11 @@
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:visibility="gone"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/close_button_round_corners" />
+            android:background="@drawable/close_button_round_corners"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout
@@ -60,11 +60,12 @@
         </LinearLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_profile_picture"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:padding="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/anya"
+            android:src="@drawable/icon_profile"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder"
             app:strokeColor="@color/primaryColor"
             app:strokeWidth="5dp" />
@@ -74,6 +75,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/glacial_indifference"
             android:text="Anya Forger"
+            android:id="@+id/tv_client_name"
             android:textAlignment="center"
             android:textColor="@color/primaryColor"
             android:textSize="20sp" />

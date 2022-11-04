@@ -17,9 +17,9 @@
         tools:layout="@layout/fragment_profile_client" />
     <fragment
         android:id="@+id/fragment_chat"
-        android:name="com.fourbytes.loc8teapp.fragment.client.FragmentChat_InsideChat"
+        android:name="com.fourbytes.loc8teapp.fragment.client.FragmentChat_Client"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat_inside_chat" />
+        tools:layout="@layout/fragment_chat_client" />
     <fragment
         android:id="@+id/fragment_event"
         android:name="com.fourbytes.loc8teapp.fragment.client.FragmentEvent_Client"

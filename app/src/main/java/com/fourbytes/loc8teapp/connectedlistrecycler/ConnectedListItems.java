@@ -1,16 +1,29 @@
 package com.fourbytes.loc8teapp.connectedlistrecycler;
 
-public class ConnectedListItems {
-    String connectedlist_name;
-    String connectedlist_occupation;
-    String connectedlist_distance;
-    int connectedlist_image;
+import android.graphics.Bitmap;
 
-    public ConnectedListItems(String connectedlist_name, String connectedlist_occupation, String connectedlist_distance, int connectedlist_image) {
+public class ConnectedListItems {
+    private String connectedlist_username;
+    private String connectedlist_name;
+    private String connectedlist_occupation;
+    private String connectedlist_field;
+
+    private Bitmap connectedlist_image;
+
+    public ConnectedListItems(String connectedlist_username, String connectedlist_name, String connectedlist_occupation, String connectedlist_field, Bitmap connectedlist_image) {
+        this.connectedlist_username = connectedlist_username;
         this.connectedlist_name = connectedlist_name;
         this.connectedlist_occupation = connectedlist_occupation;
-        this.connectedlist_distance = connectedlist_distance;
+        this.connectedlist_field = connectedlist_field;
         this.connectedlist_image = connectedlist_image;
+    }
+
+    public String getConnectedlist_username() {
+        return connectedlist_username;
+    }
+
+    public void setConnectedlist_username(String connectedlist_username) {
+        this.connectedlist_username = connectedlist_username;
     }
 
     public String getConnectedlist_name() {
@@ -29,19 +42,19 @@ public class ConnectedListItems {
         this.connectedlist_occupation = connectedlist_occupation;
     }
 
-    public String getConnectedlist_distance() {
-        return connectedlist_distance;
+    public String getConnectedlist_field() {
+        return connectedlist_field;
     }
 
-    public void setConnectedlist_distance(String connectedlist_distance) {
-        this.connectedlist_distance = connectedlist_distance;
+    public void setConnectedlist_field(String connectedlist_field) {
+        this.connectedlist_field = connectedlist_field;
     }
 
-    public int getConnectedlist_image() {
+    public Bitmap getConnectedlist_image() {
         return connectedlist_image;
     }
 
-    public void setConnectedlist_image(int connectedlist_image) {
+    public void setConnectedlist_image(Bitmap connectedlist_image) {
         this.connectedlist_image = connectedlist_image;
     }
 }

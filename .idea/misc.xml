@@ -106,6 +106,13 @@
 >>>>>>> 59cb87a6e138bebefd5ca2e47de298df7397726f
         <entry key="app/src/main/res/drawable/white_round_corners_10.xml" value="0.2405" />
         <entry key="app/src/main/res/drawable/white_round_corners_40.xml" value="0.2405" />
+<<<<<<< HEAD
+=======
+        <entry key="app/src/main/res/layout/activity_admin.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_extra.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_home1.xml" value="0.23020833333333332" />
+        <entry key="app/src/main/res/layout/activity_host.xml" value="0.1990990990990991" />
+>>>>>>> b32eaaf23a387b5278f00b8ba4fee34b610a4684
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/layout/activity_signup1.xml" value="0.33" />
@@ -113,11 +120,21 @@
         <entry key="app/src/main/res/layout/activity_signup3.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_signup4.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.33" />
+<<<<<<< HEAD
         <entry key="app/src/main/res/layout/custom_spinner_item.xml" value="0.25" />
 <<<<<<< HEAD
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.17265625" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
 =======
+=======
+        <entry key="app/src/main/res/layout/add_experience_popup.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/add_service_popup.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/client_fragment_profile.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/connected_client_item_view.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/custom_spinner_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/edit_about_popup.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/edit_culture_popup.xml" value="0.33" />
+>>>>>>> b32eaaf23a387b5278f00b8ba4fee34b610a4684
         <entry key="app/src/main/res/layout/experience_item_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment__reviews__by__professionals.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_about.xml" value="0.25" />
@@ -125,33 +142,43 @@
         <entry key="app/src/main/res/layout/fragment_certification.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_chat__professional.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_chat_client.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_chat_inside_chat.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_chat_inside_chat_items_left.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_chat_items.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_chat_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_culture_tab.xml" value="0.18558558558558558" />
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_event__client.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_event_client.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_event_general.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_experience.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home_client.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home_connected.xml" value="0.1990990990990991" />
-        <entry key="app/src/main/res/layout/fragment_home_connected_items.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_home_connected_items.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home_map.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_home_map_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home_new.xml" value="0.1990990990990991" />
-        <entry key="app/src/main/res/layout/fragment_home_new_items.xml" value="0.19574844995571303" />
-        <entry key="app/src/main/res/layout/fragment_home_professional.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_home_new_items.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_home_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile__professional.xml" value="0.18558558558558558" />
         <entry key="app/src/main/res/layout/fragment_profile_client.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile_pro_about.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile_pro_culture.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_profile_pro_experience.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_profile_pro_experience.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile_pro_rate.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_rate.xml" value="0.1990990990990991" />
+        <entry key="app/src/main/res/layout/fragment_reviews_about__professional.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/fragment_reviews_about_client.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_reviews_about_pro.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_reviews_about_professional.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_test.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/item_review_about_client.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_review_about_professional.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_review_for_professional.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/node_onclick_popup.xml" value="0.1990990990990991" />
         <entry key="app/src/main/res/layout/professional_fragment_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rate_professional_popup.xml" value="0.33" />
         <entry key="app/src/main/res/layout/service_item_view.xml" value="0.33" />
