@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
@@ -63,6 +64,8 @@ public class Fragment_Reviews_About_Client extends Fragment {
 
     private String username;
     private String accountType;
+    private String viewedUsername;
+    private String current;
 
     public Fragment_Reviews_About_Client() {}
 
@@ -83,6 +86,8 @@ public class Fragment_Reviews_About_Client extends Fragment {
         // Get fragment manager of parent fragment
         parentFragmentManager = getParentFragmentManager();
 
+        viewedUsername = DataPasser.getUsername2();
+
         // Get username and account type of current user
         pair = null;
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
@@ -90,8 +95,14 @@ public class Fragment_Reviews_About_Client extends Fragment {
             pair = data;
         });
 
-        username = pair.getUsername();
-        accountType = pair.getAccountType();
+        if (viewedUsername == null) {
+            username = pair.getUsername();
+            accountType = pair.getAccountType();
+        } else {
+            current = pair.getUsername();
+            username = viewedUsername;
+            accountType = "professional";
+        }
 
         // Get full name of current user
         db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {

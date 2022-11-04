@@ -125,7 +125,6 @@ public class FragmentChat_Client extends Fragment {
 
                         chatsItemsList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
-                            Log.d("aww_chat", documentSnapshot.getId());
                             db.collection("professionals").document(documentSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -134,28 +133,14 @@ public class FragmentChat_Client extends Fragment {
                                         // Get profile picture of current user
                                         StorageReference storageRef = storage.getReference();
                                         StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
-                                        final long ONE_MEGABYTE = 1024 * 1024;
-                                        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                            @Override
-                                            public void onSuccess(byte[] bytes) {
-                                                Log.d("image_stats", "Image retrieved.");
-                                                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                chatsItemsList.add(new ChatsItems(
-                                                        documentSnapshot.getId(),
-                                                        task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"),
-                                                        task.getResult().getData().get("specific_job") + " ",
-                                                        task.getResult().getData().get("first_name").toString() + ": Hello",
-                                                        bmp
-                                                ));
-                                                rvChats.setAdapter(new ChatAdapter(view.getContext(), chatsItemsList, parentFragmentManager));
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception exception) {
-                                                Log.d("image_stats", "Image not retrieved.");
-                                            }
-                                        });
-
+                                        chatsItemsList.add(new ChatsItems(
+                                                documentSnapshot.getId(),
+                                                task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"),
+                                                task.getResult().getData().get("specific_job") + " ",
+                                                task.getResult().getData().get("first_name").toString() + ": Hello",
+                                                pathReference
+                                        ));
+                                        rvChats.setAdapter(new ChatAdapter(getContext(), chatsItemsList, parentFragmentManager, db, username, accountType));
                                     }
                                 }
                             });

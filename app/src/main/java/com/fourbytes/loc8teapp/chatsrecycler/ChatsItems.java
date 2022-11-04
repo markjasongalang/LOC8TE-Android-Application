@@ -2,19 +2,22 @@ package com.fourbytes.loc8teapp.chatsrecycler;
 
 import android.graphics.Bitmap;
 
+import com.google.firebase.storage.StorageReference;
+
 public class ChatsItems {
     private String chat_username;
     private String chat_name;
     private String chat_occupation;
     private String chat_msgpreview;
-    private Bitmap chat_image;
 
-    public ChatsItems(String chat_username, String chat_name, String chat_occupation, String chat_msgpreview, Bitmap chat_image) {
+    private StorageReference pathReference;
+
+    public ChatsItems(String chat_username, String chat_name, String chat_occupation, String chat_msgpreview, StorageReference pathReference) {
         this.chat_username = chat_username;
         this.chat_name = chat_name;
         this.chat_occupation = chat_occupation;
         this.chat_msgpreview = chat_msgpreview;
-        this.chat_image = chat_image;
+        this.pathReference = pathReference;
     }
 
     public String getChat_username() {
@@ -49,11 +52,11 @@ public class ChatsItems {
         this.chat_msgpreview = chat_msgpreview;
     }
 
-    public Bitmap getChat_image() {
-        return chat_image;
+    public StorageReference getPathReference() {
+        return pathReference;
     }
 
-    public void setChat_image(Bitmap chat_image) {
-        this.chat_image = chat_image;
+    public void setPathReference(StorageReference pathReference) {
+        this.pathReference = pathReference;
     }
 }
