@@ -90,8 +90,8 @@ public class ExperienceFragment extends Fragment {
                 pair = data;
             });
 
-            username = pair.getFirst();
-            accountType = pair.getSecond();
+            username = pair.getUsername();
+            accountType = pair.getAccountType();
         } else {
             username = viewedUsername;
             accountType = "client";

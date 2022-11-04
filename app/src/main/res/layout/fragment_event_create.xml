@@ -107,6 +107,21 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Event Type"
+                android:textStyle="italic"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/open_sans"
+                android:textSize="13dp"/>
+
+            <Spinner
+                android:id="@+id/event_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fourth_color_round_corners_10"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Event Location"
                 android:textStyle="italic"
                 android:textColor="@color/primaryColor"
@@ -143,7 +158,8 @@
                 android:maxHeight="150dp"
                 android:background="@drawable/fourth_color_round_corners_10"
                 android:fontFamily="@font/open_sans_light"
-                android:hint="@string/sample_text"
+                android:maxLines="5"
+                android:hint="Enter Event Description"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
                 android:textColor="@color/primaryColor"
@@ -250,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/fourth_color_round_corners_10"
                     android:fontFamily="@font/open_sans_light"
-                    android:hint="0"
+                    android:text="0"
                     android:inputType="number"
                     android:padding="10dp"
                     android:textColor="@color/primaryColor"

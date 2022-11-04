@@ -106,8 +106,8 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        username = pair.getUsername();
+        accountType = pair.getAccountType();
 
         // Get full name of current user
         db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {

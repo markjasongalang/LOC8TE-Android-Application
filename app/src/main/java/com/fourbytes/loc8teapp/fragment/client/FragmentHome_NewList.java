@@ -3,7 +3,6 @@ package com.fourbytes.loc8teapp.fragment.client;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,8 +83,8 @@ public class FragmentHome_NewList extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        username = pair.getUsername();
+        accountType = pair.getAccountType();
 
         // Workaround to enable the visibility of the document
         temp = new HashMap<>();

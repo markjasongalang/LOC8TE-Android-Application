@@ -164,8 +164,14 @@ public class FragmentEvent_SetLocation extends Fragment implements OnMapReadyCal
             public void onComplete(@NonNull Task<Location> task) {
                 if(task.isSuccessful()){
                     Location location = task.getResult();
-                    GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                    setCurrentLocation(geopoint.getLatitude(), geopoint.getLongitude());
+
+                    if(location != null){
+                        GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                        setCurrentLocation(geopoint.getLatitude(), geopoint.getLongitude());
+                    }else{
+                        dialog.show();
+                    }
+
                 }else{
                     dialog.show();
                 }
@@ -191,8 +197,13 @@ public class FragmentEvent_SetLocation extends Fragment implements OnMapReadyCal
             public void onComplete(@NonNull Task<Location> task) {
                 if(task.isSuccessful()){
                     Location location = task.getResult();
-                    GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                    setLocationCamera(geopoint.getLatitude(), geopoint.getLongitude());
+                    if(location != null){
+                        GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                        setLocationCamera(geopoint.getLatitude(), geopoint.getLongitude());
+                    }else{
+                        setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LATITUDE);
+                    }
+
                 }else{
                     setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LATITUDE);
                 }
@@ -249,9 +260,7 @@ public class FragmentEvent_SetLocation extends Fragment implements OnMapReadyCal
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
         if(!isMarkerExist){
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.icon_event_marker);
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 50, 50, false);
-            clickMarker = map_instance.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
+            clickMarker = map_instance.addMarker(new MarkerOptions().position(latLng));
             isMarkerExist = true;
             return;
         }

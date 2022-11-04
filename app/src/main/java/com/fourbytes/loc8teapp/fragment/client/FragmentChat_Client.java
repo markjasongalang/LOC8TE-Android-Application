@@ -20,16 +20,13 @@ import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.adapter.ConnectedListAdapter;
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.adapter.ChatAdapter;
-import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListItems;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,7 +38,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -86,8 +82,8 @@ public class FragmentChat_Client extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        username = pair.getUsername();
+        accountType = pair.getAccountType();
 
         // Workaround to enable the visibility of the document
         Map<String, Object> temp = new HashMap<>();

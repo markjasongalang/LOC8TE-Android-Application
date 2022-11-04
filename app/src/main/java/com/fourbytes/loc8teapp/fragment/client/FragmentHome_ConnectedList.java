@@ -20,17 +20,13 @@ import android.view.ViewGroup;
 
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.adapter.NewListAdapter;
 import com.fourbytes.loc8teapp.connectedlistrecycler.ConnectedListItems;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.adapter.ConnectedListAdapter;
-import com.fourbytes.loc8teapp.newlistrecycler.NewListItems;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -88,8 +84,8 @@ public class FragmentHome_ConnectedList extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        username = pair.getUsername();
+        accountType = pair.getAccountType();
 
         return view;
     }

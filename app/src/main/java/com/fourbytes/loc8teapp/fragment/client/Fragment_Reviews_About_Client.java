@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.adapter.ExperienceAdapter;
 import com.fourbytes.loc8teapp.adapter.ReviewAboutClientAdapter;
 import com.fourbytes.loc8teapp.reviewaboutclientrecycler.ReviewAboutClient;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -91,8 +90,8 @@ public class Fragment_Reviews_About_Client extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        username = pair.getUsername();
+        accountType = pair.getAccountType();
 
         // Get full name of current user
         db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
