@@ -126,9 +126,6 @@ public class FragmentChat_Professional extends Fragment {
                                         pathReference
                                 ));
                                 chats_recyclerView2.setAdapter(new ChatAdapter(getContext(), chats_items_clients, parentFragmentManager, db, username, accountType));
-                                if (chats_items_clients.size() > 0) {
-                                    chats_recyclerView2.scrollToPosition(chats_items_clients.size() - 1);
-                                }
 
                             }
                         }
@@ -137,21 +134,6 @@ public class FragmentChat_Professional extends Fragment {
 
             }
         });
-
-
-//        chats_items_clients.add(new ChatsItems(
-//                "Anya Forger",
-//                "Client",
-//                "Anya: Waku waku!",
-//                R.drawable.anya
-//        ));
-//
-//        chats_items_clients.add(new ChatsItems(
-//                "Yor Forger",
-//                "Client",
-//                "Yor: Henlo",
-//                R.drawable.yor
-//        ));
 
     }
 }

@@ -145,7 +145,6 @@ public class FragmentChat_Client extends Fragment {
                                                 pathReference
                                         ));
                                         rvChats.setAdapter(new ChatAdapter(getContext(), chatsItemsList, parentFragmentManager, db, username, accountType));
-
                                     }
                                 }
                             });

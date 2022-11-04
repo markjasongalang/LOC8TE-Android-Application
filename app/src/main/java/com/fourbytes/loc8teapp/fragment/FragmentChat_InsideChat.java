@@ -197,6 +197,9 @@ public class FragmentChat_InsideChat extends Fragment {
                             }
                         });
                         rvInsideChat.setAdapter(new InsideChatAdapter(getContext(), insideChatItemsList));
+                        if (insideChatItemsList.size() > 0) {
+                            rvInsideChat.scrollToPosition(insideChatItemsList.size()-1);
+                        }
 
                     }
                 });

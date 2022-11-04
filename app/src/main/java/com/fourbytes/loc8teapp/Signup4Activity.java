@@ -51,6 +51,8 @@ public class Signup4Activity extends AppCompatActivity {
     private Double currentUserLat;
     private Double currentUserLong;
 
+    private HashMap<String, Object> temp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,7 @@ public class Signup4Activity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
         mAuth = FirebaseAuth.getInstance();
+        temp = new HashMap<>();
 
         btnGps.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +85,7 @@ public class Signup4Activity extends AppCompatActivity {
             }
         });
 
+        temp.put("exists", true);
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,6 +145,21 @@ public class Signup4Activity extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(Signup4Activity.this, "Successfully signed up!", Toast.LENGTH_SHORT).show();
                                 Log.d("SIGNUP_SUCCESS", "DocumentSnapshot successfully written!");
+
+                                db.collection(type)
+                                        .document(username)
+                                        .collection("registered_events")
+                                        .document("sample_event")
+                                        .set(temp);
+
+                                if (accountType.equals("professional")) {
+                                    db.collection(type)
+                                            .document(username)
+                                            .collection("created_events")
+                                            .document("sample_event")
+                                            .set(temp);
+                                }
+
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
