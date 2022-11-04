@@ -77,8 +77,8 @@ public class FragmentChat_Professional extends Fragment {
             pair = data;
         });
 
-        username = pair.getFirst();
-        accountType = pair.getSecond();
+        username = pair.getUsername();
+        accountType = pair.getAccountType();
 
         return view;
     }

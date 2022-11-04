@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,10 +24,7 @@ import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.adapter.ReviewAboutClientAdapter;
 import com.fourbytes.loc8teapp.adapter.ReviewAboutProfessionalAdapter;
-import com.fourbytes.loc8teapp.fragment.professional.profiletabs.AboutFragment;
-import com.fourbytes.loc8teapp.reviewaboutclientrecycler.ReviewAboutClient;
 import com.fourbytes.loc8teapp.reviewaboutproreycler.ReviewAboutProfessional;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -99,11 +95,12 @@ public class Fragment_Reviews_About_Pro extends Fragment {
             pair = data;
         });
 
+
         if (viewedUsername == null) {
-            username = pair.getFirst();
-            accountType = pair.getSecond();
+            username = pair.getUsername();
+            accountType = pair.getAccountType();
         } else {
-            current = pair.getFirst();
+            current = pair.getUsername();
             username = viewedUsername;
             accountType = "professional";
         }

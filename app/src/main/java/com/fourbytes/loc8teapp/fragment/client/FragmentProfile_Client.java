@@ -113,11 +113,12 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
             pair = data;
         });
 
+
         if (viewedUsername == null) {
-            username = pair.getFirst();
-            accountType = pair.getSecond();
+            username = pair.getUsername();
+            accountType = pair.getAccountType();
         } else {
-            current = pair.getFirst();
+            current = pair.getUsername();
             username = viewedUsername;
             accountType = "professional";
         }
@@ -130,6 +131,7 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
         });
 
         Log.d("user_hello", username);
+
 
         // Get full name of current user
         db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
