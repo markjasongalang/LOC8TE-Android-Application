@@ -6,6 +6,8 @@ public class DataPasser {
     private static String accountType;
     private static String chatUsername;
 
+    private static boolean industryChosen;
+
     public static String getUsername1() {
         return username1;
     }
@@ -36,5 +38,13 @@ public class DataPasser {
 
     public static void setChatUsername(String chatUsername) {
         DataPasser.chatUsername = chatUsername;
+    }
+
+    public static boolean isIndustryChosen() {
+        return industryChosen;
+    }
+
+    public static void setIndustryChosen(boolean industryChosen) {
+        DataPasser.industryChosen = industryChosen;
     }
 }
