@@ -21,6 +21,9 @@
             android:name=".ExtraActivity"
             android:exported="false" />
         <activity
+            android:name=".AdminActivity2"
+            android:exported="false" />
+        <activity
             android:name=".AdminActivity"
             android:exported="false" />
         <activity
