@@ -1,10 +1,7 @@
 package com.fourbytes.loc8teapp;
-<<<<<<< HEAD
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-=======
->>>>>>> ce8d4317cdfa4b56e9188bd38a7d0d9d93f0abc1
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,10 +35,8 @@ public class AdminActivity2 extends AppCompatActivity {
     private FirebaseStorage storage;
     public Spinner sp_id_type;
     public ImageView image_ids;
-<<<<<<< HEAD
     private String username;
-=======
->>>>>>> ce8d4317cdfa4b56e9188bd38a7d0d9d93f0abc1
+
 
     TextView Professional_name;
     TextView Professional_work;
