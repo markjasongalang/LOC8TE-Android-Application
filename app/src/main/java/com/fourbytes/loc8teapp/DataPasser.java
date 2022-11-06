@@ -5,6 +5,7 @@ public class DataPasser {
     private static String username2;
     private static String accountType;
     private static String chatUsername;
+    private static String ProUsername;
 
     public static String getUsername1() {
         return username1;
@@ -36,5 +37,13 @@ public class DataPasser {
 
     public static void setChatUsername(String chatUsername) {
         DataPasser.chatUsername = chatUsername;
+    }
+
+    public static String getProUsername() {
+        return ProUsername;
+    }
+
+    public static void setProUsername(String proUsername) {
+        ProUsername = proUsername;
     }
 }

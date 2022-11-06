@@ -1,14 +1,14 @@
-package com.fourbytes.loc8teapp.admin;
+package com.fourbytes.loc8teapp.newadmin;
 
 import com.google.firebase.storage.StorageReference;
 
-public class Admin_Holder_Data {
+public class Item {
     private String username;
     private String fullName;
 
     private StorageReference pathReference;
 
-    public Admin_Holder_Data(String username, String fullName, StorageReference pathReference) {
+    public Item(String username, String fullName, StorageReference pathReference) {
         this.username = username;
         this.fullName = fullName;
         this.pathReference = pathReference;
@@ -36,5 +36,4 @@ public class Admin_Holder_Data {
 
     public void setPathReference(StorageReference pathReference) {
         this.pathReference = pathReference;
-    }
-}
+    }}

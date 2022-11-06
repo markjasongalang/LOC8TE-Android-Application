@@ -23,6 +23,18 @@
 
         />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/testbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="290dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/tertiary_colro_round_corners"
+
+
+
+        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
