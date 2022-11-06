@@ -33,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FragmentChat_Professional extends Fragment {
@@ -54,8 +55,12 @@ public class FragmentChat_Professional extends Fragment {
 
     private String username;
     private String accountType;
+    private String field;
+    private String fieldUsername;
 
     private FragmentManager parentFragmentManager;
+
+    private HashMap<String, Object> temp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +74,7 @@ public class FragmentChat_Professional extends Fragment {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         parentFragmentManager = getParentFragmentManager();
+        temp = new HashMap<>();
 
         /// Get username and account type of current user
         pair = null;
@@ -79,6 +85,24 @@ public class FragmentChat_Professional extends Fragment {
 
         username = pair.getUsername();
         accountType = pair.getAccountType();
+        field = pair.getField();
+
+        fieldUsername = "";
+        for (char ch : field.toCharArray()) {
+            if (ch == ' ') {
+                fieldUsername += '_';
+            } else {
+                fieldUsername += ch;
+            }
+        }
+
+        temp.put("exists", true);
+        db.collection("industry_chat").document(fieldUsername).set(temp).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                db.collection("industry_chat").document(fieldUsername).collection("messages").document("sample_message").set(temp);
+            }
+        });
 
         return view;
     }
@@ -91,14 +115,19 @@ public class FragmentChat_Professional extends Fragment {
         chats_recyclerView1.setLayoutManager(new LinearLayoutManager(view.getContext()));
         chats_items_industry = new ArrayList<>();
 
-//        chats_items_industry.add(new ChatsItems(
-//                "IT Industry",
-//                "Industry Chat",
-//                "Juswa: Gawa tayo software guys",
-//                R.drawable.juswa_hearts
-//        ));
-//
-//        chats_recyclerView1.setAdapter(new ChatAdapter(view.getContext(), chats_items_industry, parentFragmentManager));
+        // Get industry picture
+        StorageReference storageRef = storage.getReference();
+        StorageReference pathReference = storageRef.child("industryChatPics/" + fieldUsername + ".jpg");
+
+        chats_items_industry.add(new ChatsItems(
+                fieldUsername,
+                field,
+                "",
+                "You: testing",
+                pathReference
+        ));
+
+        chats_recyclerView1.setAdapter(new ChatAdapter(getContext(), chats_items_industry, parentFragmentManager, db, username, accountType, fieldUsername));
 
         // For client chat
         chats_recyclerView2.setLayoutManager(new LinearLayoutManager(view.getContext()));

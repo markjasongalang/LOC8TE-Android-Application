@@ -5,6 +5,9 @@ public class DataPasser {
     private static String username2;
     private static String accountType;
     private static String chatUsername;
+    private static String ProUsername;
+
+    private static boolean industryChosen;
 
     public static String getUsername1() {
         return username1;
@@ -36,5 +39,22 @@ public class DataPasser {
 
     public static void setChatUsername(String chatUsername) {
         DataPasser.chatUsername = chatUsername;
+    }
+
+<<<<<<< HEAD
+    public static String getProUsername() {
+        return ProUsername;
+    }
+
+    public static void setProUsername(String proUsername) {
+        ProUsername = proUsername;
+=======
+    public static boolean isIndustryChosen() {
+        return industryChosen;
+    }
+
+    public static void setIndustryChosen(boolean industryChosen) {
+        DataPasser.industryChosen = industryChosen;
+>>>>>>> ce8d4317cdfa4b56e9188bd38a7d0d9d93f0abc1
     }
 }

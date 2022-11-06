@@ -24,6 +24,7 @@
         android:background="@drawable/white_chat_bubble"
         android:fontFamily="@font/open_sans_light"
         android:padding="10dp"
+        android:text="loading..."
         android:textColor="@color/primaryColor"
         android:textSize="15sp" />
 
