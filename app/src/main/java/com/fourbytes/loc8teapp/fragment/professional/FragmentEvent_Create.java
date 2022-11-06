@@ -36,6 +36,7 @@ import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
@@ -161,6 +162,7 @@ public class FragmentEvent_Create extends Fragment {
                                 event_end_time,
                                 parking_slots);
                     System.out.println("Data complete");
+                    fragmentManager.popBackStack();
                 }else{
                     System.out.println("Not Complete");
                 }
@@ -168,12 +170,6 @@ public class FragmentEvent_Create extends Fragment {
                 System.out.println(event_type);
                 System.out.println(event_description);
                 System.out.println(event_date);
-
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment, FragmentEvent_MyEvents_Professional.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
-                        .commit();
 
             }
         });
@@ -189,8 +185,6 @@ public class FragmentEvent_Create extends Fragment {
                         .commit();
             }
         });
-
-
 
         dateEditView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,7 +230,17 @@ public class FragmentEvent_Create extends Fragment {
                 mTimePicker = new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        startTimeEditView.setText( selectedHour + ":" + selectedMinute);
+
+                        String format_hour = String.valueOf(selectedHour);
+                        String format_minute = String.valueOf(selectedMinute);
+                        if (selectedHour < 10){
+                            format_hour = "0" + format_hour;
+                        }
+
+                        if (selectedMinute < 10){
+                            format_minute = "0" + format_minute;
+                        }
+                        startTimeEditView.setText( format_hour + ":" + format_minute);
                         endTimeEditView.setEnabled(true);
                     }
                 }, hour, minute, false);//Yes 24 hour time
@@ -257,7 +261,17 @@ public class FragmentEvent_Create extends Fragment {
                         System.out.println(startTimeEditView);
                         String endTime = selectedHour + ":" + selectedMinute;
                         String startTime = String.valueOf(startTimeEditView.getText());
-                        endTimeEditView.setText(selectedHour + ":" + selectedMinute);
+
+                        String format_hour = String.valueOf(selectedHour);
+                        String format_minute = String.valueOf(selectedMinute);
+                        if (selectedHour < 10){
+                            format_hour = "0" + format_hour;
+                        }
+
+                        if (selectedMinute < 10){
+                            format_minute = "0" + format_minute;
+                        }
+                        endTimeEditView.setText( format_hour + ":" + format_minute);
 
                         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
@@ -300,6 +314,7 @@ public class FragmentEvent_Create extends Fragment {
         }
 
         HashMap<String, Object> data = new HashMap<>();
+        HashMap<String, Object> created_data = new HashMap<>();
         data.put("event_title", title);
         data.put("event_industry", type);
         data.put("event_description", description);
@@ -310,12 +325,28 @@ public class FragmentEvent_Create extends Fragment {
         data.put("event_parking_count", 0);
         data.put("event_parking_limit", parkingSlots);
         data.put("event_host", pair.getName());
+        data.put("event_host_id", pair.getUsername());
         data.put("event_host_job", pair.getSpecific_job());
         data.put("event_location", event_location);
         data.put("event_latitude", event_latitude);
         data.put("event_longitude", event_longitude);
 
-        db.collection("events").add(data);
+        db.collection("events")
+                .add(data)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        created_data.put("event_id", documentReference.getId());
+                        db.collection("professionals").document(pair.getUsername()).collection("created_events").add(created_data);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
 
     }
 

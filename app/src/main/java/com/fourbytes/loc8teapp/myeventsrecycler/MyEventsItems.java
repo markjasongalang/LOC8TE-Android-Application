@@ -4,23 +4,35 @@ public class MyEventsItems {
 
     String event_title;
     String event_location;
+    String event_description;
     String event_id;
     String hosted_by;
     String time;
     String date;
     String job_title;
-    int image;
+    String host_id;
+    int participant_count;
+    int parking_limit;
+    int parking_count;
+    double latitude;
+    double longitude;
 
-    public MyEventsItems(String event_title, String event_location, String event_id,
-                         String hosted_by, String time, String date, String job_title, int image) {
+    public MyEventsItems(String event_title, String event_location, String hosted_by, String time, String date, String job_title, String event_id, String host_id, String event_description,
+                         int participant_count, int parking_limit, int parking_count, double latitude, double longitude) {
         this.event_title = event_title;
         this.event_location = event_location;
-        this.event_id = event_id;
         this.hosted_by = hosted_by;
         this.time = time;
         this.date = date;
         this.job_title = job_title;
-        this.image = image;
+        this.event_id = event_id;
+        this.host_id = host_id;
+        this.event_description = event_description;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.participant_count = participant_count;
+        this.parking_limit = parking_limit;
+        this.parking_count = parking_count;
     }
 
     public String getEvent_title() {
@@ -79,11 +91,59 @@ public class MyEventsItems {
         this.job_title = job_title;
     }
 
-    public int getImage() {
-        return image;
+    public String getEvent_description() {
+        return event_description;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setEvent_description(String event_description) {
+        this.event_description = event_description;
+    }
+
+    public String getHost_id() {
+        return host_id;
+    }
+
+    public void setHost_id(String host_id) {
+        this.host_id = host_id;
+    }
+
+    public int getParticipant_count() {
+        return participant_count;
+    }
+
+    public void setParticipant_count(int participant_count) {
+        this.participant_count = participant_count;
+    }
+
+    public int getParking_limit() {
+        return parking_limit;
+    }
+
+    public void setParking_limit(int parking_limit) {
+        this.parking_limit = parking_limit;
+    }
+
+    public int getParking_count() {
+        return parking_count;
+    }
+
+    public void setParking_count(int parking_count) {
+        this.parking_count = parking_count;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

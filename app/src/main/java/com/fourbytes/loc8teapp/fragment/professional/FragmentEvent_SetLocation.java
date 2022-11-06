@@ -201,11 +201,11 @@ public class FragmentEvent_SetLocation extends Fragment implements OnMapReadyCal
                         GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                         setLocationCamera(geopoint.getLatitude(), geopoint.getLongitude());
                     }else{
-                        setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LATITUDE);
+                        setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LONGITUDE);
                     }
 
                 }else{
-                    setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LATITUDE);
+                    setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LONGITUDE);
                 }
             }
         });

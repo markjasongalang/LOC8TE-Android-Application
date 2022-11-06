@@ -73,10 +73,14 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -98,6 +102,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -163,6 +168,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private Marker currentLocationMarker;
     private Polyline polyline;
+    Polyline dotted_polyline;
 
     private VertexMatrix vertex;
 
@@ -462,7 +468,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 start_distance = nearest_vertex.get(1).getDistance();
             }
 
-
             checkUserNearestNode(start_point, start_distance);
         }else{
             showGPSPopUp();
@@ -540,14 +545,22 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     public void checkNearestUser(String start_point, double start_distance, ArrayList<UserInfo> Users){
         final double MAX = 99999;
+
+        if(dotted_polyline != null){
+            dotted_polyline.remove();
+        }
+        List<PatternItem> pattern = Arrays.asList(new Dot(), new Gap(3), new Dot());
         HashMap<String, VertexData> data = vertex.getVertex();
         HashMap<String, PathVertex> origin_path = data.get(start_point).getPath();
 
         ArrayList<LatLng> points = new ArrayList<>();
+        ArrayList<LatLng> dotted_points = new ArrayList<>();
         PolylineOptions polylineOptions = new PolylineOptions();
+        PolylineOptions polylineOptionsDotted = new PolylineOptions();
         System.out.println(start_point);
         System.out.println(data.get(start_point).getLatitude());
         System.out.println(data.get(start_point).getLongitude());
+
         for(int i = 0; i < Users.size(); i++){
             double path_distance;
 
@@ -556,26 +569,37 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                 if(origin_path.get(Users.get(i).getMeet_point()) != null){
                     path_distance = origin_path.get(Users.get(i).getMeet_point()).getDistance();
-                    Users.get(i).setDistance(currentUserDistance + path_distance + start_distance);
+                    Users.get(i).setDistance(path_distance);
                 }else{
                     path_distance = MAX;
-                    Users.get(i).setDistance(currentUserDistance + path_distance + start_distance);
+                    Users.get(i).setDistance(path_distance);
                 }
 
             }else{
                 points.add(new LatLng(currentUserLat, currentUserLong));
                 points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLongitude()));
-                points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLongitude()));
-                points.add(new LatLng(Users.get(i).getLatitude(), Users.get(i).getLongitude()));
+//                points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLongitude()));
+//                points.add(new LatLng(Users.get(i).getLatitude(), Users.get(i).getLongitude()));
+                dotted_points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLongitude()));
+                dotted_points.add(new LatLng(Users.get(i).getLatitude(), Users.get(i).getLongitude()));
+
+                polylineOptionsDotted.addAll(dotted_points);
+                polylineOptionsDotted.width(10);
+                polylineOptionsDotted.geodesic(true);
 
                 polylineOptions.addAll(points);
-                polylineOptions.width(10);
+                polylineOptions.width(5);
                 polylineOptions.color(getResources().getColor(R.color.secondaryColor));
                 polylineOptions.geodesic(true);
 
-                setMarkers(Users.get(i).getLatitude(), Users.get(i).getLongitude(), 0, Users.get(i).getName(), Users.get(i).getId());
+                map_instance.addPolyline(polylineOptions).setZIndex(0);
 
-                map_instance.addPolyline(polylineOptions);
+                dotted_polyline = map_instance.addPolyline(polylineOptionsDotted);
+                dotted_polyline.setZIndex(1);
+                dotted_polyline.setColor(getResources().getColor(R.color.primaryColor));
+                dotted_polyline.setPattern(pattern);
+
+                setMarkers(Users.get(i).getLatitude(), Users.get(i).getLongitude(), 0, Users.get(i).getName(), Users.get(i).getId());
 
                 return;
             }
@@ -594,6 +618,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             String nearest_user_name = Users.get(0).getName();
             String nearest_meet_point = Users.get(0).getMeet_point();
             String nearest_path = Users.get(0).getMeet_point();
+            double nearest_distance = Users.get(0).getDistance();
             double nearest_user_latitude = Users.get(0).getLatitude();
             double nearest_path_longitude = Users.get(0).getLongitude();
 
@@ -601,7 +626,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             double start_point_longitude = data.get(start_point).getLongitude();
 
             ArrayList<String> final_path = origin_path.get(nearest_path).getPath();
-
+            int path_last_index = final_path.size() - 1;
+            double final_point_latitude = data.get(final_path.get(path_last_index)).getLatitude();
+            double final_point_longitude = data.get(final_path.get(path_last_index)).getLongitude();
             points.add(new LatLng(currentUserLat, currentUserLong));
             points.add(new LatLng(start_point_latitude, start_point_longitude));
             for(int i = 0; i < final_path.size(); i++){
@@ -611,23 +638,46 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 ));
             }
 
-            points.add(new LatLng(
+            dotted_points.add(new LatLng(
                     data.get(nearest_meet_point).getLatitude(),
                     data.get(nearest_meet_point).getLongitude()
             ));
-            points.add(new LatLng(
+            dotted_points.add(new LatLng(
                     nearest_user_latitude,
                     nearest_path_longitude
             ));
 
+            polylineOptionsDotted.addAll(dotted_points);
+            polylineOptionsDotted.width(10);
+            polylineOptionsDotted.geodesic(true);
+
+            dotted_polyline = map_instance.addPolyline(polylineOptionsDotted);
+            dotted_polyline.setColor(getResources().getColor(R.color.primaryColor));
+            dotted_polyline.setPattern(pattern);
+            dotted_polyline.setZIndex(1);
+//            points.add(new LatLng(
+//                    data.get(nearest_meet_point).getLatitude(),
+//                    data.get(nearest_meet_point).getLongitude()
+//            ));
+//            points.add(new LatLng(
+//                    nearest_user_latitude,
+//                    nearest_path_longitude
+//            ));
+
             polylineOptions.addAll(points);
-            polylineOptions.width(10);
+            polylineOptions.width(5);
             polylineOptions.color(getResources().getColor(R.color.secondaryColor));
             polylineOptions.geodesic(true);
 
             setMarkers(nearest_user_latitude, nearest_path_longitude, 0, nearest_user_name, nearest_user);
-
-            map_instance.addPolyline(polylineOptions);
+//            System.out.println("ORIGIN ---------------------------");
+//            System.out.println(start_point_latitude);
+//            System.out.println(start_point_longitude);
+//            System.out.println(nearest_distance);
+//            System.out.println("DESTINATION ---------------------------");
+//            System.out.println(final_point_latitude);
+//            System.out.println(final_point_longitude);
+            map_instance.addPolyline(polylineOptions).setZIndex(0);
 
         }
 
