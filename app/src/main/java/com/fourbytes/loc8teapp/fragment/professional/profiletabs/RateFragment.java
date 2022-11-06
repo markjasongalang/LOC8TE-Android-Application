@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +29,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RateFragment extends Fragment {
@@ -66,6 +70,10 @@ public class RateFragment extends Fragment {
 
     private String viewedUsername;
 
+    private HashMap<String, Object> temp;
+
+    private int current;
+
     public RateFragment() {}
 
     @Override
@@ -80,6 +88,7 @@ public class RateFragment extends Fragment {
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
+        temp = new HashMap<>();
 
         viewedUsername = DataPasser.getUsername1();
 
@@ -110,6 +119,9 @@ public class RateFragment extends Fragment {
             }
         });
 
+        temp.put("exists", true);
+        db.collection("pro_profiles").document(username).set(temp);
+
         btnAddService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,7 +142,20 @@ public class RateFragment extends Fragment {
                 btnAddServicePopup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), "Successfully added!", Toast.LENGTH_SHORT).show();
+                        temp.clear();
+
+                        temp.put("service_name", edtServiceName.getText().toString());
+                        temp.put("price", edtPrice.getText().toString());
+                        temp.put("rate_type", edtRate.getText().toString());
+                        temp.put("description", edtDescription.getText().toString());
+
+                        db.collection("pro_profiles")
+                                .document(username)
+                                .collection("rate")
+                                .document()
+                                .set(temp);
+
+                        dialog.dismiss();
                     }
                 });
 
@@ -154,29 +179,23 @@ public class RateFragment extends Fragment {
         rvService.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         serviceItemList = new ArrayList<>();
+        db.collection("pro_profiles").document(username).collection("rate").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                serviceItemList = new ArrayList<>();
 
-        serviceItemList.add(new ServiceItem(
-                "Live Cooking Show",
-                101.69,
-                "per hour",
-                "I love to cook in front of the panelists <3"
-        ));
+                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    serviceItemList.add(new ServiceItem(
+                            documentSnapshot.getId(),
+                            documentSnapshot.getData().get("service_name").toString(),
+                            Double.valueOf(documentSnapshot.getData().get("price").toString()),
+                            documentSnapshot.getData().get("rate_type").toString(),
+                            documentSnapshot.getData().get("description").toString()
+                    ));
+                }
 
-        serviceItemList.add(new ServiceItem(
-                "Hero Duties",
-                99999.99,
-                "depends on the calamity",
-                "Class S Hero to the rescue!"
-        ));
-
-        serviceItemList.add(new ServiceItem(
-                "Recycler View Lover",
-                43.75,
-                "per hour",
-                "Protect Rylie at all cost..."
-        ));
-
-        rvService.setAdapter(new ServiceAdapter(view.getContext(), serviceItemList));
-
+                rvService.setAdapter(new ServiceAdapter(view.getContext(), serviceItemList, getLayoutInflater(), username));
+            }
+        });
     }
 }

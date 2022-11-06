@@ -23,13 +23,18 @@ import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.ExperienceAdapter;
+import com.fourbytes.loc8teapp.adapter.ServiceAdapter;
 import com.fourbytes.loc8teapp.experienceprorecycler.ExperienceItem;
+import com.fourbytes.loc8teapp.ratesprorecycler.ServiceItem;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ExperienceFragment extends Fragment {
@@ -65,6 +70,8 @@ public class ExperienceFragment extends Fragment {
 
     private String viewedUsername;
 
+    private HashMap<String, Object> temp;
+
     public ExperienceFragment() {}
 
     @Override
@@ -79,6 +86,7 @@ public class ExperienceFragment extends Fragment {
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
+        temp = new HashMap<>();
 
         viewedUsername = DataPasser.getUsername1();
 
@@ -109,6 +117,9 @@ public class ExperienceFragment extends Fragment {
             }
         });
 
+        temp.put("exists", true);
+        db.collection("pro_profiles").document(username).set(temp);
+
         btnAddExperience.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,7 +140,15 @@ public class ExperienceFragment extends Fragment {
                 btnAddExperiencePopup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), "Successfully added!", Toast.LENGTH_SHORT).show();
+                        temp.clear();
+
+                        temp.put("position", edtPosition.getText().toString());
+                        temp.put("company", edtCompany.getText().toString());
+                        temp.put("description", edtDescription.getText().toString());
+
+                        db.collection("pro_profiles").document(username).collection("experience").document().set(temp);
+
+                        dialog.dismiss();
                     }
                 });
 
@@ -153,25 +172,40 @@ public class ExperienceFragment extends Fragment {
         rvExperience.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         experienceItemList = new ArrayList<>();
+        db.collection("pro_profiles").document(username).collection("experience").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                experienceItemList = new ArrayList<>();
 
-        experienceItemList.add(new ExperienceItem(
-                "Head Chef",
-                "Netflix",
-                "I was the no. 1 chef of the world at that time."
-        ));
+                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    experienceItemList.add(new ExperienceItem(
+                            documentSnapshot.getId(),
+                            documentSnapshot.getData().get("position").toString(),
+                            documentSnapshot.getData().get("company").toString(),
+                            documentSnapshot.getData().get("description").toString()
+                    ));
+                }
 
-        experienceItemList.add(new ExperienceItem(
-                "Former Class S Hero",
-                "Jollibee",
-                "I was the no. 1 hero of the world at that time."
-        ));
+                rvExperience.setAdapter(new ExperienceAdapter(view.getContext(), experienceItemList, getLayoutInflater(), username));
+            }
+        });
 
-        experienceItemList.add(new ExperienceItem(
-                "Android Lord",
-                "Apple",
-                "I was the no. 1 android lord of the world at that time."
-        ));
-
-        rvExperience.setAdapter(new ExperienceAdapter(view.getContext(), experienceItemList));
+//        experienceItemList.add(new ExperienceItem(
+//                "Head Chef",
+//                "Netflix",
+//                "I was the no. 1 chef of the world at that time."
+//        ));
+//
+//        experienceItemList.add(new ExperienceItem(
+//                "Former Class S Hero",
+//                "Jollibee",
+//                "I was the no. 1 hero of the world at that time."
+//        ));
+//
+//        experienceItemList.add(new ExperienceItem(
+//                "Android Lord",
+//                "Apple",
+//                "I was the no. 1 android lord of the world at that time."
+//        ));
     }
 }

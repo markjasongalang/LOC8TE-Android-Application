@@ -43,6 +43,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -87,8 +88,12 @@ public class FragmentChat_InsideChat extends Fragment {
     private String otherUsername;
     private String sender;
     private String receiver;
+    private String field;
+    private String fieldUsername;
 
-    private EditText edtChatMesage;
+    private EditText edtChatMessage;
+
+    private CollectionReference colRef;
 
     public FragmentChat_InsideChat() {}
 
@@ -100,7 +105,7 @@ public class FragmentChat_InsideChat extends Fragment {
         rvInsideChat = view.findViewById(R.id.insidechat_recyclerview);
         btnBack = view.findViewById(R.id.btn_back);
         tvChatName = view.findViewById(R.id.tv_chat_name);
-        edtChatMesage = view.findViewById(R.id.edt_chat_message);
+        edtChatMessage = view.findViewById(R.id.edt_chat_message);
         btnSend = view.findViewById(R.id.btn_send);
 
         // Initialize values
@@ -120,6 +125,7 @@ public class FragmentChat_InsideChat extends Fragment {
 
         username = pair.getUsername();
         accountType = pair.getAccountType();
+        field = pair.getField();
 
         otherUsername = DataPasser.getChatUsername();
 
@@ -131,14 +137,37 @@ public class FragmentChat_InsideChat extends Fragment {
             receiver = username;
         }
 
-        db.collection((accountType.equals("client") ? "professionals" : "clients")).document(otherUsername).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    tvChatName.setText(task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"));
+        if (DataPasser.isIndustryChosen()) {
+            fieldUsername = "";
+            for (char ch : field.toCharArray()) {
+                if (ch == ' ') {
+                    fieldUsername += '_';
+                } else {
+                    fieldUsername += ch;
                 }
             }
-        });
+
+            colRef = db.collection("industry_chat")
+                    .document(fieldUsername)
+                    .collection("messages");
+
+            tvChatName.setText(field);
+        } else {
+            colRef = db.collection("client_chats")
+                    .document(sender)
+                    .collection("pro_list_chats")
+                    .document(receiver)
+                    .collection("messages");
+
+            db.collection((accountType.equals("client") ? "professionals" : "clients")).document(otherUsername).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        tvChatName.setText(task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"));
+                    }
+                }
+            });
+        }
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +180,7 @@ public class FragmentChat_InsideChat extends Fragment {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String chatMessage = edtChatMesage.getText().toString();
+                String chatMessage = edtChatMessage.getText().toString();
                 if (chatMessage.isEmpty()) {
                     return;
                 }
@@ -163,10 +192,9 @@ public class FragmentChat_InsideChat extends Fragment {
                 temp.put("message", chatMessage);
                 temp.put("timestamp", ts.toString());
 
-                db.collection("client_chats").document(sender).collection("pro_list_chats")
-                        .document(receiver).collection("messages").add(temp);
+                colRef.add(temp);
 
-                edtChatMesage.setText("");
+                edtChatMessage.setText("");
 
             }
         });
@@ -181,13 +209,14 @@ public class FragmentChat_InsideChat extends Fragment {
         rvInsideChat.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         insideChatItemsList = new ArrayList<>();
-        db.collection("client_chats").document(sender).collection("pro_list_chats").document(receiver)
-                .collection("messages").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        colRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
                         insideChatItemsList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
+                            if (documentSnapshot.getId().equals("sample_message")) {
+                                continue;
+                            }
 
                             // Get profile picture of current user
                             StorageReference storageRef = storage.getReference();
@@ -198,8 +227,8 @@ public class FragmentChat_InsideChat extends Fragment {
                                     pathReference,
                                     (documentSnapshot.getData().get("sender").equals(username) ? InsideChatItems.layout_right : InsideChatItems.layout_left)
                             ));
-
                         }
+
                         Collections.sort(insideChatItemsList, new Comparator<InsideChatItems>() {
                             @Override
                             public int compare(InsideChatItems message, InsideChatItems other) {
@@ -208,13 +237,20 @@ public class FragmentChat_InsideChat extends Fragment {
                                 return ts1.compareTo(ts2);
                             }
                         });
+
                         rvInsideChat.setAdapter(new InsideChatAdapter(getContext(), insideChatItemsList));
                         if (insideChatItemsList.size() > 0) {
                             rvInsideChat.scrollToPosition(insideChatItemsList.size()-1);
                         }
-
                     }
                 });
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        DataPasser.setIndustryChosen(false);
     }
 }

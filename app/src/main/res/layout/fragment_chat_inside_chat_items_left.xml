@@ -23,6 +23,7 @@
         android:background="@drawable/primary_color_chat_bubble"
         android:fontFamily="@font/open_sans_light"
         android:padding="10dp"
+        android:text="loading..."
         android:textColor="@color/white"
         android:textSize="15sp" />
 

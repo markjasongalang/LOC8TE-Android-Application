@@ -1,14 +1,24 @@
 package com.fourbytes.loc8teapp.experienceprorecycler;
 
 public class ExperienceItem {
+    private String experienceId;
     private String position;
     private String company;
     private String description;
 
-    public ExperienceItem(String position, String company, String description) {
+    public ExperienceItem(String experienceId, String position, String company, String description) {
+        this.experienceId = experienceId;
         this.position = position;
         this.company = company;
         this.description = description;
+    }
+
+    public String getExperienceId() {
+        return experienceId;
+    }
+
+    public void setExperienceId(String experienceId) {
+        this.experienceId = experienceId;
     }
 
     public String getPosition() {
