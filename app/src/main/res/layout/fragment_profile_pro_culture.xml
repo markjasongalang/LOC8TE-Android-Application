@@ -98,11 +98,11 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tv_religion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans"
-            android:text="Catholic"
             android:textColor="@color/fifthColor"
             android:textSize="16sp" />
 
@@ -116,11 +116,11 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tv_life_motto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans"
-            android:text="Time is of the essence."
             android:textColor="@color/fifthColor"
             android:textSize="16sp" />
 
@@ -134,11 +134,11 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tv_languages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans"
-            android:text="- English \n- Filipino"
             android:textColor="@color/fifthColor"
             android:textSize="16sp" />
 
@@ -152,11 +152,11 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tv_personal_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans"
-            android:text="I usually spend my weekends saving people."
             android:textColor="@color/fifthColor"
             android:textSize="16sp" />
     </LinearLayout>

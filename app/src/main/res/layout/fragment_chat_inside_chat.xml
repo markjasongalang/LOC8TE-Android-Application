@@ -65,7 +65,7 @@
             android:maxLines="1"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:text="Anya F."
+            android:text="loading..."
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"

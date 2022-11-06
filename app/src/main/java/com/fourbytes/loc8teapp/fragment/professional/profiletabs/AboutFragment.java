@@ -26,8 +26,10 @@ import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -54,6 +56,7 @@ public class AboutFragment extends Fragment {
 
     private TextView tvProfessionalName;
     private TextView tvSpecificJob;
+    private TextView tvAbout;
 
     private AppCompatButton btnEditProfile;
     private AppCompatButton btnConnect;
@@ -78,6 +81,8 @@ public class AboutFragment extends Fragment {
 
     private String viewedUsername;
 
+    private HashMap<String, Object> temp;
+
     public AboutFragment() {}
 
     @Override
@@ -91,11 +96,13 @@ public class AboutFragment extends Fragment {
         cvReviews = view.findViewById(R.id.cv_reviews);
         btnEditProfile = view.findViewById(R.id.btn_edit_profile);
         btnConnect = view.findViewById(R.id.btn_connect);
+        tvAbout = view.findViewById(R.id.tv_about);
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         parentFragmentManager = getParentFragmentManager();
+        temp = new HashMap<>();
 
         viewedUsername = DataPasser.getUsername1();
 
@@ -149,6 +156,9 @@ public class AboutFragment extends Fragment {
             btnConnect.setVisibility(View.GONE);
         }
 
+        temp.put("exists", true);
+        db.collection("pro_profiles").document(username).set(temp);
+
         // Get profile picture of current user
         StorageReference storageRef = storage.getReference();
         StorageReference pathReference = storageRef.child("profilePics/" + username + "_profile.jpg");
@@ -181,7 +191,7 @@ public class AboutFragment extends Fragment {
                     }
                 });
             }
-        }, 500);
+        }, 200);
 
         cvReviews.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +205,18 @@ public class AboutFragment extends Fragment {
             }
         });
 
+        db.collection("pro_profiles").document(username)
+                .collection("about")
+                .document("data")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value.exists()) {
+                            tvAbout.setText(value.getData().get("text").toString());
+                        }
+                    }
+                });
+
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,6 +228,8 @@ public class AboutFragment extends Fragment {
                 btnSaveAboutPopup = editAboutPopupView.findViewById(R.id.btn_save);
                 btnCancelPopup = editAboutPopupView.findViewById(R.id.btn_cancel);
 
+                edtAbout.setText(tvAbout.getText());
+
                 dialogBuilder.setView(editAboutPopupView);
                 dialog = dialogBuilder.create();
                 dialog.show();
@@ -213,7 +237,14 @@ public class AboutFragment extends Fragment {
                 btnSaveAboutPopup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                        temp.clear();
+                        temp.put("text", edtAbout.getText().toString());
+                        db.collection("pro_profiles").document(username)
+                                .collection("about")
+                                .document("data")
+                                .set(temp);
+
+                        dialog.dismiss();
                     }
                 });
 

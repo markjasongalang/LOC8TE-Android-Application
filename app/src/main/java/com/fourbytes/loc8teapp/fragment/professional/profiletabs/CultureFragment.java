@@ -25,6 +25,8 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.HashMap;
+
 public class CultureFragment extends Fragment {
     private View view;
 
@@ -32,6 +34,10 @@ public class CultureFragment extends Fragment {
 
     private TextView tvProfessionalName;
     private TextView tvSpecificJob;
+    private TextView tvReligion;
+    private TextView tvLifeMotto;
+    private TextView tvLanguages;
+    private TextView tvPersonalNote;
 
     private AppCompatButton btnEditCulture;
 
@@ -55,6 +61,8 @@ public class CultureFragment extends Fragment {
 
     private String viewedUsername;
 
+    private HashMap<String, Object> temp;
+
     public CultureFragment() {}
 
     @Override
@@ -65,9 +73,14 @@ public class CultureFragment extends Fragment {
         tvProfessionalName = view.findViewById(R.id.tv_professional_name);
         tvSpecificJob = view.findViewById(R.id.tv_specific_job);
         btnEditCulture = view.findViewById(R.id.btn_edit_culture);
+        tvReligion = view.findViewById(R.id.tv_religion);
+        tvLifeMotto = view.findViewById(R.id.tv_life_motto);
+        tvLanguages = view.findViewById(R.id.tv_languages);
+        tvPersonalNote = view.findViewById(R.id.tv_personal_note);
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
+        temp = new HashMap<>();
 
         viewedUsername = DataPasser.getUsername1();
 
@@ -98,6 +111,24 @@ public class CultureFragment extends Fragment {
             }
         });
 
+        temp.put("exists", true);
+        db.collection("pro_profiles").document(username).set(temp);
+
+        db.collection("pro_profiles")
+                .document(username)
+                .collection("culture")
+                .document("data").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value.exists()) {
+                            tvReligion.setText(value.getData().get("religion").toString());
+                            tvLifeMotto.setText(value.getData().get("life_motto").toString());
+                            tvLanguages.setText(value.getData().get("languages").toString());
+                            tvPersonalNote.setText(value.getData().get("personal_note").toString());
+                        }
+                    }
+                });
+
         btnEditCulture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +143,11 @@ public class CultureFragment extends Fragment {
                 btnSaveCulturePopup = editCulturePopupView.findViewById(R.id.btn_save);
                 btnCancelPopup = editCulturePopupView.findViewById(R.id.btn_cancel);
 
+                edtReligion.setText(tvReligion.getText());
+                edtLifeMotto.setText(tvLifeMotto.getText());
+                edtLanguages.setText(tvLanguages.getText());
+                edtPersonalNote.setText(tvPersonalNote.getText());
+
                 dialogBuilder.setView(editCulturePopupView);
                 dialog = dialogBuilder.create();
                 dialog.show();
@@ -119,7 +155,16 @@ public class CultureFragment extends Fragment {
                 btnSaveCulturePopup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                        temp.clear();
+
+                        temp.put("religion", edtReligion.getText().toString());
+                        temp.put("life_motto", edtLifeMotto.getText().toString());
+                        temp.put("languages", edtLanguages.getText().toString());
+                        temp.put("personal_note", edtPersonalNote.getText().toString());
+
+                        db.collection("pro_profiles").document(username).collection("culture").document("data").set(temp);
+
+                        dialog.dismiss();
                     }
                 });
 
