@@ -1,6 +1,8 @@
 package com.fourbytes.loc8teapp.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,9 @@ import com.fourbytes.loc8teapp.fragment.FragmentEvent_Register;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_CreatorView;
 import com.fourbytes.loc8teapp.myeventsrecycler.MyEventsItems;
 import com.fourbytes.loc8teapp.myeventsrecycler.MyEventsViewHolder;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -24,6 +29,7 @@ public class CreatedEventsAdapter extends RecyclerView.Adapter<MyEventsViewHolde
     Context context;
     private List<MyEventsItems> myevents_items;
     private FragmentManager fragmentManager;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     public CreatedEventsAdapter(Context context, List<MyEventsItems> myevents_items, FragmentManager fragmentManager){
         this.context = context;
         this.myevents_items = myevents_items;
@@ -44,7 +50,19 @@ public class CreatedEventsAdapter extends RecyclerView.Adapter<MyEventsViewHolde
         holder.event_date.setText(myevents_items.get(position).getDate());
         holder.host_name.setText(myevents_items.get(position).getHosted_by());
         holder.host_job.setText(myevents_items.get(position).getJob_title());
-        holder.host_image.setImageResource(myevents_items.get(position).getImage());
+
+        StorageReference storageRef = storage.getReference();
+        StorageReference pathReference = storageRef.child("profilePics/" + myevents_items.get(position).getHost_id() + "_profile.jpg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                holder.host_image.setImageBitmap(bmp);
+            }
+        });
+
 
         holder.btn_view.setOnClickListener(new View.OnClickListener() {
             @Override

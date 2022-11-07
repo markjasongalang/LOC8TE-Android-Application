@@ -196,7 +196,7 @@
                                 android:layout_height="30dp"
                                 android:scaleType="centerCrop"
                                 app:shapeAppearanceOverlay="@style/ShapeAppearance.CircularBorder"
-                                android:src="@drawable/anya"/>
+                                android:src="@drawable/icon_profile"/>
 
                             <androidx.appcompat.widget.LinearLayoutCompat
                                 android:layout_width="match_parent"

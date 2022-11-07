@@ -1,5 +1,7 @@
 package com.fourbytes.loc8teapp.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +16,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentResultListener;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_Industry_Professional;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,8 +34,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class FragmentEvent_Register extends Fragment {
+
     private View view;
     private TextView event_title;
     private TextView event_location;
@@ -46,6 +57,7 @@ public class FragmentEvent_Register extends Fragment {
     private String doc_event_date;
     private String doc_event_time;
     private String doc_host;
+    private String doc_host_id;
     private String doc_host_profession;
     private String doc_event_id;
     private String doc_event_participant_count;
@@ -55,11 +67,19 @@ public class FragmentEvent_Register extends Fragment {
 
     private AppCompatButton btnBack;
     private AppCompatButton btnRegister;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
+    private Pair pair = null;
+    private SharedViewModel viewModel;
+    private int parking_count = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_event_register, container, false);
 
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
+            pair = data;
+        });
         fragmentManager = getParentFragmentManager();
 
         db = FirebaseFirestore.getInstance();
@@ -77,11 +97,27 @@ public class FragmentEvent_Register extends Fragment {
         event_parking_count = view.findViewById(R.id.parking_count);
         host_img = view.findViewById(R.id.host_img);
 
+        fragmentManager.setFragmentResultListener("eventData", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                parking_count = result.getInt("parking_limit") - result.getInt("parking_count");
+                doc_event_title = result.getString("title");
+                doc_event_location = result.getString("location");
+                doc_event_desc = result.getString("description");
+                doc_event_date = result.getString("date");
+                doc_event_time = result.getString("time");
+                doc_host = result.getString("host");
+                doc_host_profession = result.getString("host_job");
+                doc_event_id = result.getString("event_id");
+                doc_event_participant_count = String.valueOf(result.getInt("participant"));
+                doc_event_parking_count = String.valueOf(parking_count);
+                doc_host_id = result.getString("host_id");
+                setValue();
+                }
+            });
 
-        doc_event_id = "A9yfcf5G1asBbfc1iw5h"; //TODO: Change this later
 
-        fetchEvent(doc_event_id);
-
+        setValue();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,10 +129,17 @@ public class FragmentEvent_Register extends Fragment {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Bundle result = new Bundle();
+                result.putString("event_title", doc_event_title);
+                result.putString("event_location", doc_event_location);
+                result.putString("event_id", doc_event_id);
+                result.putString("name", pair.getName());
+                result.putInt("parking_count", parking_count);
+
+                fragmentManager.setFragmentResult("registerData", result);
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment, FragmentEvent_Register_Clicked.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
                         .commit();
             }
         });
@@ -104,42 +147,31 @@ public class FragmentEvent_Register extends Fragment {
         return view;
     }
 
-    //TODO: Change to more complex queries later :D
-    public void fetchEvent(String event_id){
-        final DocumentReference docRef = db.collection("events").document(event_id);
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w("DATABASE EVENT", "Listen failed.", e);
-                    return;
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    Log.d("DATABASE EVENT", "Current data: " + snapshot.getData());
-                    doc_event_title = snapshot.getData().get("event_title").toString();
-                    doc_event_location = snapshot.getData().get("event_location").toString();
-                    doc_event_desc = snapshot.getData().get("event_description").toString();
-                    doc_event_date = snapshot.getData().get("event_date").toString();
-                    doc_event_time = snapshot.getData().get("event_time").toString();
-                    doc_host = snapshot.getData().get("event_host").toString();
-                    doc_host_profession = snapshot.getData().get("event_host_job").toString();
-                    doc_event_participant_count = snapshot.getData().get("event_participant_no").toString();
-                    doc_event_parking_count = snapshot.getData().get("event_parking_count").toString();
-
-
-                } else {
-                    Log.d("DATABASE EVENT", "Current data: null");
-                }
-
-                setValue();
-            }
-        });
-        return;
-    }
 
     public void setValue(){
+
+        System.out.println(doc_event_title);
+        System.out.println(doc_event_location);
+        System.out.println(doc_event_desc);
+        System.out.println(doc_event_participant_count);
+        System.out.println(doc_event_date);
+        System.out.println(doc_event_time);
+        System.out.println(doc_event_parking_count);
+        System.out.println(doc_host);
+        System.out.println(doc_host_profession);
+
+        StorageReference storageRef = storage.getReference();
+        StorageReference pathReference = storageRef.child("profilePics/" + doc_host_id + "_profile.jpg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                host_img.setImageBitmap(bmp);
+            }
+        });
+
         event_title.setText(doc_event_title);
         event_location.setText(doc_event_location);
         event_description.setText(doc_event_desc);
