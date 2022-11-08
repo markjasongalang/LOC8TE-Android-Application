@@ -11,6 +11,10 @@ import static com.fourbytes.loc8teapp.Constants.SKILLED_TRADE_FIELD;
 import static com.fourbytes.loc8teapp.Constants.TECHNOLOGY_FIELD;
 
 import android.Manifest;
+
+import com.google.android.gms.location.LocationRequest;
+
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +28,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -65,7 +70,10 @@ import com.fourbytes.loc8teapp.VertexMatrix;
 import com.fourbytes.loc8teapp.fragment.MarkerTag;
 import com.fourbytes.loc8teapp.fragment.professional.FragmentProfile_Professional;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -106,10 +114,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
+public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private View view;
     private View l;
+
     //private View l2;
+
+    private FusedLocationProviderClient mFusedLocationClient;
+    private TextView txtLocation;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
 
     private CheckBox mapViewCheckBox;
     private CheckBox listViewCheckBox;
@@ -179,6 +193,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private ArrayList<String> professional_filters = new ArrayList<>();
     private int radius_filter = 0;
+
     public FragmentHome_MapView(String path) {
         this.path = path;
     }
@@ -232,11 +247,11 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 getLastLocation();
-                if(isGPSEnabled){
-                    System.out.println("GPS is activated");
-                    findNearestUser();
-
-                }else{
+                if (isGPSEnabled) {
+                    if(isLocationSupported()){
+                        findNearestUser();
+                    }
+                } else {
                     showGPSPopUp();
                 }
 
@@ -308,9 +323,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if (medicalCheckBox.isChecked()){
+                if (medicalCheckBox.isChecked()) {
                     professional_filters.add(MEDICAL_FIELD);
-                }else{
+                } else {
                     professional_filters.remove(MEDICAL_FIELD);
                 }
 
@@ -322,9 +337,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if (technologyCheckBox.isChecked()){
+                if (technologyCheckBox.isChecked()) {
                     professional_filters.add(TECHNOLOGY_FIELD);
-                }else{
+                } else {
                     professional_filters.remove(TECHNOLOGY_FIELD);
                 }
 
@@ -337,9 +352,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if (skilledCheckBox.isChecked()){
+                if (skilledCheckBox.isChecked()) {
                     professional_filters.add(SKILLED_TRADE_FIELD);
-                }else{
+                } else {
                     professional_filters.remove(SKILLED_TRADE_FIELD);
                 }
 
@@ -351,9 +366,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if (businessCheckBox.isChecked()){
+                if (businessCheckBox.isChecked()) {
                     professional_filters.add(BUSINESS_FIELD);
-                }else{
+                } else {
                     professional_filters.remove(BUSINESS_FIELD);
                 }
 
@@ -365,9 +380,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if (educationCheckBox.isChecked()){
+                if (educationCheckBox.isChecked()) {
                     professional_filters.add(EDUCATION_FIELD);
-                }else{
+                } else {
                     professional_filters.remove(EDUCATION_FIELD);
                 }
 
@@ -379,9 +394,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if (lawCheckBox.isChecked()){
+                if (lawCheckBox.isChecked()) {
                     professional_filters.add(LAW_FIELD);
-                }else{
+                } else {
                     professional_filters.remove(LAW_FIELD);
                 }
 
@@ -393,9 +408,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if (foodCheckBox.isChecked()){
+                if (foodCheckBox.isChecked()) {
                     professional_filters.add(FOOD_FIELD);
-                }else{
+                } else {
                     professional_filters.remove(FOOD_FIELD);
                 }
 
@@ -407,9 +422,9 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if (artsCheckBox.isChecked()){
+                if (artsCheckBox.isChecked()) {
                     professional_filters.add(ARTS_FIELD);
-                }else{
+                } else {
                     professional_filters.remove(ARTS_FIELD);
                 }
 
@@ -430,18 +445,23 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         return view;
     }
 
-    public String[] numberPickerValues(){
+
+    private void getLocation() {
+
+    }
+
+    public String[] numberPickerValues() {
         String[] numberPickerArray = new String[101];
         int count = 0;
-        for(int i = 0; i <= 100; i++){
+        for (int i = 0; i <= 100; i++) {
             numberPickerArray[i] = String.valueOf(count);
-            count+= 10;
+            count += 10;
         }
 
         return numberPickerArray;
     }
 
-    public void initVertices(){
+    public void initVertices() {
         try {
             vertex = new VertexMatrix(view.getContext());
         } catch (IOException e) {
@@ -451,32 +471,30 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         }
     }
 
-    public void findNearestUser(){
+    public void findNearestUser() {
         setCurrentLocationMarker(currentUserLat, currentUserLong);
 
-        //setNodeMarkers(vertex.getDistanceLatLong(currentUserLat, currentUserLong));
-
-        if(isGPSEnabled){
+        if (isGPSEnabled) {
             List<VertexInfo> nearest_vertex = vertex.getDistanceLatLong(currentUserLat, currentUserLong);
             String start_point;
             double start_distance;
-            if(!nearest_vertex.get(0).getId().equals("vertex3")){
+            if (!nearest_vertex.get(0).getId().equals("vertex3")) {
                 start_point = nearest_vertex.get(0).getId();
                 start_distance = nearest_vertex.get(0).getDistance();
-            }else{
+            } else {
                 start_point = nearest_vertex.get(1).getId();
                 start_distance = nearest_vertex.get(1).getDistance();
             }
 
             checkUserNearestNode(start_point, start_distance);
-        }else{
+        } else {
             showGPSPopUp();
             return;
         }
 
     }
 
-    public void checkUserNearestNode(String start_point, double start_distance){
+    public void checkUserNearestNode(String start_point, double start_distance) {
 
         ArrayList<UserInfo> Users = new ArrayList<>();
         db.collection("professionals")
@@ -489,8 +507,8 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                             ArrayList<String> meet_point_list = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                try{
-                                    if(document.getDouble("latitude") != null && document.getDouble("longitude") != null){
+                                try {
+                                    if (document.getDouble("latitude") != null && document.getDouble("longitude") != null) {
                                         String nearest_point;
                                         double nearest_distance;
                                         double latitude = document.getDouble("latitude");
@@ -498,16 +516,16 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                                         String field = document.getString("field");
 
-                                        if(professional_filters.size() == 0 || professional_filters.contains(field)){
+                                        if (professional_filters.size() == 0 || professional_filters.contains(field)) {
                                             String id = document.getId();
                                             String fname = document.getString("first_name");
                                             String lname = document.getString("last_name");
-                                            String name = fname + " " +lname;
+                                            String name = fname + " " + lname;
 
-                                            if(vertex.getDistanceLatLong(latitude, longitude).get(0).getId() != null){
+                                            if (vertex.getDistanceLatLong(latitude, longitude).get(0).getId() != null) {
                                                 nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(0).getId();
                                                 nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(0).getDistance();
-                                            }else{
+                                            } else {
                                                 nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(1).getId();
                                                 nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(1).getDistance();
                                             }
@@ -523,15 +541,15 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                         }
 
                                     }
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
                             }
 
-                            if(!Users.isEmpty()){
+                            if (!Users.isEmpty()) {
                                 checkNearestUser(start_point, start_distance, Users);
-                            }else{
+                            } else {
                                 System.out.println("No users");
                             }
 
@@ -543,10 +561,10 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 });
     }
 
-    public void checkNearestUser(String start_point, double start_distance, ArrayList<UserInfo> Users){
+    public void checkNearestUser(String start_point, double start_distance, ArrayList<UserInfo> Users) {
         final double MAX = 99999;
 
-        if(dotted_polyline != null){
+        if (dotted_polyline != null) {
             dotted_polyline.remove();
         }
         List<PatternItem> pattern = Arrays.asList(new Dot(), new Gap(3), new Dot());
@@ -561,21 +579,21 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         System.out.println(data.get(start_point).getLatitude());
         System.out.println(data.get(start_point).getLongitude());
 
-        for(int i = 0; i < Users.size(); i++){
+        for (int i = 0; i < Users.size(); i++) {
             double path_distance;
 
             double currentUserDistance = Users.get(i).getDistance();
-            if(!start_point.equals(Users.get(i).getMeet_point())){
+            if (!start_point.equals(Users.get(i).getMeet_point())) {
 
-                if(origin_path.get(Users.get(i).getMeet_point()) != null){
+                if (origin_path.get(Users.get(i).getMeet_point()) != null) {
                     path_distance = origin_path.get(Users.get(i).getMeet_point()).getDistance();
                     Users.get(i).setDistance(path_distance);
-                }else{
+                } else {
                     path_distance = MAX;
                     Users.get(i).setDistance(path_distance);
                 }
 
-            }else{
+            } else {
                 points.add(new LatLng(currentUserLat, currentUserLong));
                 points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLongitude()));
 //                points.add(new LatLng(data.get(start_point).getLatitude(), data.get(start_point).getLongitude()));
@@ -609,11 +627,11 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             Users.sort((o1, o2) -> Double.compare(o1.getDistance(), o2.getDistance()));
         }
 
-        if(origin_path.get(Users.get(0).getMeet_point()) == null){
+        if (origin_path.get(Users.get(0).getMeet_point()) == null) {
             showNoRoutesPopup();
             System.out.println("no route available");
 
-        }else{
+        } else {
             String nearest_user = Users.get(0).getId();
             String nearest_user_name = Users.get(0).getName();
             String nearest_meet_point = Users.get(0).getMeet_point();
@@ -631,7 +649,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             double final_point_longitude = data.get(final_path.get(path_last_index)).getLongitude();
             points.add(new LatLng(currentUserLat, currentUserLong));
             points.add(new LatLng(start_point_latitude, start_point_longitude));
-            for(int i = 0; i < final_path.size(); i++){
+            for (int i = 0; i < final_path.size(); i++) {
                 points.add(new LatLng(
                         data.get(final_path.get(i)).getLatitude(),
                         data.get(final_path.get(i)).getLongitude()
@@ -683,7 +701,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     }
 
-    private void showNoRoutesPopup(){
+    private void showNoRoutesPopup() {
         dialogBuilder = new AlertDialog.Builder(view.getContext());
         final View noGPS_view = getLayoutInflater().inflate(R.layout.no_route_popup, null);
 
@@ -700,14 +718,14 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         });
     }
 
-    public void setNodeMarkers(List<VertexInfo> vertexMarker){
+    public void setNodeMarkers(List<VertexInfo> vertexMarker) {
 
-        for(int i = 0; i < vertexMarker.size(); i++){
+        for (int i = 0; i < vertexMarker.size(); i++) {
 
             map_instance.addMarker(new MarkerOptions()
-                    .position(new LatLng(vertexMarker.get(i).getLatitude(), vertexMarker.get(i).getLongitude()))
-                    .title("Start Here")
-                    .icon(BitmapFromVector(view.getContext(), R.drawable.icon_marker_node_green)))
+                            .position(new LatLng(vertexMarker.get(i).getLatitude(), vertexMarker.get(i).getLongitude()))
+                            .title("Start Here")
+                            .icon(BitmapFromVector(view.getContext(), R.drawable.icon_marker_node_green)))
                     .setTag(new MarkerTag(vertexMarker.get(i).getId(), "vertex"));
         }
     }
@@ -726,220 +744,12 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-
-//    public void findNearestUser(){
-//        getLastLocation();
-//        //Check if current location is supported
-//        if(!isLocationSupported()){
-//            return;
-//        }
-//        refreshMap();
-//        ArrayList<UserInfo> Users = new ArrayList<>();
-//        db = FirebaseFirestore.getInstance();
-//        db.collection("users")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//
-//                                try {
-//                                    double latitude = document.getDouble("lat");
-//                                    double longitude = document.getDouble("long");
-//                                    String userId = document.getId();
-//
-//                                    Users.add(new UserInfo(
-//                                            userId,
-//                                            longitude,
-//                                            latitude
-//                                    ));
-//                                } catch (Exception e) {
-//                                    Log.d("USER", document.getId() + " is Invalid User Format");
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                            //snapVertices(Users);
-//                            getDistanceMatrix(Users);
-//                        } else {
-//                            showNoResponsePopUp();
-//                            Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                    }
-//                });
-//    }
-
-//    public void snapVertices(ArrayList<UserInfo> Users){
-//
-//        for(int i = 0; i < Users.size(); i++){
-//            double latitude = Users.get(i).getLatitude();
-//            double longitude = Users.get(i).getLongitude();
-//
-//            List<VertexInfo> distanceLongLat = vertex.getDistanceLatLong(latitude, longitude);
-//
-//            System.out.println(Users.get(i).getId() + "---------------------------------------");
-//
-//            getDistanceMatrix(distanceLongLat, latitude, longitude, Users.size());
-//        }
-//    }
-//
-//    public void snapCurrentUserVertex(){
-//
-//
-//    }
-
-//    public void getDistanceMatrix(List<VertexInfo> distanceLongLat, double latitude, double longitude, int user_count){
-//        String origin = "";
-//        String destination = "";
-//        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-//        final String API_KEY = getString(R.string.google_maps_api_key);
-//
-//        if(isGPSEnabled){
-//            destination = latitude + "," + longitude;
-//
-//            for(int i = 0; i < distanceLongLat.size(); i++){
-//                origin += distanceLongLat.get(i).getLatitude() + "," + distanceLongLat.get(i).getLongitude() + "|";
-//            }
-//        }else{
-//            showGPSPopUp();
-//            return;
-//        }
-//
-//        String url = Uri.parse("https://maps.googleapis.com/maps/api/distancematrix/json")
-//                .buildUpon()
-//                .appendQueryParameter("destinations", destination)
-//                .appendQueryParameter("origins", origin)
-//                .appendQueryParameter("mode", "driving")
-//                .appendQueryParameter("key", API_KEY)
-//                .toString();
-//
-//
-//        String finalOrigin = origin;
-//        String finalDestination = destination;
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-//                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-//
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        try{
-//                            String status = response.getString("status");
-//                            System.out.println(status);
-//                            if(status.equals("OK")){
-//                                System.out.println(finalDestination);
-//                                checkNearestNode(response, distanceLongLat);
-//                            }
-//                        }catch (JSONException e){
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        showNoResponsePopUp();
-//                        error.printStackTrace();
-//                    }
-//                });
-//
-//        requestQueue.add(jsonObjectRequest);
-//    }
-//
-//    public void checkNearestNode(JSONObject response, List<VertexInfo> distanceLongLat) throws JSONException {
-//        ArrayList<Edge> edge = vertex.getEdges();
-//        JSONArray rows = response.getJSONArray("rows");
-//
-//        for(int i = 0; i < rows.length(); i++){
-//            JSONArray elements = rows.getJSONObject(i).getJSONArray("elements");
-//            JSONObject distance = elements.getJSONObject(0).getJSONObject("distance");
-//            double distance_parsed = Double.parseDouble(String.valueOf(distance.get("value")));
-//
-//            distanceLongLat.get(i).setDistance(distance_parsed);
-//        }
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            distanceLongLat.sort((o1, o2) -> Double.compare(o1.getDistance(), o2.getDistance()));
-//        }
-//
-//        for(int i = distanceLongLat.size() - 1; i > 0; i --){
-//            System.out.println(distanceLongLat.get(i).getId());
-//            System.out.println(distanceLongLat.get(i).getDistance());
-//
-//            for (int j = i - 1; j >= 0; j--){
-//
-//                //TODO: finish tom
-//
-//            }
-//        }
-//
-//    }
-
-    public void getDistanceMatrix(ArrayList<UserInfo> Users){
-        String origin = "";
-        String destination = "";
-        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-        final String API_KEY = getString(R.string.google_maps_api_key);
-
-        if(isGPSEnabled){
-            origin = currentUserLat + "," + currentUserLong;
-
-            if(Users.size() == 0){
-                //TODO: Show no users found popup
-
-                return;
-            }else{
-
-                for(int i = 0; i < Users.size(); i++){
-                    destination += Users.get(i).getLatitude() + "," + Users.get(i).getLongitude() + "|";
-                }
-            }
-        }else{
-            showGPSPopUp();
-            return;
-        }
-
-        String url = Uri.parse("https://maps.googleapis.com/maps/api/distancematrix/json")
-                .buildUpon()
-                .appendQueryParameter("destinations", destination)
-                .appendQueryParameter("origins", origin)
-                .appendQueryParameter("mode", "driving")
-                .appendQueryParameter("key", API_KEY)
-                .toString();
-
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try{
-                            String status = response.getString("status");
-                            //System.out.println(status);
-                            if(status.equals("OK")){
-                                checkNearestUser(response, Users);
-                            }
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        showNoResponsePopUp();
-                        error.printStackTrace();
-                    }
-                });
-
-        requestQueue.add(jsonObjectRequest);
-    }
-
     public void checkNearestUser(JSONObject response, ArrayList<UserInfo> Users) throws JSONException {
         JSONArray elements = response.getJSONArray("rows").getJSONObject(0).getJSONArray("elements");
 
         //System.out.println(elements);
         //System.out.println(elements.length());
-        for(int i = 0; i < elements.length(); i++){
+        for (int i = 0; i < elements.length(); i++) {
             JSONObject distance = elements.getJSONObject(i).getJSONObject("distance");
             double distance_parsed = Double.parseDouble(String.valueOf(distance.get("value")));
 
@@ -958,29 +768,29 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     }
 
     public void drawPolyline(JSONArray routes) throws JSONException {
-        if(polyline != null){
+        if (polyline != null) {
             polyline.remove();
         }
 
         ArrayList<LatLng> points;
         PolylineOptions polylineOptions = null;
 
-        for (int i=0;i<routes.length();i++){
+        for (int i = 0; i < routes.length(); i++) {
             points = new ArrayList<>();
-            if(i == 0){
+            if (i == 0) {
                 points.add(new LatLng(currentUserLat, currentUserLong));
             }
             polylineOptions = new PolylineOptions();
             JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
 
-            for (int j=0;j<legs.length();j++){
+            for (int j = 0; j < legs.length(); j++) {
                 JSONArray steps = legs.getJSONObject(j).getJSONArray("steps");
 
-                for (int k=0;k<steps.length();k++){
+                for (int k = 0; k < steps.length(); k++) {
                     String polyline = steps.getJSONObject(k).getJSONObject("polyline").getString("points");
                     List<LatLng> list = PolyUtil.decode(polyline);
 
-                    for (int l=0;l<list.size();l++){
+                    for (int l = 0; l < list.size(); l++) {
                         LatLng position = new LatLng((list.get(l)).latitude, (list.get(l)).longitude);
                         points.add(position);
                     }
@@ -1018,13 +828,13 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
 
                     try {
                         Location location = task.getResult();
                         GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
-                        if(polyline != null){
+                        if (polyline != null) {
                             polyline.remove();
                         }
 
@@ -1032,28 +842,27 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                         setCurrentLocation(geopoint.getLatitude(), geopoint.getLongitude());
                         setCurrentLocationMarker(geopoint.getLatitude(), geopoint.getLongitude());
                         isGPSEnabled = true;
-                    }catch (Exception e){
-                        showGPSPopUp();
+                    } catch (Exception e) {
                         setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LONGITUDE);
                         e.printStackTrace();
                     }
 
-                }else{
+                } else {
                     isGPSEnabled = false;
                 }
             }
         });
     }
 
-    public void refreshMap(){
+    public void refreshMap() {
         map_instance.clear();
         retrieveUsers();
         getLastLocation();
 
     }
 
-    private void setCurrentLocationMarker(double latitude, double longitude){
-        if(currentLocationMarker != null){
+    private void setCurrentLocationMarker(double latitude, double longitude) {
+        if (currentLocationMarker != null) {
             currentLocationMarker.remove();
         }
         String id = "current";
@@ -1064,21 +873,21 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     }
 
-    private boolean isLocationSupported(){
+    private boolean isLocationSupported() {
 
-        if(BOUNDING_BOX_LAT1 <= currentUserLat
-            && currentUserLat <= BOUNDING_BOX_LAT2
-            && BOUNDING_BOX_LONG1 <= currentUserLong
-            && currentUserLong <= BOUNDING_BOX_LONG2){
+        if (BOUNDING_BOX_LAT1 <= currentUserLat
+                && currentUserLat <= BOUNDING_BOX_LAT2
+                && BOUNDING_BOX_LONG1 <= currentUserLong
+                && currentUserLong <= BOUNDING_BOX_LONG2) {
             System.out.println("SUPPORTED");
             return true;
-        }else{
+        } else {
             showNoServicePopUp();
             return false;
         }
     }
 
-    public void showNoServicePopUp(){
+    public void showNoServicePopUp() {
         dialogBuilder = new AlertDialog.Builder(view.getContext());
         final View noGPS_view = getLayoutInflater().inflate(R.layout.no_service_popup, null);
 
@@ -1095,7 +904,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         });
     }
 
-    public void showGPSPopUp(){
+    public void showGPSPopUp() {
         dialogBuilder = new AlertDialog.Builder(view.getContext());
         final View noGPS_view = getLayoutInflater().inflate(R.layout.no_gps_popup, null);
 
@@ -1113,7 +922,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     }
 
-    public void showNoResponsePopUp(){
+    public void showNoResponsePopUp() {
         dialogBuilder = new AlertDialog.Builder(view.getContext());
         final View noResponse_view = getLayoutInflater().inflate(R.layout.no_response_popup, null);
 
@@ -1131,7 +940,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     }
 
-    public void setCurrentLocation(double latitude, double longitude){
+    public void setCurrentLocation(double latitude, double longitude) {
         currentUserLat = latitude;
         currentUserLong = longitude;
     }
@@ -1146,12 +955,12 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Location location = task.getResult();
                     try {
                         GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                         setLocationCamera(geopoint.getLatitude(), geopoint.getLongitude());
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LONGITUDE);
                     }
 
@@ -1161,11 +970,12 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         return;
     }
 
-    private void setLocationCamera(double latitude, double longitude){
+    private void setLocationCamera(double latitude, double longitude) {
         CameraUpdate point = CameraUpdateFactory.newLatLngZoom
                 (new LatLng(latitude, longitude), 18);
         map_instance.moveCamera(point);
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -1176,6 +986,36 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
         }
         map_view.onSaveInstanceState(mapViewBundle);
+    }
+
+    public void startLocationRequest() {
+        LocationRequest mLocationRequest = LocationRequest.create();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(500);
+        mLocationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
+        LocationCallback mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    isGPSEnabled = false;
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        isGPSEnabled = true;
+                        //TODO: UI updates.
+
+                    }
+                }
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(view.getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view.getContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        LocationServices.getFusedLocationProviderClient(view.getContext()).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
     }
 
     @Override
@@ -1200,15 +1040,16 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             return;
         }
 
-        if(!isVertexInit){
+        if (!isVertexInit) {
             retrieveNodes();
         }
+        startLocationRequest();
         retrieveUsers();
         getLastLocation();
         googleMap.setOnMarkerClickListener(this);
     }
 
-    public void getDirections(String destinationLat, String destinationLong){
+    public void getDirections(String destinationLat, String destinationLong) {
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
         final String API_KEY = getString(R.string.google_maps_api_key);
 
@@ -1228,11 +1069,11 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        try{
+                        try {
                             String status = response.getString("status");
 
 
-                            if(status.equals("OK")){
+                            if (status.equals("OK")) {
                                 JSONArray routes = response.getJSONArray("routes");
                                 JSONArray legs = routes.getJSONObject(0).getJSONArray("legs");
                                 JSONObject distance = legs.getJSONObject(0).getJSONObject("distance");
@@ -1242,7 +1083,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                 drawPolyline(routes);
                             }
 
-                        }catch (JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -1278,22 +1119,22 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                 double radius_distance = vertex.calculateDistance(currentUserLat, latitude, currentUserLong, longitude);
 
                                 System.out.println(radius_distance);
-                                try{
-                                    if(professional_filters.size() == 0 || professional_filters.contains(field)){
+                                try {
+                                    if (professional_filters.size() == 0 || professional_filters.contains(field)) {
 
-                                        if(radius_filter == 0 || radius_filter >= radius_distance){
+                                        if (radius_filter == 0 || radius_filter >= radius_distance) {
                                             String id = document.getId();
                                             String meet_point = document.getString("meet_point");
                                             String fname = document.getString("first_name");
                                             String lname = document.getString("last_name");
                                             String specific_job = document.getString("specific_job");
-                                            String name = fname + " " +lname;
+                                            String name = fname + " " + lname;
 
 
                                             setMarkers(latitude, longitude, name, id, specific_job, field);
                                         }
                                     }
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -1352,14 +1193,14 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                 for (QueryDocumentSnapshot document : value) {
                     if (document != null) {
-                            double latitude = document.getDouble("lat");
-                            double longitude = document.getDouble("long");
+                        double latitude = document.getDouble("lat");
+                        double longitude = document.getDouble("long");
 
-                            V.add(new VertexInfo(
-                                    document.getId(),
-                                    longitude,
-                                    latitude
-                            ));
+                        V.add(new VertexInfo(
+                                document.getId(),
+                                longitude,
+                                latitude
+                        ));
                     }
                 }
 
@@ -1379,7 +1220,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                     if (document != null) {
 
 
-                        try{
+                        try {
                             String id = document.getId();
                             String origin = document.getString("start");
                             String destination = document.getString("end");
@@ -1387,7 +1228,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                             E.add(new Edge(origin, destination, distance, id));
                             E.add(new Edge(origin, destination, distance, id));
 
-                        }catch (Exception error){
+                        } catch (Exception error) {
                             Log.d("ERROR", document.getId());
                         }
 
@@ -1399,15 +1240,15 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         });
     }
 
-    public void initMatrix(ArrayList<VertexInfo> V){
+    public void initMatrix(ArrayList<VertexInfo> V) {
         matrix = new DistanceMatrix(V);
     }
 
-    public void initEdges(ArrayList<Edge> E){
+    public void initEdges(ArrayList<Edge> E) {
         matrix.initEdgeValue(E);
     }
 
-    public void initUsers(ArrayList<VertexInfo> U){
+    public void initUsers(ArrayList<VertexInfo> U) {
         matrix.initUsers(U);
     }
 
@@ -1433,12 +1274,12 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     public boolean onMarkerClick(@NonNull Marker marker) {
         MarkerTag tag = (MarkerTag) marker.getTag(); //Gets the object to retrieve id/infos
 
-        if(tag != null){
+        if (tag != null) {
             String type = tag.getType();
             String name = marker.getTitle();
             String id = tag.getId();
 
-            if(type.equals("users")){
+            if (type.equals("users")) {
 
                 View node_onclick_view = getLayoutInflater().inflate(R.layout.user_onclick_popup, null);
                 AppCompatButton btn_view = node_onclick_view.findViewById(R.id.btn_view);
@@ -1466,18 +1307,18 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                             @Override
                             public void onResponse(JSONObject response) {
-                                try{
+                                try {
                                     String status = response.getString("status");
                                     System.out.println(status);
                                     System.out.println(response);
 
-                                    if(status.equals("OK")){
+                                    if (status.equals("OK")) {
                                         JSONArray results = response.getJSONArray("results");
                                         String formatted_address = results.getJSONObject(0).getString("formatted_address");
                                         user_location.setText(formatted_address);
                                     }
 
-                                }catch (JSONException e){
+                                } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -1515,7 +1356,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         return false;
     }
 
-    public void retrieveProfessionals(String start_point){
+    public void retrieveProfessionals(String start_point) {
         ArrayList<UserInfo> Users = new ArrayList<>();
         db.collection("professionals")
                 .get()
@@ -1524,11 +1365,11 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
 
-                        ArrayList<String> meet_point_list = new ArrayList<>();
+                            ArrayList<String> meet_point_list = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                try{
-                                    if(document.getString("meet_point") != null){
+                                try {
+                                    if (document.getString("meet_point") != null) {
                                         double latitude = document.getDouble("latitude");
                                         double longitude = document.getDouble("longitude");
                                         String id = document.getId();
@@ -1536,7 +1377,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                         String fname = document.getString("first_name");
                                         String lname = document.getString("last_name");
 
-                                        String name = fname + " " +lname;
+                                        String name = fname + " " + lname;
 //                                        Users.add(new UserInfo(
 //                                                id,
 //                                                longitude,
@@ -1544,17 +1385,17 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 //                                                meet_point,
 //                                                name
 //                                        ));
-                                        if(!meet_point_list.contains(meet_point)){
+                                        if (!meet_point_list.contains(meet_point)) {
                                             meet_point_list.add(meet_point);
                                         }
                                     }
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
                             }
 
-                            if(!meet_point_list.isEmpty()){
+                            if (!meet_point_list.isEmpty()) {
                                 searchProfessionals(start_point, meet_point_list, Users);
                             }
 
@@ -1566,7 +1407,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 });
     }
 
-    public void searchProfessionals(String start_point, ArrayList<String> meet_point_list, ArrayList<UserInfo> Users){
+    public void searchProfessionals(String start_point, ArrayList<String> meet_point_list, ArrayList<UserInfo> Users) {
         double finalLat;
         double finalLong;
         String meet_point;
@@ -1577,16 +1418,16 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
         ArrayList<String> nearest_path = new ArrayList<>();
 
-        for (int i = 0; i < meet_point_list.size(); i++){
-            if(path.get(meet_point_list.get(i)) != null || start_point.equals(meet_point_list.get(i))){
+        for (int i = 0; i < meet_point_list.size(); i++) {
+            if (path.get(meet_point_list.get(i)) != null || start_point.equals(meet_point_list.get(i))) {
                 meet_point_list_filtered.add(meet_point_list.get(i));
 
-                if(start_point.equals(meet_point_list.get(i))){
+                if (start_point.equals(meet_point_list.get(i))) {
                     System.out.println("True");
                     map_instance.clear();
 
-                    finalLat = vertices.get( meet_point_list.get(i)).getLatitude();
-                    finalLong = vertices.get( meet_point_list.get(i)).getLongitude();
+                    finalLat = vertices.get(meet_point_list.get(i)).getLatitude();
+                    finalLong = vertices.get(meet_point_list.get(i)).getLongitude();
 
                     setCurrentLocationMarker(currentUserLat, currentUserLong);
                     getDirections(String.valueOf(vertices.get(start_point).getLatitude()), String.valueOf(vertices.get(start_point).getLongitude()));
@@ -1596,7 +1437,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                     return;
                 }
-            }else{
+            } else {
                 System.out.println("No path for " + meet_point_list.get(i));
             }
 
@@ -1605,13 +1446,13 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         System.out.println("Meet points to check: " + meet_point_list_filtered.size());
         double nearest_distance = path.get(meet_point_list_filtered.get(0)).getDistance();
         nearest_path = path.get(meet_point_list_filtered.get(0)).getPath();
-        for(int i = 0; i <  meet_point_list_filtered.size() - 1; i++){
+        for (int i = 0; i < meet_point_list_filtered.size() - 1; i++) {
 
             double check_distance = path.get(meet_point_list_filtered.get(i + 1)).getDistance();
             System.out.println(nearest_distance);
             System.out.println(check_distance);
-            if(nearest_distance > check_distance){
-                System.out.println("new distance is: "+ check_distance);
+            if (nearest_distance > check_distance) {
+                System.out.println("new distance is: " + check_distance);
                 nearest_path = path.get(meet_point_list_filtered.get(i + 1)).getPath();
             }
 
@@ -1620,7 +1461,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         map_instance.clear();
         setCurrentLocationMarker(currentUserLat, currentUserLong);
         getDirections(String.valueOf(vertices.get(start_point).getLatitude()), String.valueOf(vertices.get(start_point).getLongitude()));
-        for(int i = 0; i < nearest_path.size() - 1; i++){
+        for (int i = 0; i < nearest_path.size() - 1; i++) {
             String originLat = String.valueOf(vertices.get(nearest_path.get(i)).getLatitude());
             String originLong = String.valueOf(vertices.get(nearest_path.get(i)).getLongitude());
             String destinationLat = String.valueOf(vertices.get(nearest_path.get(i + 1)).getLatitude());
@@ -1629,33 +1470,33 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             getNodeDirection(destinationLat, destinationLong, originLat, originLong);
         }
 
-        meet_point = nearest_path.get(nearest_path.size()-1);
-        finalLat = vertices.get(nearest_path.get(nearest_path.size()-1)).getLatitude();
-        finalLong = vertices.get(nearest_path.get(nearest_path.size()-1)).getLongitude();
+        meet_point = nearest_path.get(nearest_path.size() - 1);
+        finalLat = vertices.get(nearest_path.get(nearest_path.size() - 1)).getLatitude();
+        finalLong = vertices.get(nearest_path.get(nearest_path.size() - 1)).getLongitude();
         getUserMeetPoint(Users, meet_point);
         setDestinationMarker(finalLat, finalLong);
 
     }
 
-    public void getUserMeetPoint(ArrayList<UserInfo> Users, String meet_point){
+    public void getUserMeetPoint(ArrayList<UserInfo> Users, String meet_point) {
 
-        for(int i = 0; i < Users.size(); i++){
+        for (int i = 0; i < Users.size(); i++) {
 
-            if (Users.get(i).getMeet_point().equals(meet_point)){
-                setMarkers(Users.get(i).getLatitude(), Users.get(i).getLongitude(), 0,Users.get(i).getName() ,Users.get(i).getId());
+            if (Users.get(i).getMeet_point().equals(meet_point)) {
+                setMarkers(Users.get(i).getLatitude(), Users.get(i).getLongitude(), 0, Users.get(i).getName(), Users.get(i).getId());
             }
         }
 
     }
 
-    public void setDestinationMarker(double finalLat, double finalLong){
+    public void setDestinationMarker(double finalLat, double finalLong) {
         map_instance.addMarker(new MarkerOptions()
                 .position(new LatLng(finalLat, finalLong))
                 .title("Nearest Meet Point")
                 .icon(BitmapFromVector(view.getContext(), R.drawable.icon_meetpoint)));
     }
 
-    public void getNodeDirection(String destinationLat, String destinationLong, String originLat, String originLong){
+    public void getNodeDirection(String destinationLat, String destinationLong, String originLat, String originLong) {
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
         final String API_KEY = getString(R.string.google_maps_api_key);
 
@@ -1675,11 +1516,11 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        try{
+                        try {
                             String status = response.getString("status");
 
 
-                            if(status.equals("OK")){
+                            if (status.equals("OK")) {
                                 JSONArray routes = response.getJSONArray("routes");
                                 JSONArray legs = routes.getJSONObject(0).getJSONArray("legs");
                                 JSONObject distance = legs.getJSONObject(0).getJSONObject("distance");
@@ -1689,7 +1530,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                                 drawMultiplePolyLine(routes);
                             }
 
-                        }catch (JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -1709,20 +1550,20 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         ArrayList<LatLng> points;
         PolylineOptions polylineOptions = null;
 
-        for (int i=0;i<routes.length();i++){
+        for (int i = 0; i < routes.length(); i++) {
             points = new ArrayList<>();
 
             polylineOptions = new PolylineOptions();
             JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
 
-            for (int j=0;j<legs.length();j++){
+            for (int j = 0; j < legs.length(); j++) {
                 JSONArray steps = legs.getJSONObject(j).getJSONArray("steps");
 
-                for (int k=0;k<steps.length();k++){
+                for (int k = 0; k < steps.length(); k++) {
                     String polyline = steps.getJSONObject(k).getJSONObject("polyline").getString("points");
                     List<LatLng> list = PolyUtil.decode(polyline);
 
-                    for (int l=0;l<list.size();l++){
+                    for (int l = 0; l < list.size(); l++) {
                         LatLng position = new LatLng((list.get(l)).latitude, (list.get(l)).longitude);
                         points.add(position);
                     }
