@@ -1,5 +1,7 @@
 package com.fourbytes.loc8teapp;
 
+import static com.fourbytes.loc8teapp.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -18,7 +20,11 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,6 +59,9 @@ public class Signup4Activity extends AppCompatActivity {
 
     private HashMap<String, Object> temp;
 
+    private LocationCallback mLocationCallback;
+
+    private boolean isLocationSet = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +85,7 @@ public class Signup4Activity extends AppCompatActivity {
             public void onClick(View view) {
                 String status = btnGps.getText().toString();
                 if (status.equals("turn on GPS")) {
+                    startLocationRequest();
                     getLastLocation();
                     btnGps.setText("turn off GPS");
                 } else {
@@ -257,7 +267,6 @@ public class Signup4Activity extends AppCompatActivity {
                 }
             }
         });
-
         return;
     }
 
@@ -265,4 +274,40 @@ public class Signup4Activity extends AppCompatActivity {
         currentUserLat = latitude;
         currentUserLong = longitude;
     }
+
+    public void startLocationRequest() {
+        LocationRequest mLocationRequest = LocationRequest.create();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        if(!isLocationSet){
+                            GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                            setCurrentLocation(geopoint.getLatitude(), geopoint.getLongitude());
+                            fusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
+                            isLocationSet = false;
+                        }
+                        isLocationSet = true;
+                    }
+                }
+            }
+        };
+
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            return;
+        }
+        LocationServices.getFusedLocationProviderClient(getApplicationContext()).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+    }
+
 }
