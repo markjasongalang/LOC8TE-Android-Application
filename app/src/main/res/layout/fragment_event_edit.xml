@@ -1,13 +1,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/header_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fourthColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/header_general"
+        android:id="@+id/header_event"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/primaryColor"
@@ -64,7 +63,8 @@
         android:textSize="10dp"
         android:textStyle="bold"
         android:text="editing.."
-        android:background="@drawable/secondary_color_round_corners2"/>
+        android:padding="10dp"
+        android:background="@drawable/tertiary_color_round_corners"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/event_card"
@@ -86,7 +86,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="title"
+                android:text="Event Title"
                 android:textStyle="italic"
                 android:textColor="@color/primaryColor"
                 android:fontFamily="@font/open_sans"
@@ -98,17 +98,18 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/fourth_color_round_corners_10"
                 android:fontFamily="@font/open_sans_light"
-                android:hint="Example Title"
+                android:hint="Enter Event Title"
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/primaryColor"
                 android:textColorHint="@color/primaryColor"
                 android:textSize="13dp"/>
 
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="location"
+                android:text="Event Location"
                 android:textStyle="italic"
                 android:textColor="@color/primaryColor"
                 android:fontFamily="@font/open_sans"
@@ -120,11 +121,12 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/fourth_color_round_corners_10"
                 android:fontFamily="@font/open_sans_light"
-                android:hint="Example Location"
+                android:hint="Enter Event Location"
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/primaryColor"
                 android:textColorHint="@color/primaryColor"
+                android:focusable="false"
                 android:textSize="13dp"/>
 
             <TextView
@@ -143,134 +145,14 @@
                 android:maxHeight="150dp"
                 android:background="@drawable/fourth_color_round_corners_10"
                 android:fontFamily="@font/open_sans_light"
-                android:hint="@string/sample_text"
+                android:maxLines="5"
+                android:hint="Enter Event Description"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
                 android:textColor="@color/primaryColor"
                 android:textColorHint="@color/primaryColor"
                 android:textSize="13dp"
                 android:gravity="top|left"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="date (mm/dd/yyyy)"
-                android:textStyle="italic"
-                android:textColor="@color/primaryColor"
-                android:fontFamily="@font/open_sans"
-                android:textSize="13dp"/>
-
-            <EditText
-                android:id="@+id/edit_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/fourth_color_round_corners_10"
-                android:fontFamily="@font/open_sans_light"
-                android:hint="mm/dd/yyyy"
-                android:inputType="date"
-                android:padding="10dp"
-                android:textColor="@color/primaryColor"
-                android:textColorHint="@color/primaryColor"
-                android:textSize="13dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="time"
-                android:textStyle="italic"
-                android:textColor="@color/primaryColor"
-                android:fontFamily="@font/open_sans"
-                android:textSize="13dp"/>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/edit_time_start"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/fourth_color_round_corners_10"
-                    android:fontFamily="@font/open_sans_light"
-                    android:hint="00:00 AM"
-                    android:inputType="time"
-                    android:padding="10dp"
-                    android:textColor="@color/primaryColor"
-                    android:textColorHint="@color/primaryColor"
-                    android:textSize="13dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="to"
-                    android:textStyle="italic"
-                    android:textColor="@color/primaryColor"
-                    android:fontFamily="@font/open_sans"
-                    android:textSize="13dp"
-                    android:paddingHorizontal="10dp"/>
-
-                <EditText
-                    android:id="@+id/edit_time_end"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/fourth_color_round_corners_10"
-                    android:fontFamily="@font/open_sans_light"
-                    android:hint="00:00 PM"
-                    android:inputType="time"
-                    android:padding="10dp"
-                    android:textColor="@color/primaryColor"
-                    android:textColorHint="@color/primaryColor"
-                    android:textSize="13dp"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="parking slots (optional)"
-                android:textStyle="italic"
-                android:textColor="@color/primaryColor"
-                android:fontFamily="@font/open_sans"
-                android:textSize="13dp"/>
-
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/edit_parkingslots"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/fourth_color_round_corners_10"
-                    android:fontFamily="@font/open_sans_light"
-                    android:hint="15"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    android:textColor="@color/primaryColor"
-                    android:textColorHint="@color/primaryColor"
-                    android:textSize="13dp"
-                    android:layout_gravity="center"/>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_set_location"
-                    android:layout_width="100dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/fifth_color_round_corners"
-                    android:text="set current location&#10;as parking"
-                    android:textSize="7dp"
-                    android:fontFamily="@font/open_sans"
-                    android:textStyle="bold"
-                    android:textAllCaps="false"
-                    android:textFontWeight="1000"
-                    android:textColor="@color/white"
-                    android:layout_gravity="top"
-                    android:layout_marginLeft="10dp"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -295,7 +177,7 @@
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btn_save"
+        app:layout_constraintTop_toBottomOf="@+id/btn_remove"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:text="cancel"
@@ -304,5 +186,17 @@
         android:textAllCaps="false"
         android:layout_marginTop="10dp"/>
 
+    <TextView
+        android:id="@+id/btn_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_save"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="Remove Event"
+        android:textSize="15dp"
+        android:textColor="@color/red"
+        android:textAllCaps="false"
+        android:layout_marginTop="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
