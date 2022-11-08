@@ -126,7 +126,6 @@ public class FragmentEvent_CreatorView extends Fragment {
                         host_img.setImageBitmap(bmp);
                     }
                 });
-
                 event_title.setText(doc_event_title);
                 event_location.setText(doc_event_location);
                 event_description.setText(doc_event_desc);

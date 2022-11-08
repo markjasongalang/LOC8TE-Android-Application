@@ -143,7 +143,7 @@ public class FragmentEvent_Registered extends Fragment {
                 event_title.setText(result.getString("title"));
                 event_location.setText(result.getString("location"));
                 event_description.setText(result.getString("description"));
-                event_parking_count.setText(String.valueOf(result.getInt("participant")));
+                event_participant_count.setText(String.valueOf(result.getInt("participant")));
                 host_name.setText(result.getString("host"));
                 host_profession.setText(result.getString("host_job"));
                 event_date.setText(result.getString("date"));

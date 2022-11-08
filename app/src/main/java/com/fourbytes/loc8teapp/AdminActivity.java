@@ -180,6 +180,7 @@ public class AdminActivity extends AppCompatActivity  {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
+                        ProfessionalList.clear();
                         for(QueryDocumentSnapshot document:value){
                             if((boolean)document.getData().get("verified") == false){
                                 // Get profile picture of current user
@@ -192,9 +193,6 @@ public class AdminActivity extends AppCompatActivity  {
 
                         }
                         recyclerView.setAdapter(new MyAdapter(AdminActivity.this,ProfessionalList));
-
-
-
 
                     }
                 });
