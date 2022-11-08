@@ -96,7 +96,6 @@ public class FragmentEvent_Edit extends Fragment {
 
         fragmentManager = getParentFragmentManager();
 
-
         viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         viewModel.getData().observe((LifecycleOwner) view.getContext(), data -> {
             pair = data;

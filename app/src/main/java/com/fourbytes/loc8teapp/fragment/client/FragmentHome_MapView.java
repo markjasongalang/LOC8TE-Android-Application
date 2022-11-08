@@ -1105,69 +1105,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     }
 
-//    public void retrieveNodes() {
-//        String TAG = "MAP Markers";
-//        db = FirebaseFirestore.getInstance();
-//        ArrayList<VertexInfo> V = new ArrayList<>();
-//        ArrayList<Edge> E = new ArrayList<>();
-//        db.collection("vertex").addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-//                int count = 0;
-//                if (e != null) {
-//
-//                    return;
-//                }
-//
-//                for (QueryDocumentSnapshot document : value) {
-//                    if (document != null) {
-//                        double latitude = document.getDouble("lat");
-//                        double longitude = document.getDouble("long");
-//
-//                        V.add(new VertexInfo(
-//                                document.getId(),
-//                                longitude,
-//                                latitude
-//                        ));
-//                    }
-//                }
-//
-//                initMatrix(V);
-//            }
-//        });
-//
-//        db.collection("edges").addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-//                int count = 0;
-//                if (e != null) {
-//                    return;
-//                }
-//
-//                for (QueryDocumentSnapshot document : value) {
-//                    if (document != null) {
-//
-//
-//                        try {
-//                            String id = document.getId();
-//                            String origin = document.getString("start");
-//                            String destination = document.getString("end");
-//                            double distance = document.getDouble("distance");
-//                            E.add(new Edge(origin, destination, distance, id));
-//                            E.add(new Edge(origin, destination, distance, id));
-//
-//                        } catch (Exception error) {
-//                            Log.d("ERROR", document.getId());
-//                        }
-//
-//                    }
-//                }
-//
-//                initEdges(E);
-//            }
-//        });
-//    }
-
     public void setMarkers(double latitude, double longitude, double filter, String name, String id) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.icon_pro_marker);
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 50, 50, false);
