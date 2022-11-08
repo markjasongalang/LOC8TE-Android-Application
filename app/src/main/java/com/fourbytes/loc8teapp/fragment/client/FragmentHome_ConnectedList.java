@@ -114,7 +114,6 @@ public class FragmentHome_ConnectedList extends Fragment {
 
                                 db.collection("pro_homes").document(documentSnapshot.getId()).set(temp);
                                 db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).set(temp);
-
                             } else {
                                 db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).delete();
                             }

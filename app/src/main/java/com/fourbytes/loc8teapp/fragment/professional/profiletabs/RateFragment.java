@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,6 +42,8 @@ public class RateFragment extends Fragment {
 
     private FirebaseFirestore db;
 
+    private FragmentManager parentFragmentManager;
+
     private TextView tvProfessionalName;
     private TextView tvSpecificJob;
 
@@ -74,6 +77,8 @@ public class RateFragment extends Fragment {
 
     private int current;
 
+    private LayoutInflater layoutInflater;
+
     public RateFragment() {}
 
     @Override
@@ -89,6 +94,8 @@ public class RateFragment extends Fragment {
         // Initialize values
         db = FirebaseFirestore.getInstance();
         temp = new HashMap<>();
+        parentFragmentManager = getParentFragmentManager();
+        layoutInflater = getLayoutInflater();
 
         viewedUsername = DataPasser.getUsername1();
 
@@ -126,7 +133,7 @@ public class RateFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 dialogBuilder = new AlertDialog.Builder(view.getContext());
-                final View addServicePopupView = getLayoutInflater().inflate(R.layout.add_service_popup, null);
+                final View addServicePopupView = layoutInflater.inflate(R.layout.add_service_popup, null);
 
                 edtServiceName = addServicePopupView.findViewById(R.id.edt_service_name);
                 edtPrice = addServicePopupView.findViewById(R.id.edt_price);
@@ -194,7 +201,8 @@ public class RateFragment extends Fragment {
                     ));
                 }
 
-                rvService.setAdapter(new ServiceAdapter(view.getContext(), serviceItemList, getLayoutInflater(), username));
+
+                rvService.setAdapter(new ServiceAdapter(view.getContext(), serviceItemList, layoutInflater, username));
             }
         });
     }

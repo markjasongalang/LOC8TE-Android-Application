@@ -152,7 +152,7 @@ public class AdminActivity2 extends AppCompatActivity {
                             Professional_bday.setText(task.getResult().get("birthdate").toString());
 
                             StorageReference storageRef = storage.getReference();
-                                StorageReference pathReference = storageRef.child("profilePics/" + task.getResult().getData().get("username") + "_profile.jpg");
+                                StorageReference pathReference = storageRef.child("profilePics/" + task.getResult().getData().get("username").toString() + "_profile.jpg");
                                 StorageReference pathReference2 = storageRef.child("idPics/" +  task.getResult().getData().get("username") + "_id.jpg");
                                 final long ONE_MEGABYTE = 1024 * 1024;
                                 pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {

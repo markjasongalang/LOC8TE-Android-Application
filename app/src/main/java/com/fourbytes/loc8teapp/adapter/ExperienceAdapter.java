@@ -82,6 +82,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceViewHolder
                 edtCompany.setText(company);
                 edtDescription.setText(description);
 
+                btnAddExperiencePopup.setText("save");
                 btnDelete.setVisibility(View.VISIBLE);
 
                 dialogBuilder.setView(addExperiencePopupView);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +43,8 @@ public class ExperienceFragment extends Fragment {
 
     private FirebaseFirestore db;
 
+    private FragmentManager parentFragmentManager;
+
     private TextView tvProfessionalName;
     private TextView tvSpecificJob;
 
@@ -72,6 +75,8 @@ public class ExperienceFragment extends Fragment {
 
     private HashMap<String, Object> temp;
 
+    private LayoutInflater layoutInflater;
+
     public ExperienceFragment() {}
 
     @Override
@@ -87,6 +92,8 @@ public class ExperienceFragment extends Fragment {
         // Initialize values
         db = FirebaseFirestore.getInstance();
         temp = new HashMap<>();
+        parentFragmentManager = getParentFragmentManager();
+        layoutInflater = getLayoutInflater();
 
         viewedUsername = DataPasser.getUsername1();
 
@@ -125,7 +132,7 @@ public class ExperienceFragment extends Fragment {
             public void onClick(View view) {
 
                 dialogBuilder = new AlertDialog.Builder(view.getContext());
-                final View addExperiencePopupView = getLayoutInflater().inflate(R.layout.add_experience_popup, null);
+                final View addExperiencePopupView = layoutInflater.inflate(R.layout.add_experience_popup, null);
 
                 edtPosition = addExperiencePopupView.findViewById(R.id.edt_position);
                 edtCompany = addExperiencePopupView.findViewById(R.id.edt_company);
@@ -186,26 +193,8 @@ public class ExperienceFragment extends Fragment {
                     ));
                 }
 
-                rvExperience.setAdapter(new ExperienceAdapter(view.getContext(), experienceItemList, getLayoutInflater(), username));
+                rvExperience.setAdapter(new ExperienceAdapter(view.getContext(), experienceItemList, layoutInflater, username));
             }
         });
-
-//        experienceItemList.add(new ExperienceItem(
-//                "Head Chef",
-//                "Netflix",
-//                "I was the no. 1 chef of the world at that time."
-//        ));
-//
-//        experienceItemList.add(new ExperienceItem(
-//                "Former Class S Hero",
-//                "Jollibee",
-//                "I was the no. 1 hero of the world at that time."
-//        ));
-//
-//        experienceItemList.add(new ExperienceItem(
-//                "Android Lord",
-//                "Apple",
-//                "I was the no. 1 android lord of the world at that time."
-//        ));
     }
 }

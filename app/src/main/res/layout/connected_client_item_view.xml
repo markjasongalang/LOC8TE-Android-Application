@@ -25,7 +25,7 @@
         android:fontFamily="@font/open_sans_bold"
         android:maxLines="1"
         android:paddingRight="10dp"
-        android:text="Anya Forger"
+        android:text="loading..."
         android:textColor="@color/secondaryColor"
         android:textSize="17sp" />
 
@@ -60,7 +60,8 @@
         android:layout_below="@id/tv_sample_text"
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@id/btn_client_profile"
-        android:background="@drawable/tertiary_color_round_button_chat" />
+        android:background="@drawable/tertiary_color_round_button_chat"
+        android:visibility="invisible" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_client_rate"
@@ -69,7 +70,8 @@
         android:layout_below="@id/tv_sample_text"
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@id/btn_client_chat"
-        android:background="@drawable/tertiary_color_round_button_rate" />
+        android:background="@drawable/tertiary_color_round_button_rate"
+        android:visibility="invisible" />
 
     <LinearLayout
         android:layout_width="match_parent"

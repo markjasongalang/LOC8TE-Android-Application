@@ -125,26 +125,16 @@ public class FragmentChat_Client extends Fragment {
 
                         chatsItemsList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
-                            db.collection("professionals").document(documentSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
 
-                                        // Get profile picture of current user
-                                        StorageReference storageRef = storage.getReference();
-                                        StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
-                                        chatsItemsList.add(new ChatsItems(
-                                                documentSnapshot.getId(),
-                                                task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"),
-                                                task.getResult().getData().get("specific_job") + " ",
-                                                task.getResult().getData().get("first_name").toString() + ": Hello",
-                                                pathReference
-                                        ));
-                                        rvChats.setAdapter(new ChatAdapter(getContext(), chatsItemsList, parentFragmentManager, db, username, accountType));
-                                    }
-                                }
-                            });
+                            // Get profile picture of current user
+                            StorageReference storageRef = storage.getReference();
+                            StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
+                            chatsItemsList.add(new ChatsItems(
+                                    documentSnapshot.getId(),
+                                    pathReference
+                            ));
                         }
+                        rvChats.setAdapter(new ChatAdapter(getContext(), chatsItemsList, parentFragmentManager, db, username, accountType));
 
                     }
                 });

@@ -18,7 +18,11 @@ import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.connectedclientsrecycler.ClientItem;
 import com.fourbytes.loc8teapp.connectedclientsrecycler.ClientViewHolder;
 import com.fourbytes.loc8teapp.fragment.client.FragmentProfile_Client;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
@@ -30,10 +34,14 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
 
     private FragmentManager parentFragmentManager;
 
+    private FirebaseFirestore db;
+
     public ConnectedClientsAdapter(Context context, List<ClientItem> clientItems, FragmentManager parentFragmentManager) {
         this.context = context;
         this.clientItems = clientItems;
         this.parentFragmentManager = parentFragmentManager;
+
+        db = FirebaseFirestore.getInstance();
     }
 
     @NonNull
@@ -57,11 +65,18 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
             }
         });
 
-        String firstName = clientItems.get(position).getFirstName().toString();
-        String middleName = clientItems.get(position).getMiddleName().toString();
-        String lastName = clientItems.get(position).getLastName().toString();
+        db.collection("clients").document(clientItems.get(pos).getClientUsername()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    String firstName = task.getResult().getData().get("first_name").toString();
+                    String middleName = task.getResult().getData().get("middle_name").toString();
+                    String lastName = task.getResult().getData().get("last_name").toString();
 
-        holder.tvClientName.setText(firstName + " " + middleName + " " + lastName);
+                    holder.tvClientName.setText(firstName + " " + middleName + " " + lastName);
+                }
+            }
+        });
 
         holder.btnClientRate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +96,7 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
             @Override
             public void onClick(View view) {
 
-                DataPasser.setUsername2(clientItems.get(pos).getUsername());
+                DataPasser.setUsername2(clientItems.get(pos).getClientUsername().toString());
 
                 parentFragmentManager.beginTransaction()
                         .replace(R.id.layout_home_professional, FragmentProfile_Client.class, null)
