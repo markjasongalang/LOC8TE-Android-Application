@@ -144,10 +144,18 @@ public class AboutFragment extends Fragment {
                     if (btnConnect.getText().toString().equals("connect")) {
                         temp.put("is_connected", true);
                         btnConnect.setText("disconnect");
+
+                        HashMap<String, Object> temp2 = new HashMap<>();
+                        temp2.put("exists", true);
+
+                        db.collection("pro_homes").document(username).set(temp2);
+                        db.collection("pro_homes").document(username).collection("client_list").document(current).set(temp2);
                     } else {
                         temp.put("is_connected", false);
                         btnConnect.setText("connect");
+                        db.collection("pro_homes").document(username).collection("client_list").document(current).delete();
                     }
+
                     db.collection("client_homes").document(current).collection("pro_list").document(username).set(temp);
                 }
             });

@@ -66,24 +66,31 @@ public class InsideChatAdapter extends RecyclerView.Adapter {
         int pos = position;
         StorageReference pathReference = inside_chat_list.get(pos).getPathReference();
         final long ONE_MEGABYTE = 1024 * 1024;
-        pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                switch (inside_chat_list.get(pos).getViewType()) {
-                    case layout_left:
-                        String lmsg = inside_chat_list.get(pos).getInside_chat_message();
-                        ((LeftChatViewHolder) holder).setTextLeft(lmsg);
+
+        switch (inside_chat_list.get(pos).getViewType()) {
+            case layout_left:
+                String lmsg = inside_chat_list.get(pos).getInside_chat_message();
+                ((LeftChatViewHolder) holder).setTextLeft(lmsg);
+                pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         ((LeftChatViewHolder) holder).setImgLeft(bmp);
-                        break;
-                    case layout_right:
-                        String rmsg = inside_chat_list.get(pos).getInside_chat_message();
-                        ((RightChatViewHolder) holder).setTextRight(rmsg);
+                    }
+                });
+                break;
+            case layout_right:
+                String rmsg = inside_chat_list.get(pos).getInside_chat_message();
+                ((RightChatViewHolder) holder).setTextRight(rmsg);
+                pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         ((RightChatViewHolder) holder).setImgRight(bmp);
-                        break;
-                }
-            }
-        });
+                    }
+                });
+                break;
+        }
 
     }
 

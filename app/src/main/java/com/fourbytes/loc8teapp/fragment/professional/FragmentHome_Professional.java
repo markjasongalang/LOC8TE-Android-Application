@@ -138,24 +138,23 @@ public class FragmentHome_Professional extends Fragment {
 
                         connectedClientList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
-                            db.collection("clients").document(documentSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                            db.collection("clients").document(documentSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//
+//                                }
+//                            });
 
-                                    // Get profile picture of current user
-                                    StorageReference storageRef = storage.getReference();
-                                    StorageReference pathReference = storageRef.child("profilePics/" + task.getResult().getId().toString() + "_profile.jpg");
-                                    connectedClientList.add(new ClientItem(
-                                            pathReference,
-                                            task.getResult().getData().get("username").toString(),
-                                            task.getResult().getData().get("first_name").toString(),
-                                            "",
-                                            task.getResult().get("last_name").toString()
-                                    ));
-                                    rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList, parentFragmentManager));
-                                }
-                            });
+                            // Get profile picture of current user
+                            StorageReference storageRef = storage.getReference();
+                            StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
+                            connectedClientList.add(new ClientItem(
+                                    pathReference,
+                                    documentSnapshot.getId()
+                            ));
+
                         }
+                        rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList, parentFragmentManager));
 
                     }
                 });

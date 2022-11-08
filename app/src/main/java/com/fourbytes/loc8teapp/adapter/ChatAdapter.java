@@ -18,8 +18,12 @@ import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsViewHolder;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.fragment.FragmentChat_InsideChat;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -44,6 +48,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
 
     private String username;
     private String accountType;
+    private String field;
     private String fieldUsername;
 
     public ChatAdapter(Context chats_context, List<ChatsItems> chat_items, FragmentManager parentFragmentManager, FirebaseFirestore db, String username, String accountType) {
@@ -55,13 +60,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
         this.accountType = accountType;
     }
 
-    public ChatAdapter(Context chats_context, List<ChatsItems> chat_items, FragmentManager parentFragmentManager, FirebaseFirestore db, String username, String accountType, String fieldUsername) {
+    public ChatAdapter(Context chats_context, List<ChatsItems> chat_items, FragmentManager parentFragmentManager, FirebaseFirestore db, String username, String accountType, String field, String fieldUsername) {
         this.chats_context = chats_context;
         this.chat_items = chat_items;
         this.parentFragmentManager = parentFragmentManager;
         this.db = db;
         this.username = username;
         this.accountType = accountType;
+        this.field = field;
         this.fieldUsername = fieldUsername;
     }
 
@@ -85,10 +91,29 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ChatsViewHolder holder, int position) {
-        holder.chats_name.setText(chat_items.get(position).getChat_name());
-        holder.chats_occupation.setText(chat_items.get(position).getChat_occupation());
 
         int pos = position;
+
+
+        if (fieldUsername == null) {
+            db.collection((accountType.equals("client") ? "professionals" : "clients"))
+                    .document(chat_items.get(pos).getChatUsername())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                holder.chats_name.setText(task.getResult().getData().get("first_name").toString() + " " + task.getResult().getData().get("last_name").toString());
+
+                                if (accountType.equals("client")) {
+                                    holder.chats_occupation.setText(task.getResult().getData().get("specific_job").toString());
+                                }
+                            }
+                        }
+                    });
+        } else {
+            holder.chats_name.setText(field);
+        }
 
         StorageReference pathReference = chat_items.get(pos).getPathReference();
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -104,9 +129,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
         String receiver = "";
         if (accountType.equals("client")) {
             sender = username;
-            receiver = chat_items.get(pos).getChat_username();
+            receiver = chat_items.get(pos).getChatUsername();
         } else {
-            sender = chat_items.get(pos).getChat_username();
+            sender = chat_items.get(pos).getChatUsername();
             receiver = username;
             holder.chats_occupation.setVisibility(View.GONE);
         }
@@ -123,52 +148,63 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
         }
 
         colRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                ArrayList<MessagePreview> messages = new ArrayList<>();
+                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    if (documentSnapshot.getId().equals("sample_message")) {
+                        continue;
+                    }
+
+                    messages.add(new MessagePreview(
+                            documentSnapshot.getData().get("sender").toString(),
+                            documentSnapshot.getData().get("message").toString(),
+                            documentSnapshot.getData().get("timestamp").toString()
+                    ));
+                }
+
+                Collections.sort(messages, new Comparator<MessagePreview>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        ArrayList<MessagePreview> messages = new ArrayList<>();
-                        for (QueryDocumentSnapshot documentSnapshot : value) {
-                            if (documentSnapshot.getId().equals("sample_message")) {
-                                continue;
-                            }
-
-                            messages.add(new MessagePreview(
-                                    documentSnapshot.getData().get("sender").toString(),
-                                    documentSnapshot.getData().get("message").toString(),
-                                    documentSnapshot.getData().get("timestamp").toString()
-                            ));
-                        }
-
-                        Collections.sort(messages, new Comparator<MessagePreview>() {
-                            @Override
-                            public int compare(MessagePreview message, MessagePreview other) {
-                                Timestamp ts1 = Timestamp.valueOf(message.timestamp);
-                                Timestamp ts2 = Timestamp.valueOf(other.timestamp);
-                                return ts1.compareTo(ts2);
-                            }
-                        });
-
-                        String name = "";
-                        String message = "";
-                        if (messages.size() > 0) {
-                            name = messages.get(messages.size() - 1).name.toString();
-                            message = messages.get(messages.size() - 1).message.toString();
-
-                            if (name.equals(username)) {
-                                name = "You";
-                            } else {
-                                name = chat_items.get(pos).getChat_name();
-                            }
-                        }
-
-                        if (name.isEmpty() && message.isEmpty()) {
-                            holder.chats_msgpreview.setText("Click here to chat");
-                        } else {
-                            holder.chats_msgpreview.setText(name + ": " + message);
-                        }
+                    public int compare(MessagePreview message, MessagePreview other) {
+                        Timestamp ts1 = Timestamp.valueOf(message.timestamp);
+                        Timestamp ts2 = Timestamp.valueOf(other.timestamp);
+                        return ts1.compareTo(ts2);
                     }
                 });
 
-        String username = chat_items.get(position).getChat_username();
+                if (messages.size() > 0) {
+                    db.collection((accountType.equals("client") || fieldUsername != null ? "professionals" : "clients"))
+                            .document((fieldUsername != null ? messages.get(messages.size() - 1).name.toString() : chat_items.get(pos).getChatUsername()))
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        String name = "";
+                                        String message = "";
+                                        if (messages.size() > 0) {
+                                            name = messages.get(messages.size() - 1).name.toString();
+                                            message = messages.get(messages.size() - 1).message.toString();
+
+                                            if (name.equals(username)) {
+                                                name = "You";
+                                            } else {
+                                                name = task.getResult().getData().get("first_name").toString();
+                                            }
+                                        }
+
+                                        holder.chats_msgpreview.setText(name + ": " + message);
+                                    }
+                                }
+                            });
+                } else {
+                    holder.chats_msgpreview.setText("Click here to chat");
+                }
+
+            }
+        });
+
+        String username = chat_items.get(pos).getChatUsername();
         holder.chats_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

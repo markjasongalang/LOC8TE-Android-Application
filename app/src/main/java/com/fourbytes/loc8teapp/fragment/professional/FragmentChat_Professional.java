@@ -121,13 +121,10 @@ public class FragmentChat_Professional extends Fragment {
 
         chats_items_industry.add(new ChatsItems(
                 fieldUsername,
-                field,
-                "",
-                "You: testing",
                 pathReference
         ));
 
-        chats_recyclerView1.setAdapter(new ChatAdapter(getContext(), chats_items_industry, parentFragmentManager, db, username, accountType, fieldUsername));
+        chats_recyclerView1.setAdapter(new ChatAdapter(getContext(), chats_items_industry, parentFragmentManager, db, username, accountType, field, fieldUsername));
 
         // For client chat
         chats_recyclerView2.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -139,27 +136,15 @@ public class FragmentChat_Professional extends Fragment {
 
                 chats_items_clients = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : value) {
-                    db.collection("clients").document(documentSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-
-                                // Get profile picture of current user
-                                StorageReference storageRef = storage.getReference();
-                                StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
-                                chats_items_clients.add(new ChatsItems(
-                                        documentSnapshot.getId(),
-                                        task.getResult().getData().get("first_name") + " " + task.getResult().getData().get("last_name"),
-                                        "",
-                                        task.getResult().getData().get("first_name").toString() + ": Hello",
-                                        pathReference
-                                ));
-                                chats_recyclerView2.setAdapter(new ChatAdapter(getContext(), chats_items_clients, parentFragmentManager, db, username, accountType));
-
-                            }
-                        }
-                    });
+                    // Get profile picture of current user
+                    StorageReference storageRef = storage.getReference();
+                    StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId() + "_profile.jpg");
+                    chats_items_clients.add(new ChatsItems(
+                            documentSnapshot.getId(),
+                            pathReference
+                    ));
                 }
+                chats_recyclerView2.setAdapter(new ChatAdapter(getContext(), chats_items_clients, parentFragmentManager, db, username, accountType));
 
             }
         });
