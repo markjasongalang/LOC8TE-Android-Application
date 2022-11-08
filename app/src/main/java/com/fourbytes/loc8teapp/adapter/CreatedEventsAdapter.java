@@ -3,6 +3,7 @@ package com.fourbytes.loc8teapp.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,13 +69,27 @@ public class CreatedEventsAdapter extends RecyclerView.Adapter<MyEventsViewHolde
             @Override
             public void onClick(View view) {
 
+                Bundle result = new Bundle();
+                result.putString("title", myevents_items.get(holder.getAdapterPosition()).getEvent_title());
+                result.putString("location", myevents_items.get(holder.getAdapterPosition()).getEvent_location());
+                result.putString("description", myevents_items.get(holder.getAdapterPosition()).getEvent_description());
+                result.putInt("participant", myevents_items.get(holder.getAdapterPosition()).getParticipant_count());
+                result.putInt("parking_limit", myevents_items.get(holder.getAdapterPosition()).getParking_limit());
+                result.putInt("parking_count", myevents_items.get(holder.getAdapterPosition()).getParking_count());
+                result.putString("host", myevents_items.get(holder.getAdapterPosition()).getHosted_by());
+                result.putString("host_id", myevents_items.get(holder.getAdapterPosition()).getHost_id());
+                result.putString("host_job", myevents_items.get(holder.getAdapterPosition()).getJob_title());
+                result.putString("date", myevents_items.get(holder.getAdapterPosition()).getDate());
+                result.putString("time", myevents_items.get(holder.getAdapterPosition()).getTime());
+                result.putString("event_id", myevents_items.get(holder.getAdapterPosition()).getEvent_id());
+                result.putDouble("latitude", myevents_items.get(holder.getAdapterPosition()).getLatitude());
+                result.putDouble("longitude", myevents_items.get(holder.getAdapterPosition()).getLongitude());
                 //TODO: Pass data into fragments
+                fragmentManager.setFragmentResult("eventData", result);
                 FragmentEvent_CreatorView fragment = new FragmentEvent_CreatorView();
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment, fragment)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
                         .commit();
                 Toast.makeText(view.getContext(), myevents_items.get(holder.getAdapterPosition()).getEvent_title(), Toast.LENGTH_SHORT).show();
                 Log.d("EVENTS BUTTON", myevents_items.get(holder.getAdapterPosition()).getEvent_title());
