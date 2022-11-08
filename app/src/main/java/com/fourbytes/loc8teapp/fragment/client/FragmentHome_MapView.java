@@ -12,6 +12,7 @@ import static com.fourbytes.loc8teapp.Constants.TECHNOLOGY_FIELD;
 
 import android.Manifest;
 
+import com.fourbytes.loc8teapp.fragment.professional.FragmentEvent_Realtime;
 import com.google.android.gms.location.LocationRequest;
 
 import android.app.Activity;
@@ -159,6 +160,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private GoogleMap map_instance;
     private FirebaseFirestore db;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationCallback mLocationCallback;
 
     private DistanceMatrix matrix;
 
@@ -182,7 +184,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     private Marker currentLocationMarker;
     private Polyline polyline;
-    Polyline dotted_polyline;
+    private Polyline dotted_polyline;
 
     private VertexMatrix vertex;
 
@@ -293,21 +295,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 }
             }
         });
-
-//        location_settings_FAB.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!isAllFABVisible2) {
-//                    location_settings_FAB.extend();
-//                    //l2.setVisibility(view.VISIBLE);
-//                    isAllFABVisible2 = true;
-//                } else {
-//                    location_settings_FAB.shrink();
-//                    //l2.setVisibility(view.GONE);
-//                    isAllFABVisible2 = false;
-//                }
-//            }
-//        });
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -446,10 +433,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     }
 
 
-    private void getLocation() {
-
-    }
-
     public String[] numberPickerValues() {
         String[] numberPickerArray = new String[101];
         int count = 0;
@@ -509,36 +492,42 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                                 try {
                                     if (document.getDouble("latitude") != null && document.getDouble("longitude") != null) {
-                                        String nearest_point;
-                                        double nearest_distance;
-                                        double latitude = document.getDouble("latitude");
-                                        double longitude = document.getDouble("longitude");
+                                        if(document.getDouble("latitude") != null
+                                                && document.getDouble("longitude") != null
+                                                && document.getBoolean("verified")){
+                                            String nearest_point;
+                                            double nearest_distance;
+                                            double latitude = document.getDouble("latitude");
+                                            double longitude = document.getDouble("longitude");
 
-                                        String field = document.getString("field");
+                                            String field = document.getString("field");
 
-                                        if (professional_filters.size() == 0 || professional_filters.contains(field)) {
-                                            String id = document.getId();
-                                            String fname = document.getString("first_name");
-                                            String lname = document.getString("last_name");
-                                            String name = fname + " " + lname;
+                                            if (professional_filters.size() == 0 || professional_filters.contains(field)) {
+                                                String id = document.getId();
+                                                String fname = document.getString("first_name");
+                                                String lname = document.getString("last_name");
+                                                String name = fname + " " + lname;
 
-                                            if (vertex.getDistanceLatLong(latitude, longitude).get(0).getId() != null) {
-                                                nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(0).getId();
-                                                nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(0).getDistance();
-                                            } else {
-                                                nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(1).getId();
-                                                nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(1).getDistance();
+                                                if (vertex.getDistanceLatLong(latitude, longitude).get(0).getId() != null) {
+                                                    nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(0).getId();
+                                                    nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(0).getDistance();
+                                                } else {
+                                                    nearest_point = vertex.getDistanceLatLong(latitude, longitude).get(1).getId();
+                                                    nearest_distance = vertex.getDistanceLatLong(latitude, longitude).get(1).getDistance();
+                                                }
+
+                                                Users.add(new UserInfo(
+                                                        id,
+                                                        longitude,
+                                                        latitude,
+                                                        nearest_point,
+                                                        name,
+                                                        nearest_distance
+                                                ));
                                             }
 
-                                            Users.add(new UserInfo(
-                                                    id,
-                                                    longitude,
-                                                    latitude,
-                                                    nearest_point,
-                                                    name,
-                                                    nearest_distance
-                                            ));
                                         }
+
 
                                     }
                                 } catch (Exception e) {
@@ -701,18 +690,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 dialog.dismiss();
             }
         });
-    }
-
-    public void setNodeMarkers(List<VertexInfo> vertexMarker) {
-
-        for (int i = 0; i < vertexMarker.size(); i++) {
-
-            map_instance.addMarker(new MarkerOptions()
-                            .position(new LatLng(vertexMarker.get(i).getLatitude(), vertexMarker.get(i).getLongitude()))
-                            .title("Start Here")
-                            .icon(BitmapFromVector(view.getContext(), R.drawable.icon_marker_node_green)))
-                    .setTag(new MarkerTag(vertexMarker.get(i).getId(), "vertex"));
-        }
     }
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
@@ -931,7 +908,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     private void setLocationCamera(double latitude, double longitude) {
         CameraUpdate point = CameraUpdateFactory.newLatLngZoom
                 (new LatLng(latitude, longitude), 18);
-        map_instance.moveCamera(point);
+        map_instance.animateCamera(point);
     }
 
     @Override
@@ -948,10 +925,10 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     public void startLocationRequest() {
         LocationRequest mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setInterval(5000);
+        mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
-        LocationCallback mLocationCallback = new LocationCallback() {
+        mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
@@ -975,6 +952,10 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             return;
         }
         LocationServices.getFusedLocationProviderClient(view.getContext()).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+    }
+
+    public void stopLocationRequest(){
+        fusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
     }
 
     @Override
@@ -1070,28 +1051,32 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                             ArrayList<String> meet_point_list = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String field = document.getString("field");
-                                double latitude = document.getDouble("latitude");
-                                double longitude = document.getDouble("longitude");
-                                double radius_distance = vertex.calculateDistance(currentUserLat, latitude, currentUserLong, longitude);
+                                if(document.getDouble("latitude") != null
+                                        && document.getDouble("longitude") != null
+                                        && document.getBoolean("verified")){
+                                    double latitude = document.getDouble("latitude");
+                                    double longitude = document.getDouble("longitude");
+                                    double radius_distance = vertex.calculateDistance(currentUserLat, latitude, currentUserLong, longitude);
 
-                                System.out.println(radius_distance);
-                                try {
-                                    if (professional_filters.size() == 0 || professional_filters.contains(field)) {
+                                    System.out.println(radius_distance);
+                                    try {
+                                        if (professional_filters.size() == 0 || professional_filters.contains(field)) {
 
-                                        if (radius_filter == 0 || radius_filter >= radius_distance) {
-                                            String id = document.getId();
-                                            String meet_point = document.getString("meet_point");
-                                            String fname = document.getString("first_name");
-                                            String lname = document.getString("last_name");
-                                            String specific_job = document.getString("specific_job");
-                                            String name = fname + " " + lname;
+                                            if (radius_filter == 0 || radius_filter >= radius_distance) {
+                                                String id = document.getId();
+                                                String meet_point = document.getString("meet_point");
+                                                String fname = document.getString("first_name");
+                                                String lname = document.getString("last_name");
+                                                String specific_job = document.getString("specific_job");
+                                                String name = fname + " " + lname;
 
-
-                                            setMarkers(latitude, longitude, name, id, specific_job, field);
+                                                setMarkers(latitude, longitude, name, id, specific_job, field);
+                                            }
                                         }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+
                                 }
 
                             }
@@ -1136,6 +1121,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
                 View node_onclick_view = getLayoutInflater().inflate(R.layout.user_onclick_popup, null);
                 AppCompatButton btn_view = node_onclick_view.findViewById(R.id.btn_view);
+                AppCompatButton btn_location = node_onclick_view.findViewById(R.id.btn_location);
                 RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
 
                 TextView user_name = node_onclick_view.findViewById(R.id.user_name);
@@ -1195,11 +1181,20 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 btn_view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        popupWindow.dismiss();
                         parentFragmentManager.beginTransaction()
                                 .replace(R.id.fragment, FragmentProfile_Professional.class, null)
                                 .setReorderingAllowed(true)
                                 .addToBackStack(null)
                                 .commit();
+                    }
+                });
+
+                btn_location.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popupWindow.dismiss();
+                        openRealtimeFragment(tag.getLocation().latitude, tag.getLocation().longitude);
                     }
                 });
             }
@@ -1208,6 +1203,18 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
         return false;
     }
+
+    private void openRealtimeFragment(double latitude, double longitude){
+        Bundle result = new Bundle();
+        result.putDouble("desLat", latitude);
+        result.putDouble("desLong", longitude);
+
+        parentFragmentManager.setFragmentResult("realtimeData", result);
+        parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment, FragmentEvent_Realtime.class, null)
+                .commit();
+    }
+
 
     public void retrieveProfessionals(String start_point) {
         ArrayList<UserInfo> Users = new ArrayList<>();
@@ -1448,18 +1455,21 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     public void onStop() {
         super.onStop();
         map_view.onStop();
+        stopLocationRequest();
     }
 
     @Override
     public void onPause() {
         map_view.onPause();
         super.onPause();
+        stopLocationRequest();
     }
 
     @Override
     public void onDestroy() {
         map_view.onDestroy();
         super.onDestroy();
+        stopLocationRequest();
     }
 
     @Override
@@ -1468,73 +1478,3 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         map_view.onLowMemory();
     }
 }
-
-//        search_prof_FAB.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!isAllFABVisible3) {
-//                    l3.setVisibility(view.VISIBLE);
-//                    isAllFABVisible3 = true;
-//                } else {
-//                    l3.setVisibility(view.GONE);
-//                    isAllFABVisible3 = false;
-//                }
-//            }
-//        });
-
-//    public void getUserDistanceRoad(){
-//        ArrayList<Vertex> userDistance = new ArrayList<>();
-//        ArrayList<VertexInfo> userEdge;
-//        userDistance = matrix.getUserDistance();
-//        for(int i = 0; i < userDistance.size(); i++){
-//            userEdge = userDistance.get(i).getEdge();
-//
-//            String desId = userDistance.get(i).getId();
-//            String desLong = String.valueOf(userDistance.get(i).getLongitude());
-//            String desLat = String.valueOf(userDistance.get(i).getLatitude());
-//
-//            System.out.println(desId);
-//            for(int j = 0; j < userEdge.size(); j++){
-//                String originId = userEdge.get(j).getId();
-//                String originLong = String.valueOf(userEdge.get(j).getLongitude());
-//                String originLat = String.valueOf(userEdge.get(j).getLatitude());
-//
-//                getDirections(originLat, originLong, desLat, desLong, originId, desId);
-//            }
-//        }
-//    }
-
-//    public void getUserDistance(){
-//
-//        ArrayList<VertexInfo> U = new ArrayList<>();
-//        db = FirebaseFirestore.getInstance();
-//
-//        db.collection("users")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//
-//                                try{
-//                                    double latitude = document.getDouble("lat");
-//                                    double longitude = document.getDouble("long");
-//                                    String id = document.getId();
-//                                    String name = document.getString("first");
-//                                    U.add(new VertexInfo(id, longitude, latitude));
-//                                }catch (Exception e){
-//                                    Log.d("NODES",  document.getId());
-//                                }
-//
-//                            }
-//
-//                            matrix.getDistanceLongLat(U);
-//                            getUserDistanceRoad();
-//                        } else {
-//                            Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                    }
-//                });
-//    }
