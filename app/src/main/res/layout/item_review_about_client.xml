@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_medium"
                 android:text="Sample Profession"
+                android:visibility="gone"
                 android:textColor="@color/secondaryColor"
                 android:textSize="10sp" />
         </LinearLayout>
@@ -51,30 +52,13 @@
             android:layout_gravity="bottom"
             android:orientation="horizontal">
 
-            <ImageView
+            <TextView
+                android:id="@+id/tv_rating"
+                android:textSize="18sp"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/glacial_indifference"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 

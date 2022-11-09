@@ -1,4 +1,4 @@
-package com.fourbytes.loc8teapp.fragment.client;
+package com.fourbytes.loc8teapp.fragment.professional.profiletabs;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,8 +24,8 @@ import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.adapter.ReviewAboutClientAdapter;
-import com.fourbytes.loc8teapp.reviewaboutclientrecycler.ReviewAboutClient;
+import com.fourbytes.loc8teapp.adapter.ReviewAboutProfessionalAdapter;
+import com.fourbytes.loc8teapp.reviewaboutproreycler.ReviewAboutProfessional;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -41,7 +41,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fragment_Reviews_About_Client extends Fragment {
+public class ReviewsFragment extends Fragment {
     private View view;
 
     private FirebaseFirestore db;
@@ -50,16 +50,17 @@ public class Fragment_Reviews_About_Client extends Fragment {
 
     private FragmentManager parentFragmentManager;
 
-    private TextView tvClientName;
-    private TextView tvAverageRating;
+    private AppCompatButton btnBack;
 
     private ShapeableImageView ivProfilePicture;
 
-    private AppCompatButton btnBack;
+    private TextView tvProfessionalName;
+    private TextView tvSpecificJob;
+    private TextView tvAverageRating;
 
-    private RecyclerView rvReviewsAboutClient;
+    private RecyclerView rvReviewsAboutPro;
 
-    private List<ReviewAboutClient> reviewAboutClientList;
+    private List<ReviewAboutProfessional> reviewAboutProfessionalList;
 
     private SharedViewModel viewModel;
 
@@ -70,27 +71,26 @@ public class Fragment_Reviews_About_Client extends Fragment {
     private String viewedUsername;
     private String current;
 
-    public Fragment_Reviews_About_Client() {}
+    public ReviewsFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_reviews_about_client, container, false);
+        view = inflater.inflate(R.layout.fragment_reviews, container, false);
 
         // Get views from layout
         btnBack = view.findViewById(R.id.btn_back);
+        rvReviewsAboutPro = view.findViewById(R.id.rv_reviews_about_pro);
+        tvProfessionalName = view.findViewById(R.id.tv_professional_name);
+        tvSpecificJob = view.findViewById(R.id.tv_specific_job);
         ivProfilePicture = view.findViewById(R.id.iv_profile_picture);
-        tvClientName = view.findViewById(R.id.tv_client_name);
-        rvReviewsAboutClient = view.findViewById(R.id.rv_reviews_about_client);
         tvAverageRating = view.findViewById(R.id.tv_average_rating);
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-
-        // Get fragment manager of parent fragment
         parentFragmentManager = getParentFragmentManager();
 
-        viewedUsername = DataPasser.getUsername2();
+        viewedUsername = DataPasser.getUsername1();
 
         // Get username and account type of current user
         pair = null;
@@ -108,7 +108,7 @@ public class Fragment_Reviews_About_Client extends Fragment {
             accountType = "professional";
         }
 
-        db.collection("client_profiles").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("professional_reviews").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value.exists()) {
@@ -118,21 +118,11 @@ public class Fragment_Reviews_About_Client extends Fragment {
 
                         tvAverageRating.setText((String.format("%.2f", (sumRating / numberOfRatings))));
                     } else {
-                        tvAverageRating.setText("no rating yet");
+                        tvAverageRating.setText("none");
                     }
                 } else {
-                    tvAverageRating.setText("no rating yet");
+                    tvAverageRating.setText("none");
                 }
-            }
-        });
-
-        // Get full name of current user
-        db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String firstName = value.getData().get("first_name").toString();
-                String lastName = value.getData().get("last_name").toString();
-                tvClientName.setText(firstName + " " + lastName);
             }
         });
 
@@ -155,6 +145,14 @@ public class Fragment_Reviews_About_Client extends Fragment {
             }
         });
 
+        db.collection("professionals").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                tvProfessionalName.setText(value.getData().get("first_name") + " " + value.getData().get("last_name").toString());
+                tvSpecificJob.setText(value.getData().get("specific_job").toString());
+            }
+        });
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,27 +167,27 @@ public class Fragment_Reviews_About_Client extends Fragment {
     public void onStart() {
         super.onStart();
 
-        rvReviewsAboutClient.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rvReviewsAboutPro.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        reviewAboutClientList = new ArrayList<>();
-        db.collection("client_profiles").document(username).collection("reviews_about_client").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        reviewAboutProfessionalList = new ArrayList<>();
+        db.collection("professional_reviews").document(username).collection("reviews").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                reviewAboutClientList = new ArrayList<>();
+                reviewAboutProfessionalList = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : value) {
                     if (documentSnapshot.getId().equals("sample_review")) {
                         continue;
                     }
 
-                    reviewAboutClientList.add(new ReviewAboutClient(
+                    reviewAboutProfessionalList.add(new ReviewAboutProfessional(
                             documentSnapshot.getData().get("from").toString(),
                             (double) documentSnapshot.getData().get("rating"),
                             documentSnapshot.getData().get("review").toString(),
                             documentSnapshot.getData().get("timestamp").toString()
                     ));
                 }
-                rvReviewsAboutClient.setAdapter(new ReviewAboutClientAdapter(view.getContext(), reviewAboutClientList));
+                rvReviewsAboutPro.setAdapter(new ReviewAboutProfessionalAdapter(view.getContext(), reviewAboutProfessionalList));
 
             }
         });

@@ -12,6 +12,7 @@ public class ReviewAboutProfessionalViewHolder extends RecyclerView.ViewHolder {
     public TextView tvFullName;
     public TextView tvReview;
     public TextView tvTimestamp;
+    public TextView tvRating;
 
     public ReviewAboutProfessionalViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -19,5 +20,6 @@ public class ReviewAboutProfessionalViewHolder extends RecyclerView.ViewHolder {
         tvFullName = itemView.findViewById(R.id.tv_full_name);
         tvReview = itemView.findViewById(R.id.tv_review);
         tvTimestamp = itemView.findViewById(R.id.tv_timestamp);
+        tvRating = itemView.findViewById(R.id.tv_rating);
     }
 }

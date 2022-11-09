@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:background="@drawable/eighth_color_round_corners_20"
     android:orientation="vertical"
-    android:layout_margin="10dp"
     android:padding="20dp">
 
     <LinearLayout
@@ -23,8 +23,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_light_italic"
                 android:text="to"
-                android:textSize="12sp"
-                android:textColor="@color/secondaryColor" />
+                android:textColor="@color/secondaryColor"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_full_name"
@@ -40,41 +40,25 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_medium"
                 android:text="Sample Profession"
+                android:textColor="@color/secondaryColor"
                 android:textSize="10sp"
-                android:textColor="@color/secondaryColor" />
+                android:visibility="gone" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_gravity="bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:orientation="horizontal">
 
-            <ImageView
+            <TextView
+                android:id="@+id/tv_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_full_star" />
+                android:fontFamily="@font/glacial_indifference"
+                android:textColor="@color/primaryColor"
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -92,9 +76,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textSize="12sp"
-        android:textAlignment="textEnd"
         android:fontFamily="@font/open_sans_light_italic"
         android:text="Sample Timestamp"
-        android:textColor="@color/fifthColor" />
+        android:textAlignment="textEnd"
+        android:textColor="@color/fifthColor"
+        android:textSize="12sp" />
 </LinearLayout>

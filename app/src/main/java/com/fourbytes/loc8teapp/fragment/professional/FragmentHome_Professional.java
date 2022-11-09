@@ -76,6 +76,9 @@ public class FragmentHome_Professional extends Fragment {
 
     private String username;
     private String accountType;
+    private String professionalName;
+
+    private LayoutInflater layoutInflater;
 
     public FragmentHome_Professional() {}
 
@@ -95,6 +98,7 @@ public class FragmentHome_Professional extends Fragment {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         parentFragmentManager = getParentFragmentManager();
+        layoutInflater = getLayoutInflater();
 
         // Get username and account type of current user
         pair = null;
@@ -130,6 +134,7 @@ public class FragmentHome_Professional extends Fragment {
             public void run() {
                 username = pair.getUsername();
                 accountType = pair.getAccountType();
+                professionalName = pair.getName();
                 Log.d("hello", username);
 
                 db.collection("pro_homes").document(username).collection("client_list").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -138,13 +143,6 @@ public class FragmentHome_Professional extends Fragment {
 
                         connectedClientList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
-//                            db.collection("clients").document(documentSnapshot.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//
-//                                }
-//                            });
-
                             // Get profile picture of current user
                             StorageReference storageRef = storage.getReference();
                             StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
@@ -152,9 +150,14 @@ public class FragmentHome_Professional extends Fragment {
                                     pathReference,
                                     documentSnapshot.getId()
                             ));
-
                         }
-                        rvConnectedClients.setAdapter(new ConnectedClientsAdapter(view.getContext(), connectedClientList, parentFragmentManager));
+                        rvConnectedClients.setAdapter(new ConnectedClientsAdapter(
+                                view.getContext(),
+                                connectedClientList,
+                                parentFragmentManager,
+                                layoutInflater,
+                                professionalName
+                        ));
 
                     }
                 });

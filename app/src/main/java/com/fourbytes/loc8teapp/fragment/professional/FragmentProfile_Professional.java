@@ -20,6 +20,7 @@ import com.fourbytes.loc8teapp.fragment.professional.profiletabs.AboutFragment;
 import com.fourbytes.loc8teapp.fragment.professional.profiletabs.CultureFragment;
 import com.fourbytes.loc8teapp.fragment.professional.profiletabs.ExperienceFragment;
 import com.fourbytes.loc8teapp.fragment.professional.profiletabs.RateFragment;
+import com.fourbytes.loc8teapp.fragment.professional.profiletabs.ReviewsFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -69,9 +70,10 @@ public class FragmentProfile_Professional extends Fragment {
     private void assembleTabLayout() {
         profileTabAdapter = new ProfileTabAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         profileTabAdapter.addFragment(new AboutFragment(), "About");
+        profileTabAdapter.addFragment(new ReviewsFragment(), "Review");
         profileTabAdapter.addFragment(new RateFragment(), "Rate");
         profileTabAdapter.addFragment(new ExperienceFragment(), "Exp");
-        profileTabAdapter.addFragment(new CultureFragment(), "Culture");
+        profileTabAdapter.addFragment(new CultureFragment(), "Others");
 
         viewPager.setAdapter(profileTabAdapter);
 

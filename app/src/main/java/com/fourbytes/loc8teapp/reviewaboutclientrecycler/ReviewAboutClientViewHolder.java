@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fourbytes.loc8teapp.R;
 
+import org.w3c.dom.Text;
+
 public class ReviewAboutClientViewHolder extends RecyclerView.ViewHolder {
     public TextView tvFullName;
-    public TextView tvProfession;
+    public TextView tvRating;
     public TextView tvReview;
     public TextView tvTimestamp;
 
@@ -18,7 +20,7 @@ public class ReviewAboutClientViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         tvFullName = itemView.findViewById(R.id.tv_full_name);
-        tvProfession = itemView.findViewById(R.id.tv_profession);
+        tvRating = itemView.findViewById(R.id.tv_rating);
         tvReview = itemView.findViewById(R.id.tv_review);
         tvTimestamp = itemView.findViewById(R.id.tv_timestamp);
     }

@@ -24,7 +24,9 @@ import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
+import com.fourbytes.loc8teapp.adapter.ReviewAboutClientAdapter;
 import com.fourbytes.loc8teapp.adapter.ReviewAboutProfessionalAdapter;
+import com.fourbytes.loc8teapp.reviewaboutclientrecycler.ReviewAboutClient;
 import com.fourbytes.loc8teapp.reviewaboutproreycler.ReviewAboutProfessional;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +35,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -148,26 +152,47 @@ public class Fragment_Reviews_About_Pro extends Fragment {
 
         rvReviewsAboutPro.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+//        reviewAboutProfessionalList.add(new ReviewAboutProfessional(
+//                "Jason",
+//                "",
+//                "Galang",
+//                "Respectful client. Very pleasant to work with!",
+//                "01/21/2022",
+//                5.0
+//        ));
+//
+//        reviewAboutProfessionalList.add(new ReviewAboutProfessional(
+//                "Mark",
+//                "",
+//                "Banuelos",
+//                "Good person.",
+//                "08/09/2022",
+//                5.0
+//        ));
+
         reviewAboutProfessionalList = new ArrayList<>();
+        db.collection("professional_reviews").document(username).collection("reviews").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-        reviewAboutProfessionalList.add(new ReviewAboutProfessional(
-                "Jason",
-                "",
-                "Galang",
-                "Respectful client. Very pleasant to work with!",
-                "01/21/2022",
-                5.0
-        ));
+                reviewAboutProfessionalList = new ArrayList<>();
+                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    if (documentSnapshot.getId().equals("sample_review")) {
+                        continue;
+                    }
 
-        reviewAboutProfessionalList.add(new ReviewAboutProfessional(
-                "Mark",
-                "",
-                "Banuelos",
-                "Good person.",
-                "08/09/2022",
-                5.0
-        ));
+                    reviewAboutProfessionalList.add(new ReviewAboutProfessional(
+                            documentSnapshot.getData().get("from").toString(),
+                            (double) documentSnapshot.getData().get("rating"),
+                            documentSnapshot.getData().get("review").toString(),
+                            documentSnapshot.getData().get("timestamp").toString()
+                    ));
+                }
+                rvReviewsAboutPro.setAdapter(new ReviewAboutProfessionalAdapter(view.getContext(), reviewAboutProfessionalList));
 
-        rvReviewsAboutPro.setAdapter(new ReviewAboutProfessionalAdapter(view.getContext(), reviewAboutProfessionalList));
+            }
+        });
+
+//        rvReviewsAboutPro.setAdapter(new ReviewAboutProfessionalAdapter(view.getContext(), reviewAboutProfessionalList));
     }
 }

@@ -10,7 +10,7 @@ import com.fourbytes.loc8teapp.R;
 
 public class ReviewForProfessionalViewHolder extends RecyclerView.ViewHolder {
     public TextView tvFullName;
-    public TextView tvProfession;
+    public TextView tvRating;
     public TextView tvReview;
     public TextView tvTimestamp;
 
@@ -18,7 +18,7 @@ public class ReviewForProfessionalViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         tvFullName = itemView.findViewById(R.id.tv_full_name);
-        tvProfession = itemView.findViewById(R.id.tv_profession);
+        tvRating = itemView.findViewById(R.id.tv_rating);
         tvReview = itemView.findViewById(R.id.tv_review);
         tvTimestamp = itemView.findViewById(R.id.tv_timestamp);
     }

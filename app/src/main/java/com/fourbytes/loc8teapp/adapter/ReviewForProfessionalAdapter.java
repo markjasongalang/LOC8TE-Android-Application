@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ReviewForProfessionalAdapter extends RecyclerView.Adapter<ReviewForProfessionalViewHolder> {
     private Context context;
+
     private List<ReviewForProfessional> reviewsForProfessional;
 
     public ReviewForProfessionalAdapter(Context context, List<ReviewForProfessional> reviewsForProfessional) {
@@ -30,16 +31,15 @@ public class ReviewForProfessionalAdapter extends RecyclerView.Adapter<ReviewFor
 
     @Override
     public void onBindViewHolder(@NonNull ReviewForProfessionalViewHolder holder, int position) {
-        String firstName = reviewsForProfessional.get(position).getFirstName();
-        String middleName = reviewsForProfessional.get(position).getMiddleName();
-        String lastName = reviewsForProfessional.get(position).getLastName();
-        String profession = reviewsForProfessional.get(position).getProfession();
+        int pos = position;
+
+        String fullName = reviewsForProfessional.get(position).getProfessionalName();
+        double rating = reviewsForProfessional.get(position).getRating();
         String review = reviewsForProfessional.get(position).getReview();
         String timestamp = reviewsForProfessional.get(position).getTimestamp();
-        double rating = reviewsForProfessional.get(position).getRating();
 
-        holder.tvFullName.setText(firstName + " " + middleName + " " + lastName);
-        holder.tvProfession.setText(profession);
+        holder.tvFullName.setText(fullName);
+        holder.tvRating.setText(rating + " out of 5");
         holder.tvReview.setText(review);
         holder.tvTimestamp.setText(timestamp);
     }

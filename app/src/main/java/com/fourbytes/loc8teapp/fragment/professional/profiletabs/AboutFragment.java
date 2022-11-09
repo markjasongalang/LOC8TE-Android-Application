@@ -57,6 +57,7 @@ public class AboutFragment extends Fragment {
     private TextView tvProfessionalName;
     private TextView tvSpecificJob;
     private TextView tvAbout;
+    private TextView tvAverageRating;
 
     private AppCompatButton btnEditProfile;
     private AppCompatButton btnConnect;
@@ -97,6 +98,7 @@ public class AboutFragment extends Fragment {
         btnEditProfile = view.findViewById(R.id.btn_edit_profile);
         btnConnect = view.findViewById(R.id.btn_connect);
         tvAbout = view.findViewById(R.id.tv_about);
+        tvAverageRating = view.findViewById(R.id.tv_average_rating);
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
@@ -121,6 +123,24 @@ public class AboutFragment extends Fragment {
             username = viewedUsername;
             accountType = "client";
         }
+
+        db.collection("professional_reviews").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value.exists()) {
+                    if (value.getData().get("sum_rating") != null) {
+                        double sumRating = Double.valueOf(value.getData().get("sum_rating").toString());
+                        double numberOfRatings = Double.valueOf(value.getData().get("number_of_ratings").toString());
+
+                        tvAverageRating.setText((String.format("%.2f", (sumRating / numberOfRatings))));
+                    } else {
+                        tvAverageRating.setText("none");
+                    }
+                } else {
+                    tvAverageRating.setText("none");
+                }
+            }
+        });
 
         if (accountType.equals("client")) {
             btnEditProfile.setVisibility(View.INVISIBLE);
@@ -209,7 +229,6 @@ public class AboutFragment extends Fragment {
 //                        .setReorderingAllowed(true)
 //                        .addToBackStack(null)
 //                        .commit();
-                Toast.makeText(getContext(), "Fix this!", Toast.LENGTH_SHORT).show();
             }
         });
 

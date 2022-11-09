@@ -66,17 +66,17 @@
         android:layout_below="@id/connectedlist_occupation"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
-        android:background="@drawable/tertiary_color_round_button_profile"/>
+        android:background="@drawable/tertiary_color_round_button_profile" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/connectedlist_chat"
+        android:id="@+id/btn_rate"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_below="@id/connectedlist_occupation"
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@id/connectedlist_profile"
-        android:background="@drawable/tertiary_color_round_button_chat"
-        android:visibility="invisible" />
+        android:background="@drawable/tertiary_color_round_button_rate"
+        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"

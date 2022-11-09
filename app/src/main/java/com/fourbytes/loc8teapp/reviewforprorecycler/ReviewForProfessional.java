@@ -1,54 +1,32 @@
 package com.fourbytes.loc8teapp.reviewforprorecycler;
 
 public class ReviewForProfessional {
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String profession;
+    private String professionalName;
+    private double rating;
     private String review;
     private String timestamp;
-    private double rating;
 
-    public ReviewForProfessional(String firstName, String middleName, String lastName, String profession, String review, String timestamp, double rating) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.profession = profession;
+    public ReviewForProfessional(String professionalName, double rating, String review, String timestamp) {
+        this.professionalName = professionalName;
+        this.rating = rating;
         this.review = review;
         this.timestamp = timestamp;
+    }
+
+    public String getProfessionalName() {
+        return professionalName;
+    }
+
+    public void setProfessionalName(String professionalName) {
+        this.professionalName = professionalName;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
         this.rating = rating;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getProfession() {
-        return profession;
-    }
-
-    public void setProfession(String profession) {
-        this.profession = profession;
     }
 
     public String getReview() {
@@ -65,13 +43,5 @@ public class ReviewForProfessional {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
     }
 }
