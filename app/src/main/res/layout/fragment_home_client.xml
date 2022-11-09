@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/layout_client_home"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fourthColor"
     tools:context=".fragment.client.FragmentHome_ListView">
@@ -72,6 +72,7 @@
 
     <!-- location FAB -->
     <FrameLayout
+        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/mid3"
@@ -225,7 +226,8 @@
                         android:fontFamily="@font/open_sans_semi_bold_italic"
                         android:paddingLeft="5dp"
                         android:text="professionals filter"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -235,7 +237,8 @@
                         android:minHeight="0dp"
                         android:text="medical and health"
                         android:textColor="@color/white"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -245,7 +248,8 @@
                         android:minHeight="0dp"
                         android:text="technology"
                         android:textColor="@color/white"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -255,7 +259,8 @@
                         android:minHeight="0dp"
                         android:text="skilled trade"
                         android:textColor="@color/white"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -265,7 +270,8 @@
                         android:minHeight="0dp"
                         android:text="business administration"
                         android:textColor="@color/white"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -275,7 +281,8 @@
                         android:minHeight="0dp"
                         android:text="education"
                         android:textColor="@color/white"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -285,7 +292,8 @@
                         android:minHeight="0dp"
                         android:text="law"
                         android:textColor="@color/white"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -295,7 +303,8 @@
                         android:minHeight="0dp"
                         android:text="food, culinary, events"
                         android:textColor="@color/white"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -305,7 +314,8 @@
                         android:minHeight="0dp"
                         android:text="arts, humanities, liberal arts"
                         android:textColor="@color/white"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="gone" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
