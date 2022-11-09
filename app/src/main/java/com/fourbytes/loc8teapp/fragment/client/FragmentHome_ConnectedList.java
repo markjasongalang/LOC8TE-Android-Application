@@ -109,13 +109,15 @@ public class FragmentHome_ConnectedList extends Fragment {
                         HashSet<String> connected = new HashSet<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
                             Log.d("try_lang", documentSnapshot.getId() + " " + documentSnapshot.getData());
-                            if ((boolean) documentSnapshot.getData().get("is_connected")) {
-                                connected.add(documentSnapshot.getId());
+                            if(documentSnapshot.getData().get("is_connected") != null){
+                                if ((boolean) documentSnapshot.getData().get("is_connected")) {
+                                    connected.add(documentSnapshot.getId());
 
-                                db.collection("pro_homes").document(documentSnapshot.getId()).set(temp);
-                                db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).set(temp);
-                            } else {
-                                db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).delete();
+                                    db.collection("pro_homes").document(documentSnapshot.getId()).set(temp);
+                                    db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).set(temp);
+                                } else {
+                                    db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).delete();
+                                }
                             }
                         }
 

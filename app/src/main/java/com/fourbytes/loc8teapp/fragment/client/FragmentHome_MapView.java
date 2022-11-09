@@ -1120,7 +1120,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             if (type.equals("users")) {
 
                 View node_onclick_view = getLayoutInflater().inflate(R.layout.user_onclick_popup, null);
-                AppCompatButton btn_view = node_onclick_view.findViewById(R.id.btn_view);
                 AppCompatButton btn_location = node_onclick_view.findViewById(R.id.btn_location);
                 RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
 
@@ -1177,18 +1176,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 user_field.setText(tag.getField());
                 final PopupWindow popupWindow = new PopupWindow(node_onclick_view, width, height, true);
                 popupWindow.showAtLocation(view, Gravity.TOP, 0, 0);
-
-                btn_view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popupWindow.dismiss();
-                        parentFragmentManager.beginTransaction()
-                                .replace(R.id.fragment, FragmentProfile_Professional.class, null)
-                                .setReorderingAllowed(true)
-                                .addToBackStack(null)
-                                .commit();
-                    }
-                });
 
                 btn_location.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -1453,23 +1440,26 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onStop() {
+        stopLocationRequest();
         super.onStop();
         map_view.onStop();
-        stopLocationRequest();
+
     }
 
     @Override
     public void onPause() {
+        stopLocationRequest();
         map_view.onPause();
         super.onPause();
-        stopLocationRequest();
+
     }
 
     @Override
     public void onDestroy() {
+        stopLocationRequest();
         map_view.onDestroy();
         super.onDestroy();
-        stopLocationRequest();
+
     }
 
     @Override
