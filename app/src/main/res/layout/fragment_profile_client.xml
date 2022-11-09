@@ -110,12 +110,14 @@
                             android:paddingTop="22dp">
 
                             <TextView
+                                android:id="@+id/tv_average_rating"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="6dp"
+                                android:layout_marginTop="10dp"
                                 android:fontFamily="@font/glacial_indifference"
-                                android:paddingLeft="22dp"
+                                android:paddingLeft="19dp"
                                 android:text="5.0"
                                 android:textColor="@color/white"
                                 android:textSize="20sp" />
@@ -126,6 +128,7 @@
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/open_sans_light_italic"
                                 android:text="15 reviews"
+                                android:visibility="gone"
                                 android:textAlignment="center"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
@@ -196,6 +199,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_add_review"
+                    android:visibility="invisible"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_alignParentEnd="true"

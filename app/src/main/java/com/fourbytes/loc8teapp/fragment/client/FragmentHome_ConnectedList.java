@@ -59,9 +59,12 @@ public class FragmentHome_ConnectedList extends Fragment {
     private Pair pair;
 
     private String username;
+    private String clientName;
     private String accountType;
 
     private Map<String, Object> temp;
+
+    private LayoutInflater layoutInflater;
 
     public FragmentHome_ConnectedList() {}
 
@@ -73,6 +76,7 @@ public class FragmentHome_ConnectedList extends Fragment {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         parentFragmentManager = getParentFragmentManager();
+        layoutInflater = getLayoutInflater();
 
         // Get views from layout
         rvConnectedList = view.findViewById(R.id.connected_recyclerview);
@@ -86,6 +90,7 @@ public class FragmentHome_ConnectedList extends Fragment {
 
         username = pair.getUsername();
         accountType = pair.getAccountType();
+        clientName = pair.getName();
 
         return view;
     }
@@ -146,7 +151,7 @@ public class FragmentHome_ConnectedList extends Fragment {
 
                                         }
                                     }
-                                    rvConnectedList.setAdapter(new ConnectedListAdapter(view.getContext(), connectedList, parentFragmentManager));
+                                    rvConnectedList.setAdapter(new ConnectedListAdapter(view.getContext(), connectedList, parentFragmentManager, layoutInflater, username, clientName));
 
                                 }
                             }

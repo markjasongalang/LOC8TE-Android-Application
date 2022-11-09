@@ -30,14 +30,13 @@ public class ReviewAboutProfessionalAdapter extends RecyclerView.Adapter<ReviewA
 
     @Override
     public void onBindViewHolder(@NonNull ReviewAboutProfessionalViewHolder holder, int position) {
-        String firstName = reviewsAboutProfessional.get(position).getFirstName();
-        String middleName = reviewsAboutProfessional.get(position).getMiddleName();
-        String lastName = reviewsAboutProfessional.get(position).getLastName();
+        String clientName = reviewsAboutProfessional.get(position).getClientName();
+        double rating = reviewsAboutProfessional.get(position).getRating();
         String review = reviewsAboutProfessional.get(position).getReview();
         String timestamp = reviewsAboutProfessional.get(position).getTimestamp();
-        double rating = reviewsAboutProfessional.get(position).getRating();
 
-        holder.tvFullName.setText(firstName + " " + middleName + " " + lastName);
+        holder.tvFullName.setText(clientName);
+        holder.tvRating.setText(rating + " out of 5");
         holder.tvReview.setText(review);
         holder.tvTimestamp.setText(timestamp);
     }

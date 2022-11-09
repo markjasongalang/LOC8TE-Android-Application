@@ -8,10 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,22 +27,29 @@ import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
+import com.fourbytes.loc8teapp.adapter.ReviewAboutClientAdapter;
 import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
+import com.fourbytes.loc8teapp.reviewaboutclientrecycler.ReviewAboutClient;
 import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class FragmentProfile_Client extends Fragment implements AdapterView.OnItemSelectedListener {
+public class FragmentProfile_Client extends Fragment {
     private View view;
 
     private FirebaseFirestore db;
@@ -63,8 +67,6 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
 
     private EditText edtReview;
 
-    private Spinner spProfessional;
-
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
@@ -80,8 +82,18 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
     private SharedViewModel viewModel;
 
     private TextView tvClientName;
+    private TextView tvClientNamePopup;
+    private TextView tvAverageRating;
 
     private ShapeableImageView ivProfilePicture;
+
+    private HashMap<String, Object> temp;
+
+    private List<ReviewForProfessional> reviewForProfessionals;
+
+    private int numberOfReports;
+
+    private double currentSumRating;
 
     public FragmentProfile_Client() {}
 
@@ -96,13 +108,15 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
         tvClientName = view.findViewById(R.id.tv_client_name);
         ivProfilePicture = view.findViewById(R.id.iv_profile_picture);
         btnReport = view.findViewById(R.id.btn_report);
+        tvAverageRating = view.findViewById(R.id.tv_average_rating);
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-
-        // Parent fragment manager
         parentFragmentManager = getParentFragmentManager();
+        temp = new HashMap<>();
+        currentSumRating = 0;
+        numberOfReports = 0;
 
         viewedUsername = DataPasser.getUsername2();
 
@@ -113,25 +127,78 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
             pair = data;
         });
 
-
         if (viewedUsername == null) {
             username = pair.getUsername();
             accountType = pair.getAccountType();
+
+            temp.clear();
+            temp.put("exists", true);
+            db.collection("client_profiles").document(username).update(temp);
+
+            db.collection("client_profiles")
+                    .document(username)
+                    .collection("reviews_for_professionals")
+                    .document("sample_review")
+                    .set(temp);
+
+            db.collection("client_profiles")
+                    .document(username)
+                    .collection("reviews_about_client")
+                    .document("sample_review")
+                    .set(temp);
         } else {
             current = pair.getUsername();
             username = viewedUsername;
             accountType = "professional";
         }
+
+        db.collection("client_profiles").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value.exists()) {
+                    if (value.getData().get("sum_rating") != null) {
+                        double sumRating = Double.valueOf(value.getData().get("sum_rating").toString());
+                        double numberOfRatings = Double.valueOf(value.getData().get("number_of_ratings").toString());
+
+                        tvAverageRating.setText((String.format("%.2f", (sumRating / numberOfRatings))));
+                    } else {
+                        tvAverageRating.setText("none");
+                    }
+                } else {
+                    tvAverageRating.setText("none");
+                }
+            }
+        });
+
+        if (viewedUsername != null) {
+            db.collection("client_profiles").document(viewedUsername).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (value.getData().get("sum_rating") != null) {
+                        currentSumRating = Double.valueOf(value.getData().get("sum_rating").toString());
+                    }
+
+                    if (value.getData().get("number_of_reports") != null) {
+                        numberOfReports = Integer.valueOf(value.getData().get("number_of_reports").toString());
+                    }
+                }
+            });
+        }
+
         
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "TRYING", Toast.LENGTH_SHORT).show();
+                if (viewedUsername != null) {
+                    numberOfReports++;
+
+                    db.collection("client_profiles").document(viewedUsername).update("number_of_reports", numberOfReports);
+                    if (numberOfReports % 3 == 0) {
+                        db.collection("client_profiles").document(viewedUsername).update("sum_rating", (currentSumRating < 5 ? 0 : currentSumRating - 5));
+                    }
+                }
             }
         });
-
-        Log.d("user_hello", username);
-
 
         // Get full name of current user
         db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -162,63 +229,16 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
             }
         });
 
-        rvReviewForProfessional.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        List<ReviewForProfessional> reviewForProfessionals = new ArrayList<>();
-        reviewForProfessionals.add(new ReviewForProfessional(
-                "Julia",
-                "Cruz",
-                "Santos",
-                "IT Specialist",
-                "She was very hardworking.",
-                "03/31/2022",
-                3.45
-        ));
-
-        reviewForProfessionals.add(new ReviewForProfessional(
-                "Elon",
-                "Robot",
-                "Musk",
-                "Rocket Engineer",
-                "This guy is so brilliant!",
-                "05/21/2022",
-                4.3
-        ));
-
-        reviewForProfessionals.add(new ReviewForProfessional(
-                "Joshua Matthew",
-                "Secret",
-                "Padilla",
-                "100K Android Developer",
-                "He is a genius in his line of work.",
-                "12/25/2021",
-                3.78
-        ));
-
-        reviewForProfessionals.add(new ReviewForProfessional(
-                "Mary Angeline",
-                "",
-                "Corral",
-                "Software Tester",
-                "She did a good job.",
-                "03/31/2022",
-                3.78
-        ));
-
-        rvReviewForProfessional.setAdapter(new ReviewForProfessionalAdapter(view.getContext(), reviewForProfessionals));
-
         btnAddReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialogBuilder = new AlertDialog.Builder(view.getContext());
                 final View rateProfessionalPopupView = getLayoutInflater().inflate(R.layout.rate_professional_popup, null);
 
-                spProfessional = rateProfessionalPopupView.findViewById(R.id.sp_professional);
                 btnRate = rateProfessionalPopupView.findViewById(R.id.btn_rate);
                 btnCancel = rateProfessionalPopupView.findViewById(R.id.btn_cancel);
                 edtReview = rateProfessionalPopupView.findViewById(R.id.edt_review);
-
-                initSpinnerProfessional();
-                spProfessional.setOnItemSelectedListener(FragmentProfile_Client.this);
+                tvClientNamePopup = rateProfessionalPopupView.findViewById(R.id.tv_client_name_popup);
 
                 dialogBuilder.setView(rateProfessionalPopupView);
                 dialog = dialogBuilder.create();
@@ -262,25 +282,72 @@ public class FragmentProfile_Client extends Fragment implements AdapterView.OnIt
             btnReport.setVisibility(View.VISIBLE);
             btnAddReview.setVisibility(View.GONE);
         }
+
+        rvReviewForProfessional.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        reviewForProfessionals = new ArrayList<>();
+        db.collection("client_profiles").document(username).collection("reviews_for_professionals").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                reviewForProfessionals = new ArrayList<>();
+                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    if (documentSnapshot.getId().equals("sample_review")) {
+                        continue;
+                    }
+
+                    reviewForProfessionals.add(new ReviewForProfessional(
+                            documentSnapshot.getData().get("to").toString(),
+                            (double) documentSnapshot.getData().get("rating"),
+                            documentSnapshot.getData().get("review").toString(),
+                            documentSnapshot.getData().get("timestamp").toString()
+                    ));
+                }
+                rvReviewForProfessional.setAdapter(new ReviewForProfessionalAdapter(view.getContext(), reviewForProfessionals));
+
+            }
+        });
+
+//        reviewForProfessionals.add(new ReviewForProfessional(
+//                "Julia",
+//                "Cruz",
+//                "Santos",
+//                "IT Specialist",
+//                "She was very hardworking.",
+//                "03/31/2022",
+//                3.45
+//        ));
+//
+//        reviewForProfessionals.add(new ReviewForProfessional(
+//                "Elon",
+//                "Robot",
+//                "Musk",
+//                "Rocket Engineer",
+//                "This guy is so brilliant!",
+//                "05/21/2022",
+//                4.3
+//        ));
+//
+//        reviewForProfessionals.add(new ReviewForProfessional(
+//                "Joshua Matthew",
+//                "Secret",
+//                "Padilla",
+//                "100K Android Developer",
+//                "He is a genius in his line of work.",
+//                "12/25/2021",
+//                3.78
+//        ));
+//
+//        reviewForProfessionals.add(new ReviewForProfessional(
+//                "Mary Angeline",
+//                "",
+//                "Corral",
+//                "Software Tester",
+//                "She did a good job.",
+//                "03/31/2022",
+//                3.78
+//        ));
+
+//        rvReviewForProfessional.setAdapter(new ReviewForProfessionalAdapter(view.getContext(), reviewForProfessionals));
     }
-
-    private void initSpinnerProfessional() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                view.getContext(),
-                R.array.sample_names_array,
-                R.layout.spinner_dropdown_layout
-        );
-
-        adapter.setDropDownViewResource(R.layout.spinner_item_layout);
-        spProfessional.setAdapter(adapter);
-    }
-
-    /* The methods below are needed to be overridden for the spinner action listener. */
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-        edtReview.setText("");
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {}
 }

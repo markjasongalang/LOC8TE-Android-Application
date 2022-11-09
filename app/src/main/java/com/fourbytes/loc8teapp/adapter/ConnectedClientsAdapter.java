@@ -1,5 +1,6 @@
 package com.fourbytes.loc8teapp.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,9 +8,13 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +30,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHolder> {
@@ -34,12 +41,20 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
 
     private FragmentManager parentFragmentManager;
 
+    private LayoutInflater layoutInflater;
+
+    private String professionalName;
+
     private FirebaseFirestore db;
 
-    public ConnectedClientsAdapter(Context context, List<ClientItem> clientItems, FragmentManager parentFragmentManager) {
+    private HashMap<String, Object> temp;
+
+    public ConnectedClientsAdapter(Context context, List<ClientItem> clientItems, FragmentManager parentFragmentManager, LayoutInflater layoutInflater, String professionalName) {
         this.context = context;
         this.clientItems = clientItems;
         this.parentFragmentManager = parentFragmentManager;
+        this.layoutInflater = layoutInflater;
+        this.professionalName = professionalName;
 
         db = FirebaseFirestore.getInstance();
     }
@@ -65,6 +80,17 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
             }
         });
 
+        temp = new HashMap<>();
+        temp.put("exists", true);
+        db.collection("client_profiles").document(clientItems.get(pos).getClientUsername()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (!task.getResult().exists()) {
+                    db.collection("client_profiles").document(clientItems.get(pos).getClientUsername()).set(temp);
+                }
+            }
+        });
+
         db.collection("clients").document(clientItems.get(pos).getClientUsername()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -74,23 +100,96 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
                     String lastName = task.getResult().getData().get("last_name").toString();
 
                     holder.tvClientName.setText(firstName + " " + middleName + " " + lastName);
+
+                    holder.btnClientRate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(view.getContext());
+                            final View rateClientPopupView = layoutInflater.inflate(R.layout.rate_client_popup, null);
+
+                            TextView tvClientNamePopup = rateClientPopupView.findViewById(R.id.tv_client_name_popup);
+                            RatingBar rbClientRating = rateClientPopupView.findViewById(R.id.rb_client_rating);
+                            EditText edtReview = rateClientPopupView.findViewById(R.id.edt_review);
+                            AppCompatButton btnRate = rateClientPopupView.findViewById(R.id.btn_rate);
+                            AppCompatButton btnCancel = rateClientPopupView.findViewById(R.id.btn_cancel);
+
+                            tvClientNamePopup.setText(firstName + " " + lastName);
+
+                            dialogBuilder.setView(rateClientPopupView);
+                            AlertDialog dialog = dialogBuilder.create();
+                            dialog.show();
+
+                            btnRate.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    Timestamp ts = new Timestamp(System.currentTimeMillis());
+
+                                    temp.clear();
+                                    temp.put("from", professionalName);
+                                    temp.put("rating", Double.valueOf(rbClientRating.getRating()));
+                                    temp.put("review", edtReview.getText().toString());
+                                    temp.put("timestamp", ts.toString());
+
+                                    db.collection("client_profiles")
+                                            .document(clientItems.get(pos).getClientUsername())
+                                            .collection("reviews_about_client")
+                                            .document()
+                                            .set(temp);
+
+                                    db.collection("client_profiles")
+                                            .document(clientItems.get(pos).getClientUsername())
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult().getData().get("sum_rating") != null) {
+                                                            double newSumRating = (double) task.getResult().getData().get("sum_rating") + rbClientRating.getRating();
+                                                            int newNumberOfRatings = Integer.valueOf(task.getResult().getData().get("number_of_ratings").toString()) + 1;
+                                                            db.collection("client_profiles")
+                                                                    .document(clientItems.get(pos).getClientUsername())
+                                                                    .update("sum_rating", newSumRating);
+
+                                                            db.collection("client_profiles")
+                                                                    .document(clientItems.get(pos).getClientUsername())
+                                                                    .update("number_of_ratings", newNumberOfRatings);
+                                                        } else {
+                                                            db.collection("client_profiles")
+                                                                    .document(clientItems.get(pos).getClientUsername())
+                                                                    .update("sum_rating", (double) rbClientRating.getRating());
+
+                                                            db.collection("client_profiles")
+                                                                    .document(clientItems.get(pos).getClientUsername())
+                                                                    .update("number_of_ratings", 1);
+                                                        }
+                                                    }
+                                                }
+                                            });
+
+                                    Toast.makeText(context, "Successfully rated!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            btnCancel.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    dialog.dismiss();
+                                }
+                            });
+                        }
+                    });
                 }
             }
         });
 
-        holder.btnClientRate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "Rate has been clicked!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        holder.btnClientChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "Chat has been clicked!", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        holder.btnClientChat.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         holder.btnClientProfile.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,7 +1,5 @@
 package com.fourbytes.loc8teapp.connectedlistrecycler;
 
-import android.graphics.Bitmap;
-
 import com.google.firebase.storage.StorageReference;
 
 public class ConnectedListItems {

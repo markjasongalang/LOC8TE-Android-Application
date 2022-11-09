@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.reviewaboutclientrecycler.ReviewAboutClient;
 import com.fourbytes.loc8teapp.reviewaboutclientrecycler.ReviewAboutClientViewHolder;
-import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
 
 import java.util.List;
 
 public class ReviewAboutClientAdapter extends RecyclerView.Adapter<ReviewAboutClientViewHolder> {
     private Context context;
+
     private List<ReviewAboutClient> reviewsAboutClient;
 
     public ReviewAboutClientAdapter(Context context, List<ReviewAboutClient> reviewsAboutClient) {
@@ -31,16 +31,13 @@ public class ReviewAboutClientAdapter extends RecyclerView.Adapter<ReviewAboutCl
 
     @Override
     public void onBindViewHolder(@NonNull ReviewAboutClientViewHolder holder, int position) {
-        String firstName = reviewsAboutClient.get(position).getFirstName();
-        String middleName = reviewsAboutClient.get(position).getMiddleName();
-        String lastName = reviewsAboutClient.get(position).getLastName();
-        String profession = reviewsAboutClient.get(position).getProfession();
+        String fullName = reviewsAboutClient.get(position).getProfessionalName();
+        double rating = reviewsAboutClient.get(position).getRating();
         String review = reviewsAboutClient.get(position).getReview();
         String timestamp = reviewsAboutClient.get(position).getTimestamp();
-        double rating = reviewsAboutClient.get(position).getRating();
 
-        holder.tvFullName.setText(firstName + " " + middleName + " " + lastName);
-        holder.tvProfession.setText(profession);
+        holder.tvFullName.setText(fullName);
+        holder.tvRating.setText(rating + " out of 5");
         holder.tvReview.setText(review);
         holder.tvTimestamp.setText(timestamp);
     }

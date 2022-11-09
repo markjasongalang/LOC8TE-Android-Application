@@ -20,6 +20,11 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Review" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Rates" />
 
         <com.google.android.material.tabs.TabItem
@@ -34,6 +39,7 @@
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:visibility="gone"
         android:id="@+id/btn_view_reviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

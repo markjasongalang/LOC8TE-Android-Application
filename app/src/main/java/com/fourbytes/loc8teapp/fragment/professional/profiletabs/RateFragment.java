@@ -201,7 +201,6 @@ public class RateFragment extends Fragment {
                     ));
                 }
 
-
                 rvService.setAdapter(new ServiceAdapter(view.getContext(), serviceItemList, layoutInflater, username));
             }
         });
