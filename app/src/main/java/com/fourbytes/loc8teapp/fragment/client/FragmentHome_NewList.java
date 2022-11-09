@@ -61,6 +61,7 @@ public class FragmentHome_NewList extends Fragment {
     private List<NewListItems> newList;
 
     private Map<String, Object> temp;
+    private Map<String, Object> temp2;
 
     public FragmentHome_NewList() {}
 
@@ -89,6 +90,7 @@ public class FragmentHome_NewList extends Fragment {
         // Workaround to enable the visibility of the document
         temp = new HashMap<>();
         temp.put("exists", true);
+
         db.collection("client_homes").document(username).set(temp);
 
         db.collection("client_homes")
@@ -99,13 +101,15 @@ public class FragmentHome_NewList extends Fragment {
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         HashSet<String> connected = new HashSet<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
-                            if ((boolean) documentSnapshot.getData().get("is_connected")) {
-                                connected.add(documentSnapshot.getId());
+                            if(documentSnapshot.getBoolean("is_connected") != null){
+                                if ((boolean) documentSnapshot.getData().get("is_connected")) {
+                                    connected.add(documentSnapshot.getId());
+                                }
                             }
                         }
 
-                        temp = new HashMap<>();
-                        temp.put("is_connected", false);
+                        temp2 = new HashMap<>();
+                        temp2.put("is_connected", false);
                         db.collection("professionals").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -116,7 +120,7 @@ public class FragmentHome_NewList extends Fragment {
                                                     .document(username)
                                                     .collection("pro_list")
                                                     .document(document.getId())
-                                                    .set(temp);
+                                                    .set(temp2);
                                         }
                                     }
                                 }
@@ -146,9 +150,12 @@ public class FragmentHome_NewList extends Fragment {
                         HashSet<String> connected = new HashSet<>();
                         for (QueryDocumentSnapshot document : value) {
                             Log.d("try_lang", document.getId() + " " + document.getData());
-                            if ((boolean) document.getData().get("is_connected")) {
-                                connected.add(document.getId());
+                            if(document.getData().get("is_connected") != null){
+                                if ((boolean) document.getData().get("is_connected")) {
+                                    connected.add(document.getId());
+                                }
                             }
+
                         }
 
                         newList = new ArrayList<>();
