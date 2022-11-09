@@ -31,8 +31,10 @@ import com.fourbytes.loc8teapp.adapter.ReviewAboutClientAdapter;
 import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
 import com.fourbytes.loc8teapp.reviewaboutclientrecycler.ReviewAboutClient;
 import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -89,6 +91,10 @@ public class FragmentProfile_Client extends Fragment {
 
     private List<ReviewForProfessional> reviewForProfessionals;
 
+    private int numberOfReports;
+
+    private double currentSumRating;
+
     public FragmentProfile_Client() {}
 
     @Override
@@ -107,10 +113,10 @@ public class FragmentProfile_Client extends Fragment {
         // Initialize values
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-
-        // Parent fragment manager
         parentFragmentManager = getParentFragmentManager();
         temp = new HashMap<>();
+        currentSumRating = 0;
+        numberOfReports = 0;
 
         viewedUsername = DataPasser.getUsername2();
 
@@ -163,11 +169,34 @@ public class FragmentProfile_Client extends Fragment {
                 }
             }
         });
+
+        if (viewedUsername != null) {
+            db.collection("client_profiles").document(viewedUsername).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (value.getData().get("sum_rating") != null) {
+                        currentSumRating = Double.valueOf(value.getData().get("sum_rating").toString());
+                    }
+
+                    if (value.getData().get("number_of_reports") != null) {
+                        numberOfReports = Integer.valueOf(value.getData().get("number_of_reports").toString());
+                    }
+                }
+            });
+        }
+
         
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "TRYING", Toast.LENGTH_SHORT).show();
+                if (viewedUsername != null) {
+                    numberOfReports++;
+
+                    db.collection("client_profiles").document(viewedUsername).update("number_of_reports", numberOfReports);
+                    if (numberOfReports % 3 == 0) {
+                        db.collection("client_profiles").document(viewedUsername).update("sum_rating", (currentSumRating < 5 ? 0 : currentSumRating - 5));
+                    }
+                }
             }
         });
 

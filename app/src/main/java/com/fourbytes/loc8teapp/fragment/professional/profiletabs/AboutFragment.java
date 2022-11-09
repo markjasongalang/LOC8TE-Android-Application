@@ -69,6 +69,7 @@ public class AboutFragment extends Fragment {
 
     private AppCompatButton btnSaveAboutPopup;
     private AppCompatButton btnCancelPopup;
+    private AppCompatButton btnReport;
 
     private CardView cvReviews;
 
@@ -83,6 +84,10 @@ public class AboutFragment extends Fragment {
     private String viewedUsername;
 
     private HashMap<String, Object> temp;
+
+    private int numberOfReports;
+
+    private double currentSumRating;
 
     public AboutFragment() {}
 
@@ -99,12 +104,15 @@ public class AboutFragment extends Fragment {
         btnConnect = view.findViewById(R.id.btn_connect);
         tvAbout = view.findViewById(R.id.tv_about);
         tvAverageRating = view.findViewById(R.id.tv_average_rating);
+        btnReport = view.findViewById(R.id.btn_report);
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         parentFragmentManager = getParentFragmentManager();
         temp = new HashMap<>();
+        numberOfReports = 0;
+        currentSumRating = 0;
 
         viewedUsername = DataPasser.getUsername1();
 
@@ -180,8 +188,34 @@ public class AboutFragment extends Fragment {
                 }
             });
 
+            db.collection("professional_reviews").document(viewedUsername).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (value.getData().get("sum_rating") != null) {
+                        currentSumRating = Double.valueOf(value.getData().get("sum_rating").toString());
+                    }
+
+                    if (value.getData().get("number_of_reports") != null) {
+                        numberOfReports = Integer.valueOf(value.getData().get("number_of_reports").toString());
+                    }
+                }
+            });
+
+            btnReport.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    numberOfReports++;
+
+                    db.collection("professional_reviews").document(viewedUsername).update("number_of_reports", numberOfReports);
+                    if (numberOfReports % 3 == 0) {
+                        db.collection("professional_reviews").document(viewedUsername).update("sum_rating", (currentSumRating < 5 ? 0 : currentSumRating - 5));
+                    }
+                }
+            });
+
         } else {
             btnConnect.setVisibility(View.GONE);
+            btnReport.setVisibility(View.GONE);
         }
 
         temp.put("exists", true);
