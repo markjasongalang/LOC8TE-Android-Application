@@ -52,6 +52,11 @@ public class FragmentEvent_CreatorView extends Fragment {
     private String doc_event_id;
     private String doc_event_participant_count;
     private String doc_event_parking_count;
+    private String doc_event_parking_limit;
+
+    private double event_latitude;
+    private double event_longitude;
+
     private FirebaseFirestore db;
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -92,10 +97,21 @@ public class FragmentEvent_CreatorView extends Fragment {
             @Override
             public void onClick(View view) {
 
+                Bundle result = new Bundle();
+                result.putString("title", doc_event_title);
+                result.putString("location", doc_event_location);
+                result.putString("description", doc_event_desc);
+                result.putInt("parking_count", Integer.parseInt(doc_event_parking_count));
+                result.putString("date", doc_event_date);
+                result.putString("time", doc_event_time);
+                result.putString("event_id", doc_event_id);
+                result.putString("location", doc_event_location);
+                result.putDouble("latitude", event_latitude);
+                result.putDouble("longitude", event_longitude);
+
+                fragmentManager.setFragmentResult("editData", result);
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment, FragmentEvent_Edit.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack(null)
                         .commit();
             }
         });
@@ -108,12 +124,14 @@ public class FragmentEvent_CreatorView extends Fragment {
                 doc_event_desc = result.getString("description");
                 doc_event_date = result.getString("date");
                 doc_event_time = result.getString("time");
-                doc_host = result.getString("host");
+                doc_event_parking_count = result.getString("host");
                 doc_host_profession = result.getString("host_job");
                 doc_event_id = result.getString("event_id");
                 doc_event_participant_count = String.valueOf(result.getInt("participant"));
                 doc_event_parking_count = String.valueOf(result.getInt("parking_limit") - result.getInt("parking_count"));
                 doc_host_id = result.getString("host_id");
+                event_latitude = result.getDouble("latitude");
+                event_longitude = result.getDouble("longitude");
 
                 StorageReference storageRef = storage.getReference();
                 StorageReference pathReference = storageRef.child("profilePics/" + doc_host_id + "_profile.jpg");

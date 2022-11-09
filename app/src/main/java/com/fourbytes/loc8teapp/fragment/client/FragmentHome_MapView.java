@@ -673,14 +673,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             dotted_polyline.setColor(getResources().getColor(R.color.primaryColor));
             dotted_polyline.setPattern(pattern);
             dotted_polyline.setZIndex(1);
-//            points.add(new LatLng(
-//                    data.get(nearest_meet_point).getLatitude(),
-//                    data.get(nearest_meet_point).getLongitude()
-//            ));
-//            points.add(new LatLng(
-//                    nearest_user_latitude,
-//                    nearest_path_longitude
-//            ));
 
             polylineOptions.addAll(points);
             polylineOptions.width(5);
@@ -688,13 +680,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             polylineOptions.geodesic(true);
 
             setMarkers(nearest_user_latitude, nearest_path_longitude, 0, nearest_user_name, nearest_user);
-//            System.out.println("ORIGIN ---------------------------");
-//            System.out.println(start_point_latitude);
-//            System.out.println(start_point_longitude);
-//            System.out.println(nearest_distance);
-//            System.out.println("DESTINATION ---------------------------");
-//            System.out.println(final_point_latitude);
-//            System.out.println(final_point_longitude);
             map_instance.addPolyline(polylineOptions).setZIndex(0);
 
         }
@@ -747,8 +732,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     public void checkNearestUser(JSONObject response, ArrayList<UserInfo> Users) throws JSONException {
         JSONArray elements = response.getJSONArray("rows").getJSONObject(0).getJSONArray("elements");
 
-        //System.out.println(elements);
-        //System.out.println(elements.length());
         for (int i = 0; i < elements.length(); i++) {
             JSONObject distance = elements.getJSONObject(i).getJSONObject("distance");
             double distance_parsed = Double.parseDouble(String.valueOf(distance.get("value")));
@@ -945,31 +928,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
         currentUserLong = longitude;
     }
 
-    private void getLastLocationCamera() {
-        if (ActivityCompat.checkSelfPermission(view.getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
-        }
-        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                if (task.isSuccessful()) {
-                    Location location = task.getResult();
-                    try {
-                        GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                        setLocationCamera(geopoint.getLatitude(), geopoint.getLongitude());
-                    } catch (Exception e) {
-                        setLocationCamera(CAMERA_DEFAULT_LATITUDE, CAMERA_DEFAULT_LONGITUDE);
-                    }
-
-                }
-            }
-        });
-        return;
-    }
-
     private void setLocationCamera(double latitude, double longitude) {
         CameraUpdate point = CameraUpdateFactory.newLatLngZoom
                 (new LatLng(latitude, longitude), 18);
@@ -991,7 +949,7 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     public void startLocationRequest() {
         LocationRequest mLocationRequest = LocationRequest.create();
         mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(500);
+        mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
         LocationCallback mLocationCallback = new LocationCallback() {
             @Override
@@ -1002,9 +960,10 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                 }
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
+                        GeoPoint geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                         isGPSEnabled = true;
-                        //TODO: UI updates.
-
+                        setCurrentLocation(geopoint.getLatitude(), geopoint.getLongitude());
+                        setCurrentLocationMarker(geopoint.getLatitude(), geopoint.getLongitude());
                     }
                 }
             }
@@ -1040,9 +999,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
             return;
         }
 
-        if (!isVertexInit) {
-            retrieveNodes();
-        }
         startLocationRequest();
         retrieveUsers();
         getLastLocation();
@@ -1147,109 +1103,6 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
                     }
                 });
 
-//        db.collection("users")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//
-//                                try{
-//                                    double latitude = document.getDouble("lat");
-//                                    double longitude = document.getDouble("long");
-//                                    String id = document.getId();
-//                                    String name = document.getString("first");
-//                                    U.add(new VertexInfo(id, longitude, latitude));
-//                                    setMarkers(latitude, longitude, 0, name, id);
-//                                }catch (Exception e){
-//                                    Log.d("NODES",  document.getId());
-//                                }
-//
-//                            }
-//
-//                            initUsers(U);
-//                        } else {
-//                            Toast.makeText(getActivity(), "There are no users", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                    }
-//                });
-    }
-
-    public void retrieveNodes() {
-        String TAG = "MAP Markers";
-        db = FirebaseFirestore.getInstance();
-        ArrayList<VertexInfo> V = new ArrayList<>();
-        ArrayList<Edge> E = new ArrayList<>();
-        db.collection("vertex").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                int count = 0;
-                if (e != null) {
-
-                    return;
-                }
-
-                for (QueryDocumentSnapshot document : value) {
-                    if (document != null) {
-                        double latitude = document.getDouble("lat");
-                        double longitude = document.getDouble("long");
-
-                        V.add(new VertexInfo(
-                                document.getId(),
-                                longitude,
-                                latitude
-                        ));
-                    }
-                }
-
-                initMatrix(V);
-            }
-        });
-
-        db.collection("edges").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                int count = 0;
-                if (e != null) {
-                    return;
-                }
-
-                for (QueryDocumentSnapshot document : value) {
-                    if (document != null) {
-
-
-                        try {
-                            String id = document.getId();
-                            String origin = document.getString("start");
-                            String destination = document.getString("end");
-                            double distance = document.getDouble("distance");
-                            E.add(new Edge(origin, destination, distance, id));
-                            E.add(new Edge(origin, destination, distance, id));
-
-                        } catch (Exception error) {
-                            Log.d("ERROR", document.getId());
-                        }
-
-                    }
-                }
-
-                initEdges(E);
-            }
-        });
-    }
-
-    public void initMatrix(ArrayList<VertexInfo> V) {
-        matrix = new DistanceMatrix(V);
-    }
-
-    public void initEdges(ArrayList<Edge> E) {
-        matrix.initEdgeValue(E);
-    }
-
-    public void initUsers(ArrayList<VertexInfo> U) {
-        matrix.initUsers(U);
     }
 
     public void setMarkers(double latitude, double longitude, double filter, String name, String id) {

@@ -56,7 +56,6 @@ public class FragmentEvent_Create extends Fragment {
 
     private AppCompatButton btnBack;
     private AppCompatButton btnSave;
-    private AppCompatButton btnSetLocation;
 
     private Spinner eventTypeSpinner;
     private EditText titleEditView;
@@ -296,9 +295,7 @@ public class FragmentEvent_Create extends Fragment {
         fragmentManager.setFragmentResultListener("locationData", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-
                 setLocationText(result.getDouble("latitude"), result.getDouble("longitude"));
-
             }
         });
 
