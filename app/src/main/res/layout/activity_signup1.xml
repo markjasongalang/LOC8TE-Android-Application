@@ -103,6 +103,20 @@
                 android:textColorHint="@color/primaryColor"
                 android:textSize="18sp" />
 
+            <EditText
+                android:id="@+id/edt_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_round_corners_10"
+                android:fontFamily="@font/open_sans_light"
+                android:hint="confirm password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@color/primaryColor"
+                android:textColorHint="@color/primaryColor"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/tv_personal_info"
                 android:layout_width="match_parent"

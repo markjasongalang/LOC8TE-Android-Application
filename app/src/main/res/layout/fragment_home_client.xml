@@ -226,8 +226,7 @@
                         android:fontFamily="@font/open_sans_semi_bold_italic"
                         android:paddingLeft="5dp"
                         android:text="professionals filter"
-                        android:textColor="@color/white"
-                        android:visibility="gone" />
+                        android:textColor="@color/white" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -237,8 +236,7 @@
                         android:minHeight="0dp"
                         android:text="medical and health"
                         android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:visibility="gone" />
+                        android:textSize="17sp" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -248,8 +246,7 @@
                         android:minHeight="0dp"
                         android:text="technology"
                         android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:visibility="gone" />
+                        android:textSize="17sp" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -259,8 +256,7 @@
                         android:minHeight="0dp"
                         android:text="skilled trade"
                         android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:visibility="gone" />
+                        android:textSize="17sp" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -270,8 +266,7 @@
                         android:minHeight="0dp"
                         android:text="business administration"
                         android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:visibility="gone" />
+                        android:textSize="17sp" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -281,8 +276,7 @@
                         android:minHeight="0dp"
                         android:text="education"
                         android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:visibility="gone" />
+                        android:textSize="17sp" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -292,8 +286,7 @@
                         android:minHeight="0dp"
                         android:text="law"
                         android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:visibility="gone" />
+                        android:textSize="17sp" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -303,8 +296,7 @@
                         android:minHeight="0dp"
                         android:text="food, culinary, events"
                         android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:visibility="gone" />
+                        android:textSize="17sp" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -314,8 +306,7 @@
                         android:minHeight="0dp"
                         android:text="arts, humanities, liberal arts"
                         android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:visibility="gone" />
+                        android:textSize="17sp" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

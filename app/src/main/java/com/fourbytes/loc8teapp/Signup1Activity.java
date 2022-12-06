@@ -34,6 +34,7 @@ public class Signup1Activity extends AppCompatActivity {
 
     private EditText edtUsername;
     private EditText edtPassword;
+    private EditText edtConfirmPassword;
     private EditText edtFirstName;
     private EditText edtMiddleName;
     private EditText edtLastName;
@@ -60,6 +61,7 @@ public class Signup1Activity extends AppCompatActivity {
         tvAlert = findViewById(R.id.tv_alert);
         edtUsername = findViewById(R.id.edt_username);
         edtPassword = findViewById(R.id.edt_password);
+        edtConfirmPassword = findViewById(R.id.edt_confirm_password);
         edtFirstName = findViewById(R.id.edt_first_name);
         edtMiddleName = findViewById(R.id.edt_middle_name);
         edtLastName = findViewById(R.id.edt_last_name);
@@ -69,6 +71,8 @@ public class Signup1Activity extends AppCompatActivity {
         // Initialize the date picker dialog
         initDatePicker();
         btnDate.setText(getDateToday());
+
+        // TODO: Place Data Privacy
 
         // Date button
         btnDate.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +88,7 @@ public class Signup1Activity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = edtUsername.getText().toString();
                 String password = sha1(edtPassword.getText().toString());
+                String confirmPassword = sha1(edtConfirmPassword.getText().toString());
                 String firstName = edtFirstName.getText().toString();
                 String middleName = edtMiddleName.getText().toString();
                 String lastName = edtLastName.getText().toString();
@@ -96,6 +101,14 @@ public class Signup1Activity extends AppCompatActivity {
                     tvAlert.setVisibility(View.VISIBLE);
                     return;
                 }
+
+                if (!password.equals(confirmPassword)) {
+                    tvAlert.setText("Passwords do not match.");
+                    tvAlert.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                tvAlert.setVisibility(View.GONE);
 
                 if (isPasswordWeak(edtPassword.getText().toString())) {
                     tvAlert.setText(
