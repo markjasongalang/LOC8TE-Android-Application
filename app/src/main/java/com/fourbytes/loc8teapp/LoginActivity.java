@@ -11,7 +11,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -70,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     private AppCompatButton btnLogin;
 
     private TextView tvDontHaveAccount;
+    private TextView tvPrivacyPolicy;
     private TextView tvAlert;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -89,48 +92,11 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
         tvDontHaveAccount = findViewById(R.id.tv_dont_have_account);
+        tvPrivacyPolicy = findViewById(R.id.tv_privacy_policy);
         tvAlert = findViewById(R.id.tv_alert);
 
         // Permission Checker
         getLocationPermission();
-
-//        db.collection("clients")
-//                .document("sample_client69")
-//                .collection("new")
-//                .document("professional1")
-//                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            if (task.getResult().exists()) {
-//                                Log.d("subcol", task.getResult().getData().toString());
-//                            } else {
-//                                Log.d("subcol", "No document");
-//                            }
-//                        } else {
-//                            Log.d("subcol", "Get failed");
-//                        }
-//                    }
-//                });
-//                });
-
-//        Map<String, Object> mp = new HashMap<>();
-//        mp.put("year", 1995);
-//        db.collection("clients").document("sample_client69").collection("new").document("professional1").set(mp);
-//        db.collection("clients").document("sample_client69").set(mp);
-//        collection("new").document("professional1").set(mp)
-//            .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                @Override
-//                public void onSuccess(Void unused) {
-//                    Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-//                }
-//            })
-//            .addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Toast.makeText(LoginActivity.this, "Fail", Toast.LENGTH_SHORT).show();
-//                }
-//            });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,6 +208,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        tvPrivacyPolicy.setText(Html.fromHtml("<u>privacy policy</u>"));
+        tvPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.freeprivacypolicy.com/live/29545bdd-509d-4f48-938c-769d3a4f40cf")));
             }
         });
     }

@@ -72,8 +72,6 @@ public class Signup1Activity extends AppCompatActivity {
         initDatePicker();
         btnDate.setText(getDateToday());
 
-        // TODO: Place Data Privacy
-
         // Date button
         btnDate.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -130,7 +130,7 @@
                 android:id="@+id/tv_dont_have_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/open_sans_light_italic"
                 android:text="don't have an account?"
                 android:textAlignment="center"
@@ -150,6 +150,16 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_privacy_policy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/open_sans_medium"
+                android:text="privacy policy"
+                android:textAlignment="center"
+                android:textColor="@color/primaryColor" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
