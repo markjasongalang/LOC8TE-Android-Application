@@ -33,14 +33,10 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -49,15 +45,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-
-
-import java.util.EnumSet;
-//
-//import io.radar.sdk.Radar;
-//import io.radar.sdk.model.RadarRoutes;
-
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -111,6 +98,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 // todo: DON'T LET UNVERIFIED PROFESSIONALS LOG IN
+
+                // todo: CREATE NEW ACTIVITY FOR PRIVACY POLICY
+                // todo: "By continuing to sign up, you agree to our <Privacy Policy>."
 
                 db.collection("clients").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
