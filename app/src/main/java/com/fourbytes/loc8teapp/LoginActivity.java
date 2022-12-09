@@ -375,30 +375,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-//            db.collection("clients").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        intent.putExtra("accountType", task.getResult().getData().get("account_type").toString());
-//                        intent.putExtra("username", task.getResult().getData().get("username").toString());
-//                        startActivity(intent);
-//                        finish();
-//                    } else {
-//                        db.collection("professionals").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                                if (task.isSuccessful()) {
-//                                    intent.putExtra("accountType", task.getResult().getData().get("account_type").toString());
-//                                    intent.putExtra("username", task.getResult().getData().get("username").toString());
-//                                    startActivity(intent);
-//                                    finish();
-//                                }
-//                            }
-//                        });
-//                    }
-//                }
-//            });
-
         }
     }
 }
