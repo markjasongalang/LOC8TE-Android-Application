@@ -11,9 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -59,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     private AppCompatButton btnLogin;
 
     private TextView tvDontHaveAccount;
-    private TextView tvPrivacyPolicy;
+    private TextView tvSignUp;
     private TextView tvAlert;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -79,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
         tvDontHaveAccount = findViewById(R.id.tv_dont_have_account);
-        tvPrivacyPolicy = findViewById(R.id.tv_privacy_policy);
+        tvSignUp = findViewById(R.id.tv_signup);
         tvAlert = findViewById(R.id.tv_alert);
 
         // Permission Checker
@@ -98,9 +96,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 // todo: DON'T LET UNVERIFIED PROFESSIONALS LOG IN
-
-                // todo: CREATE NEW ACTIVITY FOR PRIVACY POLICY
-                // todo: "By continuing to sign up, you agree to our <Privacy Policy>."
 
                 db.collection("clients").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -201,11 +196,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        tvPrivacyPolicy.setText(Html.fromHtml("<u>privacy policy</u>"));
-        tvPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+        tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.freeprivacypolicy.com/live/29545bdd-509d-4f48-938c-769d3a4f40cf")));
+                startActivity(new Intent(LoginActivity.this, DataPrivacy.class));
             }
         });
     }
@@ -229,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private boolean checkMapServices(){
+    private boolean checkMapServices() {
         if (isServicesOK()) {
             if (isMapsEnabled()) {
                 return true;
@@ -252,10 +246,10 @@ public class LoginActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public boolean isMapsEnabled(){
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+    public boolean isMapsEnabled() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
             return false;
         }
@@ -279,16 +273,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isServicesOK(){
+    public boolean isServicesOK() {
         Log.d(TAG, "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(LoginActivity.this);
 
-        if (available == ConnectionResult.SUCCESS){
+        if (available == ConnectionResult.SUCCESS) {
             // Everything is fine and the user can make map requests
             Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
-        }  else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             // An error occurred but we can resolve it
             Log.d(TAG, "isServicesOK: an error occurred but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(LoginActivity.this, available, ERROR_DIALOG_REQUEST);
@@ -314,10 +308,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public void openSignupActivity(View view) {
-        startActivity(new Intent(this, Signup1Activity.class));
     }
 
     @Override

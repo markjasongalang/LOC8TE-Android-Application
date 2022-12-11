@@ -141,7 +141,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans_semi_bold_italic"
-                android:onClick="openSignupActivity"
                 android:shadowColor="@color/tertiaryColor"
                 android:shadowDx="3"
                 android:shadowDy="3"
@@ -150,16 +149,6 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/tv_privacy_policy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:fontFamily="@font/open_sans_medium"
-                android:text="privacy policy"
-                android:textAlignment="center"
-                android:textColor="@color/primaryColor" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
