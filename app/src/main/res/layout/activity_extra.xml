@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
-            android:text="Thank you for signing up!\nWe will send the confirmation/verification of your account in the email that you have provided.\n\nNote: the account cannot be used if it's not yet verified."
+            android:text="Thank you for signing up!\nThe developers will verify your credentials first.\nYou can try to log in later.\n\nNote: The account cannot be used if it's not yet verified."
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="15sp" />

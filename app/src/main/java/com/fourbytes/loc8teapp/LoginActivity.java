@@ -95,8 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                // todo: DON'T LET UNVERIFIED PROFESSIONALS LOG IN
-
                 db.collection("clients").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -141,10 +139,21 @@ public class LoginActivity extends AppCompatActivity {
                                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                             String dbUsername = documentSnapshot.getData().get("username").toString();
                                             String dbPassword = documentSnapshot.getData().get("password").toString();
+                                            boolean dbVerified = (boolean) documentSnapshot.getData().get("verified");
 
                                             if (dbUsername.equals(username) && dbPassword.equals(password)) {
+                                                if (!dbVerified) {
+                                                    tvAlert.setVisibility(View.VISIBLE);
+                                                    tvAlert.setText("Account not verified.");
+                                                    return;
+                                                }
+
+                                                tvAlert.setText("");
+                                                tvAlert.setVisibility(View.GONE);
+
                                                 String fname = documentSnapshot.getData().get("first_name").toString();
                                                 String lname = documentSnapshot.getData().get("last_name").toString();
+
                                                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
                                                 intent.putExtra("accountType", "professional");
                                                 intent.putExtra("username", username);

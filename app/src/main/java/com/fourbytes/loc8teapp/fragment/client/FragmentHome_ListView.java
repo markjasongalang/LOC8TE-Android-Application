@@ -1,41 +1,24 @@
 package com.fourbytes.loc8teapp.fragment.client;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
-import com.fourbytes.loc8teapp.DataPasser;
-import com.fourbytes.loc8teapp.LoginActivity;
 import com.fourbytes.loc8teapp.R;
-import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.SectionPagerAdapter;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
 
 import javax.annotation.Nullable;
 
 public class FragmentHome_ListView extends Fragment {
     private View view;
-    private View l;
-    private View l2;
 
     private ViewPager viewPager;
 
@@ -43,19 +26,9 @@ public class FragmentHome_ListView extends Fragment {
 
     private AppBarLayout appBarLayout;
 
-    private CheckBox mapViewCheckBox;
-    private CheckBox listViewCheckBox;
-
-    private ExtendedFloatingActionButton home_settings_FAB;
-    private ExtendedFloatingActionButton location_settings_FAB;
-
-    private Button logoutButton;
-
-    private Boolean isAllFABVisible;
-    private Boolean isAllFABVisible2;
-    private Boolean isAllFABVisible3;
-
     private FragmentManager parentFragmentManager;
+
+    private AppCompatButton btnMapView;
 
     public FragmentHome_ListView() {}
 
@@ -67,81 +40,19 @@ public class FragmentHome_ListView extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout = view.findViewById(R.id.tabLayout);
         appBarLayout = view.findViewById(R.id.appBarLayout);
-        mapViewCheckBox = view.findViewById(R.id.map_view_checkbox);
-        listViewCheckBox = view.findViewById(R.id.list_view_checkbox);
-        home_settings_FAB = view.findViewById(R.id.home_settings);
-        location_settings_FAB = view.findViewById(R.id.location_settings);
-        l = view.findViewById(R.id.home_settings_toolbar);
-        l2 = view.findViewById(R.id.location_settings_toolbar);
-        logoutButton = view.findViewById(R.id.logout);
+        btnMapView = view.findViewById(R.id.btn_map_view);
 
         // Get parent fragment manager (from host activity)
         parentFragmentManager = getParentFragmentManager();
 
-        l.setVisibility(view.GONE);
-        l2.setVisibility(view.GONE);
-
-        home_settings_FAB.shrink();
-        location_settings_FAB.shrink();
-
-        isAllFABVisible = false;
-        isAllFABVisible2 = false;
-        isAllFABVisible3 = false;
-
-        listViewCheckBox.setChecked(true);
-        listViewCheckBox.setEnabled(false);
-
-        mapViewCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (buttonView.isChecked()) {
-                    listViewCheckBox.setChecked(false);
-                    parentFragmentManager.beginTransaction()
-                            .replace(R.id.fragment, new FragmentHome_MapView(null), null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack(null)
-                            .commit();
-                }
-            }
-        });
-
-        home_settings_FAB.setOnClickListener(new View.OnClickListener() {
+        btnMapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isAllFABVisible) {
-                    home_settings_FAB.extend();
-                    l.setVisibility(view.VISIBLE);
-                    isAllFABVisible = true;
-                } else {
-                    home_settings_FAB.shrink();
-                    l.setVisibility(view.GONE);
-                    isAllFABVisible = false;
-                }
-            }
-        });
-
-        location_settings_FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isAllFABVisible2) {
-                    location_settings_FAB.extend();
-                    l2.setVisibility(view.VISIBLE);
-                    isAllFABVisible2 = true;
-                } else {
-                    location_settings_FAB.shrink();
-                    l2.setVisibility(view.GONE);
-                    isAllFABVisible2 = false;
-                }
-            }
-        });
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DataPasser.setUsername1(null);
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().finish();
+                parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, new FragmentHome_MapView(null), null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -157,13 +68,16 @@ public class FragmentHome_ListView extends Fragment {
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {}
+            public void onTabSelected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
     }
 
