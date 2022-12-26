@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,10 +25,8 @@ import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -136,16 +133,16 @@ public class AboutFragment extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value.exists()) {
-                    if (value.getData().get("sum_rating") != null) {
+                    if (value.getData().get("sum_rating") != null && value.getData().get("number_of_ratings") != null) {
                         double sumRating = Double.valueOf(value.getData().get("sum_rating").toString());
                         double numberOfRatings = Double.valueOf(value.getData().get("number_of_ratings").toString());
 
                         tvAverageRating.setText((String.format("%.2f", (sumRating / numberOfRatings))));
                     } else {
-                        tvAverageRating.setText("none");
+                        tvAverageRating.setText("new");
                     }
                 } else {
-                    tvAverageRating.setText("none");
+                    tvAverageRating.setText("new");
                 }
             }
         });
@@ -191,12 +188,14 @@ public class AboutFragment extends Fragment {
             db.collection("professional_reviews").document(viewedUsername).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (value.getData().get("sum_rating") != null) {
-                        currentSumRating = Double.valueOf(value.getData().get("sum_rating").toString());
-                    }
+                    if (value.exists()) {
+                        if (value.getData().get("sum_rating") != null) {
+                            currentSumRating = Double.valueOf(value.getData().get("sum_rating").toString());
+                        }
 
-                    if (value.getData().get("number_of_reports") != null) {
-                        numberOfReports = Integer.valueOf(value.getData().get("number_of_reports").toString());
+                        if (value.getData().get("number_of_reports") != null) {
+                            numberOfReports = Integer.valueOf(value.getData().get("number_of_reports").toString());
+                        }
                     }
                 }
             });

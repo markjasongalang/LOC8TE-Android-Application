@@ -3,6 +3,11 @@ package com.fourbytes.loc8teapp.fragment.professional.profiletabs;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,12 +18,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
@@ -112,16 +111,16 @@ public class ReviewsFragment extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value.exists()) {
-                    if (value.getData().get("sum_rating") != null) {
+                    if (value.getData().get("sum_rating") != null && value.getData().get("number_of_ratings") != null) {
                         double sumRating = Double.valueOf(value.getData().get("sum_rating").toString());
                         double numberOfRatings = Double.valueOf(value.getData().get("number_of_ratings").toString());
 
                         tvAverageRating.setText((String.format("%.2f", (sumRating / numberOfRatings))));
                     } else {
-                        tvAverageRating.setText("none");
+                        tvAverageRating.setText("new");
                     }
                 } else {
-                    tvAverageRating.setText("none");
+                    tvAverageRating.setText("new");
                 }
             }
         });
