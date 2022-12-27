@@ -2,6 +2,11 @@ package com.fourbytes.loc8teapp.fragment.professional.profiletabs;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -11,14 +16,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
@@ -121,8 +118,10 @@ public class RateFragment extends Fragment {
         db.collection("professionals").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                tvProfessionalName.setText(value.getData().get("first_name") + " " + value.getData().get("last_name").toString());
-                tvSpecificJob.setText(value.getData().get("specific_job").toString());
+                if (value.exists()) {
+                    tvProfessionalName.setText(value.getData().get("first_name") + " " + value.getData().get("last_name").toString());
+                    tvSpecificJob.setText(value.getData().get("specific_job").toString());
+                }
             }
         });
 

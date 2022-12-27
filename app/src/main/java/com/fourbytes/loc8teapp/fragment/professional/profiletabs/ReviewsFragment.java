@@ -147,8 +147,10 @@ public class ReviewsFragment extends Fragment {
         db.collection("professionals").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                tvProfessionalName.setText(value.getData().get("first_name") + " " + value.getData().get("last_name").toString());
-                tvSpecificJob.setText(value.getData().get("specific_job").toString());
+                if (value.exists()) {
+                    tvProfessionalName.setText(value.getData().get("first_name") + " " + value.getData().get("last_name").toString());
+                    tvSpecificJob.setText(value.getData().get("specific_job").toString());
+                }
             }
         });
 

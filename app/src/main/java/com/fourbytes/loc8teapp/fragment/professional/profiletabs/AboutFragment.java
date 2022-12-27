@@ -1,6 +1,7 @@
 package com.fourbytes.loc8teapp.fragment.professional.profiletabs;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,12 +24,17 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.fourbytes.loc8teapp.DataPasser;
+import com.fourbytes.loc8teapp.LoginActivity;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -58,6 +65,7 @@ public class AboutFragment extends Fragment {
 
     private AppCompatButton btnEditProfile;
     private AppCompatButton btnConnect;
+    private AppCompatButton btnDeleteAccount;
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -86,6 +94,11 @@ public class AboutFragment extends Fragment {
 
     private double currentSumRating;
 
+    private AppCompatButton btnConfirmDelete;
+    private AppCompatButton btnCancelDelete;
+
+    private EditText edtDeleteAccountInput;
+
     public AboutFragment() {}
 
     @Override
@@ -102,6 +115,7 @@ public class AboutFragment extends Fragment {
         tvAbout = view.findViewById(R.id.tv_about);
         tvAverageRating = view.findViewById(R.id.tv_average_rating);
         btnReport = view.findViewById(R.id.btn_report);
+        btnDeleteAccount = view.findViewById(R.id.btn_delete_account);
 
         // Initialize values
         db = FirebaseFirestore.getInstance();
@@ -149,6 +163,7 @@ public class AboutFragment extends Fragment {
 
         if (accountType.equals("client")) {
             btnEditProfile.setVisibility(View.INVISIBLE);
+            btnDeleteAccount.setVisibility(View.GONE);
 
             db.collection("client_homes").document(current).collection("pro_list").addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
@@ -215,6 +230,158 @@ public class AboutFragment extends Fragment {
         } else {
             btnConnect.setVisibility(View.GONE);
             btnReport.setVisibility(View.GONE);
+            
+            btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogBuilder = new AlertDialog.Builder(view.getContext());
+                    final View deleteProAccountPopupView = getLayoutInflater().inflate(R.layout.delete_pro_account_popup, null);
+
+                    edtDeleteAccountInput = deleteProAccountPopupView.findViewById(R.id.edt_delete_account_input);
+                    btnConfirmDelete = deleteProAccountPopupView.findViewById(R.id.btn_confirm_delete);
+                    btnCancelDelete = deleteProAccountPopupView.findViewById(R.id.btn_cancel_delete);
+
+                    dialogBuilder.setView(deleteProAccountPopupView);
+                    dialog = dialogBuilder.create();
+                    dialog.show();
+
+                    btnConfirmDelete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String input = edtDeleteAccountInput.getText().toString();
+                            if (input.equals("yes")) {
+                                // delete from 'professionals'
+                                db.collection("professionals").document(username)
+                                        .delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("DELETE_SUCCESS", "Delete from professionals succeeded...");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("DELETE_FAILED", "Delete from professionals failed...");
+                                            }
+                                        });
+
+                                // delete from 'pro_profiles'
+                                db.collection("pro_profiles").document(username)
+                                        .delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("DELETE_SUCCESS", "Delete from pro_profiles succeeded...");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("DELETE_FAILED", "Delete from pro_profiles failed...");
+                                            }
+                                        });
+
+                                // delete from 'pro_homes'
+                                db.collection("pro_homes").document(username)
+                                        .delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("DELETE_SUCCESS", "Delete from pro_homes succeeded...");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("DELETE_FAILED", "Delete from pro_homes failed...");
+                                            }
+                                        });
+
+                                // delete from Firebase Storage: idPics
+                                StorageReference storageRef = storage.getReference();
+                                StorageReference pathReference = storageRef.child("idPics/" + username + "_id.jpg");
+                                pathReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("DELETE_SUCCESS", "Delete from Firebase Storage: idPics succeeded...");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        Log.d("DELETE_FAILED", "Delete from Firebase Storage: idPics failed...");
+                                    }
+                                });
+
+                                // delete from Firebase Storage: profilePics
+                                storageRef = storage.getReference();
+                                pathReference = storageRef.child("profilePics/" + username + "_profile.jpg");
+                                pathReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("DELETE_SUCCESS", "Delete from Firebase Storage: profilePics succeeded...");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        Log.d("DELETE_FAILED", "Delete from Firebase Storage: profilePics failed...");
+                                    }
+                                });
+
+                                // delete from Firebase Authentication
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d("DELETE_SUCCESS", "Delete from Firebase Authentication succeeded...");
+                                        }
+                                    }
+                                });
+
+                                // delete from 'client_chats'
+                                db.collection("pro_homes").document(username).collection("client_list").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                                db.collection("client_homes").document(documentSnapshot.getId().toString()).collection("pro_list").document(username).update("is_connected", false)
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void unused) {
+                                                                        // log print
+                                                                    }
+                                                                });
+                                                db.collection("client_chats").document(documentSnapshot.getId().toString()).collection("pro_list_chats").document(username).delete()
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void unused) {
+                                                                Log.d("DELETE_SUCCESS", "Delete from 'client_chats' succeeded... = " + documentSnapshot.getId().toString());
+                                                            }
+                                                        });
+                                            }
+                                        }
+                                    }
+                                });
+
+                                Toast.makeText(view.getContext(), "Account successfully deleted!", Toast.LENGTH_SHORT).show();
+                                DataPasser.setUsername2(null);
+                                FirebaseAuth.getInstance().signOut();
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                                getActivity().finish();
+                            }
+                        }
+                    });
+
+                    btnCancelDelete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                }
+            });
         }
 
         temp.put("exists", true);
@@ -247,8 +414,10 @@ public class AboutFragment extends Fragment {
                 db.collection("professionals").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        tvProfessionalName.setText(value.getData().get("first_name") + " " + value.getData().get("last_name").toString());
-                        tvSpecificJob.setText(value.getData().get("specific_job").toString());
+                        if (value.exists() && value.getData().get("first_name") != null && value.getData().get("last_name") != null && value.getData().get("specific_job") != null) {
+                            tvProfessionalName.setText(value.getData().get("first_name") + " " + value.getData().get("last_name").toString());
+                            tvSpecificJob.setText(value.getData().get("specific_job").toString());
+                        }
                     }
                 });
             }

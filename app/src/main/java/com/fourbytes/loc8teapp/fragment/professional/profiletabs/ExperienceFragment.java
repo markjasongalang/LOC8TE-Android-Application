@@ -2,6 +2,11 @@ package com.fourbytes.loc8teapp.fragment.professional.profiletabs;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -12,21 +17,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.ExperienceAdapter;
-import com.fourbytes.loc8teapp.adapter.ServiceAdapter;
 import com.fourbytes.loc8teapp.experienceprorecycler.ExperienceItem;
-import com.fourbytes.loc8teapp.ratesprorecycler.ServiceItem;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -119,8 +115,10 @@ public class ExperienceFragment extends Fragment {
         db.collection("professionals").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                tvProfessionalName.setText(value.getData().get("first_name") + " " + value.getData().get("last_name").toString());
-                tvSpecificJob.setText(value.getData().get("specific_job").toString());
+                if (value.exists()) {
+                    tvProfessionalName.setText(value.getData().get("first_name") + " " + value.getData().get("last_name").toString());
+                    tvSpecificJob.setText(value.getData().get("specific_job").toString());
+                }
             }
         });
 

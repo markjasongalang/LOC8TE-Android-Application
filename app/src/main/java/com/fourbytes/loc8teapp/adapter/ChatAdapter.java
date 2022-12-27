@@ -3,7 +3,6 @@ package com.fourbytes.loc8teapp.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fourbytes.loc8teapp.DataPasser;
+import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
 import com.fourbytes.loc8teapp.chatsrecycler.ChatsViewHolder;
-import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.fragment.FragmentChat_InsideChat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -102,7 +100,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
+                            if (task.isSuccessful() && task.getResult().get("first_name") != null && task.getResult().get("last_name") != null && task.getResult().get("specific_job") != null) {
                                 holder.chats_name.setText(task.getResult().getData().get("first_name").toString() + " " + task.getResult().getData().get("last_name").toString());
 
                                 if (accountType.equals("client")) {
