@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private AppCompatButton btnLogin;
 
-    private TextView tvDontHaveAccount;
     private TextView tvSignUp;
     private TextView tvAlert;
 
@@ -76,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
         edtUsername = findViewById(R.id.edt_username);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
-        tvDontHaveAccount = findViewById(R.id.tv_dont_have_account);
         tvSignUp = findViewById(R.id.tv_signup);
         tvAlert = findViewById(R.id.tv_alert);
 
@@ -92,6 +90,22 @@ public class LoginActivity extends AppCompatActivity {
                 if (username.isEmpty() || edtPassword.getText().toString().isEmpty()) {
                     tvAlert.setText("Please fill out all fields.");
                     tvAlert.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                if (username.equals("admin") && password.equals(sha1("admin123"))) {
+                    mAuth.signInWithEmailAndPassword("admin@gmail.com", "admin123")
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        tvAlert.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
+
+                    Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                    startActivity(intent);
                     return;
                 }
 
@@ -194,14 +208,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
-            }
-        });
-
-        tvDontHaveAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -326,6 +332,13 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String email = currentUser.getEmail();
+
+            if (email.equals("admin@gmail.com")) {
+                startActivity(new Intent(LoginActivity.this, AdminActivity.class));
+                finish();
+                return;
+            }
+
             Intent intent = new Intent(new Intent(LoginActivity.this, HostActivity.class));
 
             db.collection("clients").addSnapshotListener(new EventListener<QuerySnapshot>() {

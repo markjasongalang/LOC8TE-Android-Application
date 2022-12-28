@@ -5,29 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryColor"
+    android:fillViewport="true"
     android:orientation="vertical"
-    tools:context=".AdminActivity"
-    android:fillViewport="true">
+    tools:context=".AdminActivity">
 
     <TextView
         android:id="@+id/front_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tertiaryColor"
-        android:fontFamily="@font/open_sans_bold"
-        android:paddingTop="15dp"
-        android:text="Admin Mode"
+        android:fontFamily="@font/open_sans_light"
+        android:paddingVertical="15dp"
+        android:text="Admin Dashboard"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_logout_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/secondary_color_round_corners"
+        android:fontFamily="@font/glacial_indifference"
+        android:text="log out"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:layout_marginVertical="40dp"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="20dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="25dp"
         app:cardElevation="50dp">
@@ -184,8 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
-            android:padding="5dp"
-            />
+            android:padding="5dp" />
 
     </androidx.cardview.widget.CardView>
 

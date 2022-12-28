@@ -388,7 +388,7 @@ public class FragmentHome_NewList extends Fragment {
                                             dbField += temp.charAt(i);
                                         }
 
-                                        if (!connected.contains(documentSnapshot.getId()) && isPresent(100, dbField)) {
+                                        if (!connected.contains(documentSnapshot.getId()) && isPresent(100, dbField) && (boolean) documentSnapshot.getData().get("verified")) {
                                             String fullName = documentSnapshot.getData().get("first_name") + " " + documentSnapshot.getData().get("last_name");
                                             String specific_job = documentSnapshot.getData().get("specific_job").toString();
                                             String field = documentSnapshot.getData().get("field").toString();
