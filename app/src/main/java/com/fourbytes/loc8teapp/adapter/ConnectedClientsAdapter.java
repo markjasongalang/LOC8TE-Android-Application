@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +27,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.StorageReference;
 
 import java.sql.Timestamp;
@@ -49,12 +51,20 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
 
     private HashMap<String, Object> temp;
 
-    public ConnectedClientsAdapter(Context context, List<ClientItem> clientItems, FragmentManager parentFragmentManager, LayoutInflater layoutInflater, String professionalName) {
+    private String username;
+
+    public ConnectedClientsAdapter(Context context,
+                                   List<ClientItem> clientItems,
+                                   FragmentManager parentFragmentManager,
+                                   LayoutInflater layoutInflater,
+                                   String professionalName,
+                                   String username) {
         this.context = context;
         this.clientItems = clientItems;
         this.parentFragmentManager = parentFragmentManager;
         this.layoutInflater = layoutInflater;
         this.professionalName = professionalName;
+        this.username = username;
 
         db = FirebaseFirestore.getInstance();
     }
@@ -67,7 +77,6 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ClientViewHolder holder, int position) {
-
         int pos = position;
 
         StorageReference pathReference = clientItems.get(position).getPathReference();
@@ -101,6 +110,23 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
 
                     holder.tvClientName.setText(firstName + " " + middleName + " " + lastName);
 
+                    db.collection("pro_homes")
+                            .document(username)
+                            .collection("client_list")
+                            .document(clientItems.get(pos).getClientUsername())
+                            .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                    if (value.exists()) {
+                                        if (value.getData().get("is_rated") != null) {
+                                            if ((boolean) value.getData().get("is_rated")) {
+                                                holder.btnClientRate.setVisibility(View.INVISIBLE);
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
                     holder.btnClientRate.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -122,6 +148,11 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
                             btnRate.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    db.collection("pro_homes")
+                                            .document(username)
+                                            .collection("client_list")
+                                            .document(clientItems.get(pos).getClientUsername())
+                                            .update("is_rated", true);
 
                                     Timestamp ts = new Timestamp(System.currentTimeMillis());
 
@@ -184,13 +215,6 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
             }
         });
 
-//        holder.btnClientChat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-
         holder.btnClientProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -202,7 +226,6 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
                         .commit();
-
             }
         });
 

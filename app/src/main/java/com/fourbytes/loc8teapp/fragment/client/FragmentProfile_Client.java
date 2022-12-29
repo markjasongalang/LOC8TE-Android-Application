@@ -307,47 +307,5 @@ public class FragmentProfile_Client extends Fragment {
 
             }
         });
-
-//        reviewForProfessionals.add(new ReviewForProfessional(
-//                "Julia",
-//                "Cruz",
-//                "Santos",
-//                "IT Specialist",
-//                "She was very hardworking.",
-//                "03/31/2022",
-//                3.45
-//        ));
-//
-//        reviewForProfessionals.add(new ReviewForProfessional(
-//                "Elon",
-//                "Robot",
-//                "Musk",
-//                "Rocket Engineer",
-//                "This guy is so brilliant!",
-//                "05/21/2022",
-//                4.3
-//        ));
-//
-//        reviewForProfessionals.add(new ReviewForProfessional(
-//                "Joshua Matthew",
-//                "Secret",
-//                "Padilla",
-//                "100K Android Developer",
-//                "He is a genius in his line of work.",
-//                "12/25/2021",
-//                3.78
-//        ));
-//
-//        reviewForProfessionals.add(new ReviewForProfessional(
-//                "Mary Angeline",
-//                "",
-//                "Corral",
-//                "Software Tester",
-//                "She did a good job.",
-//                "03/31/2022",
-//                3.78
-//        ));
-
-//        rvReviewForProfessional.setAdapter(new ReviewForProfessionalAdapter(view.getContext(), reviewForProfessionals));
     }
 }

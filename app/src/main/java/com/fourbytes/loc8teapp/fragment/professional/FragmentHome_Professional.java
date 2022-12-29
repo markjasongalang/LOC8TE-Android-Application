@@ -200,7 +200,8 @@ public class FragmentHome_Professional extends Fragment {
                                 connectedClientList,
                                 parentFragmentManager,
                                 layoutInflater,
-                                professionalName
+                                professionalName,
+                                username
                         ));
 
                     }
