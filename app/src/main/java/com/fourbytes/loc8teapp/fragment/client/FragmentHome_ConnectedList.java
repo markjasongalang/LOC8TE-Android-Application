@@ -329,9 +329,9 @@ public class FragmentHome_ConnectedList extends Fragment {
                                     connected.add(documentSnapshot.getId());
 
                                     db.collection("pro_homes").document(documentSnapshot.getId()).set(temp);
-                                    db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).set(temp);
+                                    db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).update("is_connected", true);
                                 } else {
-                                    db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).delete();
+                                    db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).update("is_connected", false);
                                 }
                             }
                         }

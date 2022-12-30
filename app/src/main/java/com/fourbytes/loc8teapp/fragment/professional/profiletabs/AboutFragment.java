@@ -206,11 +206,11 @@ public class AboutFragment extends Fragment {
                         temp2.put("exists", true);
 
                         db.collection("pro_homes").document(username).set(temp2);
-                        db.collection("pro_homes").document(username).collection("client_list").document(current).set(temp2);
+                        db.collection("pro_homes").document(username).collection("client_list").document(current).update("is_connected", true);
                     } else {
                         temp.put("is_connected", false);
                         btnConnect.setText("connect");
-                        db.collection("pro_homes").document(username).collection("client_list").document(current).delete();
+                        db.collection("pro_homes").document(username).collection("client_list").document(current).update("is_connected", false);
                     }
 
                     db.collection("client_homes").document(current).collection("pro_list").document(username).update(temp);
