@@ -218,7 +218,6 @@ public class ConnectedClientsAdapter extends RecyclerView.Adapter<ClientViewHold
         holder.btnClientProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 DataPasser.setUsername2(clientItems.get(pos).getClientUsername().toString());
 
                 parentFragmentManager.beginTransaction()

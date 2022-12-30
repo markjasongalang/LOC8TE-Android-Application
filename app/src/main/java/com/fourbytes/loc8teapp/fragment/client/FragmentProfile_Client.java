@@ -27,14 +27,10 @@ import com.fourbytes.loc8teapp.DataPasser;
 import com.fourbytes.loc8teapp.Pair;
 import com.fourbytes.loc8teapp.R;
 import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.adapter.ReviewAboutClientAdapter;
 import com.fourbytes.loc8teapp.adapter.ReviewForProfessionalAdapter;
-import com.fourbytes.loc8teapp.reviewaboutclientrecycler.ReviewAboutClient;
 import com.fourbytes.loc8teapp.reviewforprorecycler.ReviewForProfessional;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -150,6 +146,48 @@ public class FragmentProfile_Client extends Fragment {
             current = pair.getUsername();
             username = viewedUsername;
             accountType = "professional";
+
+            db.collection("pro_homes")
+                    .document(current)
+                    .collection("client_list")
+                    .document(username)
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if (value.exists()) {
+                                if (value.getData().get("is_reported") != null) {
+                                    if ((boolean) value.getData().get("is_reported")) {
+                                        btnReport.setVisibility(View.INVISIBLE);
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+            btnReport.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (viewedUsername != null) {
+                        numberOfReports++;
+
+                        db.collection("client_profiles")
+                                .document(viewedUsername)
+                                .update("number_of_reports", numberOfReports);
+
+                        if (numberOfReports % 3 == 0) {
+                            db.collection("client_profiles")
+                                    .document(viewedUsername)
+                                    .update("sum_rating", (currentSumRating < 5 ? 0 : currentSumRating - 5));
+                        }
+
+                        db.collection("pro_homes")
+                                .document(current)
+                                .collection("client_list")
+                                .document(username)
+                                .update("is_reported", true);
+                    }
+                }
+            });
         }
 
         db.collection("client_profiles").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -184,21 +222,6 @@ public class FragmentProfile_Client extends Fragment {
                 }
             });
         }
-
-        
-        btnReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (viewedUsername != null) {
-                    numberOfReports++;
-
-                    db.collection("client_profiles").document(viewedUsername).update("number_of_reports", numberOfReports);
-                    if (numberOfReports % 3 == 0) {
-                        db.collection("client_profiles").document(viewedUsername).update("sum_rating", (currentSumRating < 5 ? 0 : currentSumRating - 5));
-                    }
-                }
-            }
-        });
 
         // Get full name of current user
         db.collection("clients").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {

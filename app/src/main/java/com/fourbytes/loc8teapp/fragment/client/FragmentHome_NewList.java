@@ -146,7 +146,7 @@ public class FragmentHome_NewList extends Fragment {
         temp = new HashMap<>();
         temp.put("exists", true);
 
-        db.collection("client_homes").document(username).set(temp);
+        db.collection("client_homes").document(username).update(temp);
 
         db.collection("client_homes")
                 .document(username)
@@ -175,7 +175,7 @@ public class FragmentHome_NewList extends Fragment {
                                                     .document(username)
                                                     .collection("pro_list")
                                                     .document(document.getId())
-                                                    .set(temp2);
+                                                    .update(temp2);
                                         }
                                     }
                                 }

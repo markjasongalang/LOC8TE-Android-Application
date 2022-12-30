@@ -141,6 +141,23 @@ public class AboutFragment extends Fragment {
             current = pair.getUsername();
             username = viewedUsername;
             accountType = "client";
+
+            db.collection("client_homes")
+                    .document(current)
+                    .collection("pro_list")
+                    .document(username)
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if (value.exists()) {
+                                if (value.getData().get("is_reported") != null) {
+                                    if ((boolean) value.getData().get("is_reported")) {
+                                        btnReport.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+                        }
+                    });
         }
 
         db.collection("professional_reviews").document(username).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -196,7 +213,7 @@ public class AboutFragment extends Fragment {
                         db.collection("pro_homes").document(username).collection("client_list").document(current).delete();
                     }
 
-                    db.collection("client_homes").document(current).collection("pro_list").document(username).set(temp);
+                    db.collection("client_homes").document(current).collection("pro_list").document(username).update(temp);
                 }
             });
 
@@ -224,6 +241,12 @@ public class AboutFragment extends Fragment {
                     if (numberOfReports % 3 == 0) {
                         db.collection("professional_reviews").document(viewedUsername).update("sum_rating", (currentSumRating < 5 ? 0 : currentSumRating - 5));
                     }
+
+                    db.collection("client_homes")
+                            .document(current)
+                            .collection("pro_list")
+                            .document(username)
+                            .update("is_reported", true);
                 }
             });
 
