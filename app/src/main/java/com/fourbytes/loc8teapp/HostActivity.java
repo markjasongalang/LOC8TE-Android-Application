@@ -1,9 +1,7 @@
 package com.fourbytes.loc8teapp;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,17 +9,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HostActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
@@ -48,17 +36,17 @@ public class HostActivity extends AppCompatActivity {
         String accountType = getIntent().getStringExtra("accountType");
         String username = getIntent().getStringExtra("username");
         String name = getIntent().getStringExtra("name");
+
         // Pass username and account type to all fragments
-        if(accountType.equals("client")){
+        if (accountType.equals("client")) {
             viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
             viewModel.setData(new Pair(username, accountType, name));
-        }else{
+        } else {
             String field = getIntent().getStringExtra("field");
             String specific_job = getIntent().getStringExtra("specific_job");
             viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
             viewModel.setData(new Pair(username, accountType, name, field, specific_job));
         }
-
 
         // Separate the navigation (client or professional)
         if (accountType.equals("client")) {

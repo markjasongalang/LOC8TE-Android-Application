@@ -31,14 +31,10 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -47,15 +43,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-
-
-import java.util.EnumSet;
-//
-//import io.radar.sdk.Radar;
-//import io.radar.sdk.model.RadarRoutes;
-
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -69,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private AppCompatButton btnLogin;
 
-    private TextView tvDontHaveAccount;
+    private TextView tvSignUp;
     private TextView tvAlert;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -88,49 +75,11 @@ public class LoginActivity extends AppCompatActivity {
         edtUsername = findViewById(R.id.edt_username);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
-        tvDontHaveAccount = findViewById(R.id.tv_dont_have_account);
+        tvSignUp = findViewById(R.id.tv_signup);
         tvAlert = findViewById(R.id.tv_alert);
 
         // Permission Checker
         getLocationPermission();
-
-//        db.collection("clients")
-//                .document("sample_client69")
-//                .collection("new")
-//                .document("professional1")
-//                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            if (task.getResult().exists()) {
-//                                Log.d("subcol", task.getResult().getData().toString());
-//                            } else {
-//                                Log.d("subcol", "No document");
-//                            }
-//                        } else {
-//                            Log.d("subcol", "Get failed");
-//                        }
-//                    }
-//                });
-//                });
-
-//        Map<String, Object> mp = new HashMap<>();
-//        mp.put("year", 1995);
-//        db.collection("clients").document("sample_client69").collection("new").document("professional1").set(mp);
-//        db.collection("clients").document("sample_client69").set(mp);
-//        collection("new").document("professional1").set(mp)
-//            .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                @Override
-//                public void onSuccess(Void unused) {
-//                    Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-//                }
-//            })
-//            .addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Toast.makeText(LoginActivity.this, "Fail", Toast.LENGTH_SHORT).show();
-//                }
-//            });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +93,20 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                // todo: DON'T LET UNVERIFIED PROFESSIONALS LOG IN
+                if (username.equals("admin") && password.equals(sha1("admin123"))) {
+                    mAuth.signInWithEmailAndPassword("admin@gmail.com", "admin123")
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        tvAlert.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
+                    Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                    startActivity(intent);
+                    return;
+                }
 
                 db.collection("clients").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -190,10 +152,21 @@ public class LoginActivity extends AppCompatActivity {
                                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                             String dbUsername = documentSnapshot.getData().get("username").toString();
                                             String dbPassword = documentSnapshot.getData().get("password").toString();
+                                            boolean dbVerified = (boolean) documentSnapshot.getData().get("verified");
 
                                             if (dbUsername.equals(username) && dbPassword.equals(password)) {
+                                                if (!dbVerified) {
+                                                    tvAlert.setVisibility(View.VISIBLE);
+                                                    tvAlert.setText("Account not verified.");
+                                                    return;
+                                                }
+
+                                                tvAlert.setText("");
+                                                tvAlert.setVisibility(View.GONE);
+
                                                 String fname = documentSnapshot.getData().get("first_name").toString();
                                                 String lname = documentSnapshot.getData().get("last_name").toString();
+
                                                 Intent intent = new Intent(LoginActivity.this, HostActivity.class);
                                                 intent.putExtra("accountType", "professional");
                                                 intent.putExtra("username", username);
@@ -237,11 +210,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        tvDontHaveAccount.setOnClickListener(new View.OnClickListener() {
+        tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this, DataPrivacy.class));
             }
         });
     }
@@ -265,7 +237,7 @@ public class LoginActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private boolean checkMapServices(){
+    private boolean checkMapServices() {
         if (isServicesOK()) {
             if (isMapsEnabled()) {
                 return true;
@@ -288,10 +260,10 @@ public class LoginActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public boolean isMapsEnabled(){
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+    public boolean isMapsEnabled() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
             return false;
         }
@@ -315,16 +287,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isServicesOK(){
+    public boolean isServicesOK() {
         Log.d(TAG, "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(LoginActivity.this);
 
-        if (available == ConnectionResult.SUCCESS){
+        if (available == ConnectionResult.SUCCESS) {
             // Everything is fine and the user can make map requests
             Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
-        }  else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             // An error occurred but we can resolve it
             Log.d(TAG, "isServicesOK: an error occurred but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(LoginActivity.this, available, ERROR_DIALOG_REQUEST);
@@ -352,10 +324,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void openSignupActivity(View view) {
-        startActivity(new Intent(this, Signup1Activity.class));
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -363,6 +331,13 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String email = currentUser.getEmail();
+
+            if (email.equals("admin@gmail.com")) {
+                startActivity(new Intent(LoginActivity.this, AdminActivity.class));
+                finish();
+                return;
+            }
+
             Intent intent = new Intent(new Intent(LoginActivity.this, HostActivity.class));
 
             db.collection("clients").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -400,30 +375,6 @@ public class LoginActivity extends AppCompatActivity {
                     });
                 }
             });
-
-//            db.collection("clients").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        intent.putExtra("accountType", task.getResult().getData().get("account_type").toString());
-//                        intent.putExtra("username", task.getResult().getData().get("username").toString());
-//                        startActivity(intent);
-//                        finish();
-//                    } else {
-//                        db.collection("professionals").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                                if (task.isSuccessful()) {
-//                                    intent.putExtra("accountType", task.getResult().getData().get("account_type").toString());
-//                                    intent.putExtra("username", task.getResult().getData().get("username").toString());
-//                                    startActivity(intent);
-//                                    finish();
-//                                }
-//                            }
-//                        });
-//                    }
-//                }
-//            });
 
         }
     }

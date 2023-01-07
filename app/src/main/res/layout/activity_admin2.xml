@@ -1,49 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/primaryColor"
         android:orientation="vertical"
         tools:context=".AdminActivity2">
-
 
         <TextView
             android:id="@+id/front_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/tertiaryColor"
-            android:fontFamily="@font/open_sans_bold"
-            android:paddingTop="15dp"
-            android:text="Admin Mode"
+            android:fontFamily="@font/open_sans_light"
+            android:paddingVertical="15dp"
+            android:text="Admin Dashboard"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
-
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="950dp"
-            android:layout_marginVertical="40dp"
+            android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:layout_marginVertical="40dp"
             app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="50dp">
-
+            app:cardCornerRadius="25dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp">
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/accept_admin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/accept_button"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:text="approve"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/reject_admin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/reject_button"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:text="reject"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <TextView
@@ -62,7 +79,7 @@
                 android:id="@+id/prof_name2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="180dp"
+                android:layout_marginLeft="175dp"
                 android:layout_marginTop="120dp"
                 android:fontFamily="@font/open_sans"
                 android:textColor="@color/secondaryColor"
@@ -85,13 +102,12 @@
                 android:id="@+id/prof_work2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="180dp"
+                android:layout_marginLeft="175dp"
                 android:layout_marginTop="175dp"
                 android:fontFamily="@font/open_sans"
                 android:textColor="@color/secondaryColor"
                 android:textSize="12sp"
                 android:textStyle="bold" />
-
 
             <TextView
                 android:id="@+id/prof_first_name"
@@ -148,11 +164,9 @@
                 android:layout_marginLeft="145dp"
                 android:layout_marginTop="240dp"
                 android:fontFamily="@font/open_sans"
-
                 android:textColor="@color/secondaryColor"
                 android:textSize="12sp"
                 android:textStyle="bold" />
-
 
             <TextView
                 android:id="@+id/prof_middle_name2"
@@ -172,7 +186,6 @@
                 android:layout_marginLeft="145dp"
                 android:layout_marginTop="290dp"
                 android:fontFamily="@font/open_sans"
-
                 android:textColor="@color/secondaryColor"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -188,38 +201,6 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/accept_admin"
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="45dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="100dp"
-                android:background="@drawable/accept_button"
-                android:fontFamily="@font/open_sans_bold"
-                android:text="approved"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-
-                />
-
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/reject_admin"
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="195dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="100dp"
-                android:background="@drawable/reject_button"
-                android:fontFamily="@font/open_sans_bold"
-                android:text="reject"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-
-                />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -229,8 +210,8 @@
                     android:id="@+id/prof_profile_pic"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_marginTop="90dp"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginTop="90dp"
                     android:padding="10dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/icon_profile"
@@ -250,19 +231,24 @@
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/prof_id_pic"
-                android:layout_width="350dp"
-                android:layout_height="160dp"
-                android:layout_marginVertical="390dp"
-                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/prof_id_pic"
+                    android:layout_width="350dp"
+                    android:layout_height="160dp"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="390dp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/type_of_valid_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="35dp"
                 android:layout_marginTop="570dp"
                 android:fontFamily="@font/open_sans"
                 android:text="Type of ID Submitted"
@@ -274,34 +260,24 @@
                 android:id="@+id/spinner_id_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="615dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="605dp"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/open_sans"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:background="@drawable/white_round_corners_10" />
-            <ImageView
-                android:id="@+id/image_ids"
-                android:layout_width="350dp"
-                android:layout_height="185dp"
-                android:layout_marginVertical="690dp"
-                />
+                android:background="@drawable/white_round_corners_10"
+                android:fontFamily="@font/open_sans" />
 
-            <TextView
-                android:id="@+id/sample_id"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="250dp"
-                android:layout_marginTop="910dp"
-                android:fontFamily="@font/open_sans"
-                android:text="View sample ID"
-                android:textColor="@color/primaryColor"
-                android:textSize="14sp"
-               />
+                android:layout_marginTop="670dp"
+                android:orientation="vertical">
 
-
+                <ImageView
+                    android:id="@+id/image_ids"
+                    android:layout_width="350dp"
+                    android:layout_height="185dp"
+                    android:layout_gravity="center" />
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
-
-
     </LinearLayout>
 </ScrollView>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +27,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.StorageReference;
 
 import java.sql.Timestamp;
@@ -108,6 +111,23 @@ public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListView
             }
         });
 
+        db.collection("client_homes")
+                .document(username)
+                .collection("pro_list")
+                .document(connectedlist_items.get(pos).getConnectedlist_username())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value.exists()) {
+                            if (value.getData().get("is_rated") != null) {
+                                if ((boolean) value.getData().get("is_rated")) {
+                                    holder.connected_list_rate.setVisibility(View.INVISIBLE);
+                                }
+                            }
+                        }
+                    }
+                });
+
         holder.connected_list_rate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,6 +150,12 @@ public class ConnectedListAdapter extends RecyclerView.Adapter<ConnectedListView
                 btnRate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        db.collection("client_homes")
+                                .document(username)
+                                .collection("pro_list")
+                                .document(connectedlist_items.get(pos).getConnectedlist_username())
+                                .update("is_rated", true);
+
                         Timestamp ts = new Timestamp(System.currentTimeMillis());
 
                         temp.clear();

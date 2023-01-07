@@ -1,19 +1,20 @@
 package com.fourbytes.loc8teapp.fragment.professional;
 
-import static com.fourbytes.loc8teapp.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
@@ -23,14 +24,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Handler;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -51,14 +44,9 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -187,20 +175,25 @@ public class FragmentHome_Professional extends Fragment {
 
                         connectedClientList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
-                            // Get profile picture of current user
-                            StorageReference storageRef = storage.getReference();
-                            StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
-                            connectedClientList.add(new ClientItem(
-                                    pathReference,
-                                    documentSnapshot.getId()
-                            ));
+                            if (documentSnapshot.getData().get("is_connected") != null) {
+                                if ((boolean) documentSnapshot.getData().get("is_connected")) {
+                                    // Get profile picture of current user
+                                    StorageReference storageRef = storage.getReference();
+                                    StorageReference pathReference = storageRef.child("profilePics/" + documentSnapshot.getId().toString() + "_profile.jpg");
+                                    connectedClientList.add(new ClientItem(
+                                            pathReference,
+                                            documentSnapshot.getId()
+                                    ));
+                                }
+                            }
                         }
                         rvConnectedClients.setAdapter(new ConnectedClientsAdapter(
                                 view.getContext(),
                                 connectedClientList,
                                 parentFragmentManager,
                                 layoutInflater,
-                                professionalName
+                                professionalName,
+                                username
                         ));
 
                     }

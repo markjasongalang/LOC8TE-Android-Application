@@ -154,6 +154,18 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_delete_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/secondary_color_round_corners2"
+                    android:fontFamily="@font/glacial_indifference"
+                    android:text="delete account"
+                    android:layout_marginLeft="10dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
 
