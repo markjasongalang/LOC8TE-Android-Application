@@ -2,7 +2,6 @@ package com.fourbytes.loc8teapp.fragment.client;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -323,15 +323,65 @@ public class FragmentHome_ConnectedList extends Fragment {
 
                         HashSet<String> connected = new HashSet<>();
                         for (QueryDocumentSnapshot documentSnapshot : value) {
-                            Log.d("try_lang", documentSnapshot.getId() + " " + documentSnapshot.getData());
                             if (documentSnapshot.getData().get("is_connected") != null) {
                                 if ((boolean) documentSnapshot.getData().get("is_connected")) {
                                     connected.add(documentSnapshot.getId());
 
                                     db.collection("pro_homes").document(documentSnapshot.getId()).set(temp);
-                                    db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).update("is_connected", true);
+                                    db.collection("pro_homes")
+                                            .document(documentSnapshot.getId())
+                                            .collection("client_list")
+                                            .document(username)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult().exists()) {
+                                                            db.collection("pro_homes")
+                                                                    .document(documentSnapshot.getId())
+                                                                    .collection("client_list")
+                                                                    .document(username)
+                                                                    .update("is_connected", true);
+                                                        } else {
+                                                            HashMap<String, Boolean> temp2 = new HashMap<>();
+                                                            temp2.put("is_connected", true);
+                                                            db.collection("pro_homes")
+                                                                    .document(documentSnapshot.getId())
+                                                                    .collection("client_list")
+                                                                    .document(username)
+                                                                    .set(temp2);
+                                                        }
+                                                    }
+                                                }
+                                            });
+
+//                                            .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//                                                @Override
+//                                                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                                                    if (value.exists()) {
+//                                                        db.collection("pro_homes")
+//                                                                .document(documentSnapshot.getId())
+//                                                                .collection("client_list")
+//                                                                .document(username)
+//                                                                .update("is_connected", true);
+//                                                    } else {
+//                                                        HashMap<String, Boolean> temp2 = new HashMap<>();
+//                                                        temp2.put("is_connected", true);
+//                                                        db.collection("pro_homes")
+//                                                                .document(documentSnapshot.getId())
+//                                                                .collection("client_list")
+//                                                                .document(username)
+//                                                                .set(temp2);
+//                                                    }
+//                                                }
+//                                            });
                                 } else {
-                                    db.collection("pro_homes").document(documentSnapshot.getId()).collection("client_list").document(username).update("is_connected", false);
+                                    db.collection("pro_homes")
+                                            .document(documentSnapshot.getId())
+                                            .collection("client_list")
+                                            .document(username)
+                                            .update("is_connected", false);
                                 }
                             }
                         }

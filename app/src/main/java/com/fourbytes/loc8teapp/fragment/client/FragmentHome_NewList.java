@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -171,11 +172,30 @@ public class FragmentHome_NewList extends Fragment {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         if (!connected.contains(document.getId()) && (boolean) document.getData().get("verified")) {
+
                                             db.collection("client_homes")
                                                     .document(username)
                                                     .collection("pro_list")
                                                     .document(document.getId())
-                                                    .update(temp2);
+                                                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                                            if (value.exists()) {
+//                                                                db.collection("client_homes")
+//                                                                        .document(username)
+//                                                                        .collection("pro_list")
+//                                                                        .document(document.getId())
+//                                                                        .update(temp2);
+                                                            } else {
+                                                                db.collection("client_homes")
+                                                                        .document(username)
+                                                                        .collection("pro_list")
+                                                                        .document(document.getId())
+                                                                        .set(temp2);
+                                                            }
+                                                        }
+                                                    });
+
                                         }
                                     }
                                 }

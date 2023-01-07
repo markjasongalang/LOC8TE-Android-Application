@@ -3,6 +3,7 @@ package com.fourbytes.loc8teapp.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,16 +95,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
 
 
         if (fieldUsername == null) {
+            Log.d("hello_test", chat_items.get(pos).getChatUsername());
             db.collection((accountType.equals("client") ? "professionals" : "clients"))
                     .document(chat_items.get(pos).getChatUsername())
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful() && task.getResult().get("first_name") != null && task.getResult().get("last_name") != null && task.getResult().get("specific_job") != null) {
+                            if (task.isSuccessful() && task.getResult().get("first_name") != null && task.getResult().get("last_name") != null) {
                                 holder.chats_name.setText(task.getResult().getData().get("first_name").toString() + " " + task.getResult().getData().get("last_name").toString());
 
-                                if (accountType.equals("client")) {
+                                if (accountType.equals("client") && task.getResult().get("specific_job") != null) {
                                     holder.chats_occupation.setText(task.getResult().getData().get("specific_job").toString());
                                 }
                             }

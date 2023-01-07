@@ -206,7 +206,28 @@ public class AboutFragment extends Fragment {
                         temp2.put("exists", true);
 
                         db.collection("pro_homes").document(username).set(temp2);
-                        db.collection("pro_homes").document(username).collection("client_list").document(current).update("is_connected", true);
+                        db.collection("pro_homes")
+                                .document(username)
+                                .collection("client_list")
+                                .document(current)
+                                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                        if (value.exists()) {
+//                                            db.collection("pro_homes")
+//                                                    .document(username)
+//                                                    .collection("client_list")
+//                                                    .document(current)
+//                                                    .update("is_connected", true);
+                                        } else {
+//                                            db.collection("pro_homes")
+//                                                    .document(username)
+//                                                    .collection("client_list")
+//                                                    .document(current)
+//                                                    .set(temp);
+                                        }
+                                    }
+                                });
                     } else {
                         temp.put("is_connected", false);
                         btnConnect.setText("connect");
