@@ -1100,7 +1100,30 @@ public class FragmentHome_MapView extends Fragment implements OnMapReadyCallback
     }
 
     public void setMarkers(double latitude, double longitude, String name, String id, String job, String field) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.icon_pro_marker);
+        int markerImage;
+
+        if(field.equals(TECHNOLOGY_FIELD)){
+            markerImage = R.drawable.technology;
+        }else if(field.equals(SKILLED_TRADE_FIELD)){
+            markerImage = R.drawable.skilled_trade;
+        }else if(field.equals(MEDICAL_FIELD)){
+            markerImage = R.drawable.medic_health;
+        }else if(field.equals(LAW_FIELD)){
+            markerImage = R.drawable.law;
+        }else if(field.equals(FOOD_FIELD)){
+            markerImage = R.drawable.food_culinary_events;
+        }else if(field.equals(EDUCATION_FIELD)){
+            markerImage = R.drawable.education;
+        }else if(field.equals(BUSINESS_FIELD)){
+            markerImage = R.drawable.business_admin;
+        }else if(field.equals(ARTS_FIELD)){
+            markerImage = R.drawable.arts_humms_libarts;
+        }else{
+            markerImage = R.drawable.icon_pro_marker;
+        }
+
+        System.out.println(field);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), markerImage);
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(bm, 50, 50, false);
         map_instance.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))

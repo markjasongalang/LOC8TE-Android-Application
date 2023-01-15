@@ -176,8 +176,6 @@ public class FragmentEvent_Realtime extends Fragment implements OnMapReadyCallba
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
-       startLocationRequest();
     }
 
     public void initVertices() {
@@ -229,12 +227,8 @@ public class FragmentEvent_Realtime extends Fragment implements OnMapReadyCallba
                         }
 
                         if(terminate){
-                            fusedLocationProviderClient.removeLocationUpdates(mLocationCallback).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    parentFragmentManager.popBackStack();
-                                }
-                            });
+                            parentFragmentManager.popBackStack();
+
                         }
                     }
                 }
@@ -380,28 +374,34 @@ public class FragmentEvent_Realtime extends Fragment implements OnMapReadyCallba
     public void onResume() {
         super.onResume();
         map_view.onResume();
+        startLocationRequest();
     }
 
     @Override
     public void onStart() {
         super.onStart();
         map_view.onStart();
+        startLocationRequest();
     }
 
     @Override
     public void onStop() {
-        super.onStop();
+        startLocationRequest();
         map_view.onStop();
+        super.onStop();
+
     }
 
     @Override
     public void onPause() {
+        fusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
         map_view.onPause();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
+        fusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
         map_view.onDestroy();
         super.onDestroy();
 
