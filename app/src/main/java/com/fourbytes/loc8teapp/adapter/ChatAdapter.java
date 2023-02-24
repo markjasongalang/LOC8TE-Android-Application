@@ -92,8 +92,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
     public void onBindViewHolder(@NonNull ChatsViewHolder holder, int position) {
 
         int pos = position;
-
-
         if (fieldUsername == null) {
             Log.d("hello_test", chat_items.get(pos).getChatUsername());
             db.collection((accountType.equals("client") ? "professionals" : "clients"))
@@ -189,7 +187,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatsViewHolder> {
                                             if (name.equals(username)) {
                                                 name = "You";
                                             } else {
-                                                name = task.getResult().getData().get("first_name").toString();
+                                                if (task.getResult().exists()) {
+                                                    name = task.getResult().getData().get("first_name").toString();
+                                                } else {
+                                                    holder.chats_msgpreview.setText("Click here to chat");
+                                                }
                                             }
                                         }
 

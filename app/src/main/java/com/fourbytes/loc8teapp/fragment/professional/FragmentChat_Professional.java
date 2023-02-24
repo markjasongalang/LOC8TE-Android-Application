@@ -1,6 +1,9 @@
 package com.fourbytes.loc8teapp.fragment.professional;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,19 +14,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.fourbytes.loc8teapp.Pair;
-import com.fourbytes.loc8teapp.SharedViewModel;
-import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
 import com.fourbytes.loc8teapp.R;
+import com.fourbytes.loc8teapp.SharedViewModel;
 import com.fourbytes.loc8teapp.adapter.ChatAdapter;
+import com.fourbytes.loc8teapp.chatsrecycler.ChatsItems;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -119,10 +116,7 @@ public class FragmentChat_Professional extends Fragment {
         StorageReference storageRef = storage.getReference();
         StorageReference pathReference = storageRef.child("industryChatPics/" + fieldUsername + ".jpg");
 
-        chats_items_industry.add(new ChatsItems(
-                fieldUsername,
-                pathReference
-        ));
+        chats_items_industry.add(new ChatsItems(fieldUsername, pathReference));
 
         chats_recyclerView1.setAdapter(new ChatAdapter(getContext(), chats_items_industry, parentFragmentManager, db, username, accountType, field, fieldUsername));
 

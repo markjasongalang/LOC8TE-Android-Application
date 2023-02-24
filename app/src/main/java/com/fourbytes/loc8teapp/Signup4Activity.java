@@ -187,6 +187,7 @@ public class Signup4Activity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("AUTH_SUCCESS", "Authentication Success");
+                                    FirebaseAuth.getInstance().signOut();
                                 } else {
                                     Log.d("AUTH_ERROR", "Authentication Error");
                                 }
